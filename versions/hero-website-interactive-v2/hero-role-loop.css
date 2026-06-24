@@ -1,0 +1,82 @@
+.hero-role-loop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  color: #2e2f31;
+  white-space: nowrap;
+}
+
+.hero-role-loop__label {
+  flex: 0 0 auto;
+  margin: 0 4px 0 0;
+  font-family: "Helvetica Replica", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.hero-role-loop__mask {
+  position: relative;
+  width: var(--role-width, 390px);
+  height: var(--role-height, 86px);
+  overflow: hidden;
+}
+
+.hero-role-loop__word {
+  display: block;
+  margin: 0;
+  font-family: "Valky Replica", "Gallery Modern", Georgia, serif;
+  font-size: var(--role-size, 72px);
+  font-weight: 400;
+  line-height: var(--role-height, 86px);
+  letter-spacing: 0;
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+  will-change: transform, opacity, filter;
+}
+
+.hero-role-loop__word.is-active {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0) scale(1);
+}
+
+.hero-role-loop__word::before,
+.hero-role-loop__word::after {
+  content: "*";
+  display: inline-block;
+  margin: 0 .12em;
+  font-family: "Gallery Modern", Georgia, serif;
+  font-size: .48em;
+  line-height: 1;
+  transform: translateY(-.18em);
+}
+
+.hero-role-loop__fixed {
+  margin: 0;
+  font-family: "Valky Replica", "Gallery Modern", Georgia, serif;
+  font-size: var(--role-size, 72px);
+  font-weight: 400;
+  line-height: var(--role-height, 86px);
+  letter-spacing: 0;
+}
+
+@media (max-width: 809px) {
+  .hero-role-loop {
+    gap: 9px;
+    justify-content: flex-start;
+  }
+
+  .hero-role-loop__mask {
+    width: min(48vw, 300px);
+    height: 76px;
+  }
+
+  .hero-role-loop__word,
+  .hero-role-loop__fixed {
+    font-size: 58px;
+    line-height: 76px;
+  }
+}

@@ -1,0 +1,1088 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlyLens Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cobalt:      #383BCB;
+      --cobalt-mid:  #4F52D8;
+      --cobalt-dark: #252880;
+      --lavender:    #D6D6EF;
+      --pale:        #ECEDF8;
+      --surface:     #F3F4F9;
+      --sky:         #EDF0F8;
+      --muted:       #9BA5C9;
+      --ink:         #0D0F1A;
+      --ink-soft:    #2A2D4A;
+      --ink-dim:     #6B7090;
+      --white:       #FFFFFF;
+      --fd: 'DM Sans', sans-serif;
+      --fb: 'DM Sans', sans-serif;
+      --ease: cubic-bezier(.16,1,.3,1);
+    }
+
+    html { scroll-behavior: smooth; overflow-x: clip; }
+    body  { font-family: var(--fb); background: var(--white); color: var(--ink); }
+    .flylens-detail {
+      --header-h: 76px;
+      --gutter: clamp(24px, 3vw, 52px);
+    }
+    .flylens-detail .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px var(--gutter);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      pointer-events: auto;
+    }
+    .flylens-detail .brand {
+      display: flex;
+      align-items: center;
+      width: 92px;
+      min-width: 92px;
+      text-decoration: none;
+    }
+    .flylens-detail .brand__image {
+      display: block;
+      width: 92px;
+      height: auto;
+      opacity: .95;
+      transform: rotate(-1.5deg);
+    }
+    .flylens-detail .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .flylens-detail .nav-links a {
+      color: rgba(13, 15, 26, .78);
+      font-size: 14px;
+      line-height: 1;
+      text-decoration: none;
+      text-transform: lowercase;
+      transition: color .22s ease, opacity .22s ease;
+    }
+    .flylens-detail .nav-links a.active,
+    .flylens-detail .nav-links a:hover {
+      color: var(--ink);
+    }
+    .flylens-detail .portfolio-footer {
+      background: var(--ink);
+      padding: 36px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      font-size: 12px;
+      color: rgba(255,255,255,.42);
+    }
+    .flylens-detail .portfolio-footer a {
+      color: rgba(255,255,255,.55);
+      text-decoration: none;
+    }
+    .flylens-detail .project-more-work-cta {
+      display: grid;
+      place-items: center;
+      padding: 58px 24px 76px;
+      background: var(--white);
+    }
+    .flylens-detail .project-more-work-cta a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 22px;
+      border: 1px solid rgba(13, 15, 26, .34);
+      border-radius: 999px;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1;
+      text-decoration: none;
+    }
+
+    /* â”€ REVEAL â”€ */
+    .up {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .9s var(--ease), transform .9s var(--ease);
+    }
+    .up.show { opacity: 1; transform: none; }
+    .d1 { transition-delay: .10s; }
+    .d2 { transition-delay: .22s; }
+    .d3 { transition-delay: .36s; }
+    .d4 { transition-delay: .50s; }
+
+    /* â”€ SHARED â”€ */
+    .w  { max-width: 1280px; margin: 0 auto; padding: 0 56px; }
+    .w-sm { max-width: 1280px; margin: 0 auto; padding: 0 56px; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 600; letter-spacing: .13em;
+      text-transform: uppercase; color: var(--cobalt);
+    }
+    .eyebrow::before { content:''; width: 24px; height: 1px; background: var(--cobalt); }
+    .eyebrow.light { color: rgba(255,255,255,.4); }
+    .eyebrow.light::before { background: rgba(255,255,255,.4); }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ NAV â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #hero {
+      min-height: 100vh;
+      background: var(--sky);
+      display: grid; grid-template-columns: 1fr 1fr;
+      overflow: hidden; position: relative;
+    }
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse at 65% 45%, rgba(56,59,203,.1) 0%, transparent 60%);
+    }
+    .hero-l {
+      padding: 140px 64px 80px 56px;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; z-index: 2;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 4px 14px 4px 4px; border-radius: 100px;
+      border: 1px solid var(--lavender);
+      background: white;
+      font-size: 11px; font-weight: 500; color: var(--ink-dim);
+      width: fit-content; margin-bottom: 36px;
+    }
+    .hero-badge-pip {
+      width: 20px; height: 20px; background: var(--cobalt); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 10px; color: white;
+    }
+    .hero-logo { margin-bottom: 32px; }
+    .hero-logo svg { width: clamp(180px, 22vw, 320px); height: auto; }
+    .hero-sub {
+      font-size: 17px; line-height: 1.72; color: var(--ink-dim);
+      max-width: 420px; margin-bottom: 48px;
+    }
+    .hero-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      padding: 7px 16px; border-radius: 100px;
+      font-size: 12px; font-weight: 500;
+    }
+    .pill-blue { background: var(--cobalt); color: white; }
+    .pill-ghost { border: 1px solid var(--lavender); background: white; color: var(--ink-soft); }
+
+    .hero-r {
+      position: relative; overflow: hidden;
+      display: flex; align-items: flex-end; justify-content: center;
+    }
+    .hero-r img {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      width: 110%;
+      object-fit: contain;
+      animation: heroFloat 9s ease-in-out infinite;
+    }
+    @keyframes heroFloat {
+      0%,100% { transform: translateX(-50%) translateY(-14px); }
+      50%      { transform: translateX(-50%) translateY(10px); }
+    }
+    .hero-scroll-hint {
+      position: absolute; bottom: 36px; left: 56px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 500; color: var(--muted);
+      letter-spacing: .1em; text-transform: uppercase;
+    }
+    .hero-scroll-hint::before {
+      content: ''; display: block; width: 32px; height: 1px; background: var(--lavender);
+    }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ STRIP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #strip { background: var(--cobalt); }
+    .strip-inner {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      max-width: 1280px; margin: 0 auto;
+    }
+    .strip-cell {
+      padding: 40px 44px;
+    }
+    .strip-label {
+      font-size: 10px; font-weight: 600; letter-spacing: .13em;
+      text-transform: uppercase; color: rgba(255,255,255,.38); margin-bottom: 8px;
+    }
+    .strip-val {
+      font-family: var(--fd); font-size: 17px; font-weight: 700; color: white; line-height: 1.35;
+    }
+    .strip-icons {
+      display: flex; align-items: center; gap: 10px; margin-top: 2px;
+    }
+    .strip-icons img {
+      width: 36px; height: 36px; border-radius: 8px; object-fit: contain;
+    }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ PROBLEM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #problem {
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 90vh; overflow: hidden;
+    }
+    .problem-l {
+      background: var(--surface);
+      padding: 120px 72px 120px 56px;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .ghost-n {
+      font-family: var(--fd); font-size: clamp(140px,18vw,240px);
+      font-weight: 800; color: var(--pale); line-height: .85;
+      letter-spacing: -.05em; pointer-events: none;
+      position: absolute; top: 48px; left: 40px; z-index: 0;
+    }
+    .problem-content { position: relative; z-index: 1; }
+    .problem-h {
+      font-family: var(--fd);
+      font-size: clamp(2.6rem, 4vw, 3.8rem);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.06;
+      color: var(--ink); margin: 16px 0 20px;
+    }
+    .body { font-size: 15px; line-height: 1.82; color: var(--ink-dim); max-width: 440px; }
+    .kpi-row { display: flex; gap: 36px; flex-wrap: wrap; margin-top: 44px; }
+    .kpi .n {
+      font-family: var(--fd); font-size: 34px; font-weight: 800;
+      color: var(--cobalt); line-height: 1;
+    }
+    .kpi .l { font-size: 13px; color: var(--ink-dim); margin-top: 5px; }
+
+    .problem-r { position: relative; }
+    .problem-r img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; display: block; }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ PROCESS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #process { background: var(--white); padding: 56px 0 0; }
+    .process-intro { margin-bottom: 64px; }
+    .process-intro h2 {
+      font-family: var(--fd); font-size: clamp(2.6rem,4vw,3.8rem);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.06;
+      color: var(--ink); margin: 16px 0 20px;
+    }
+    .bleed { width: 100vw; margin-left: calc(-50vw + 50%); padding: 0; }
+    .bleed img { width: 100%; height: auto; display: block; }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ PERSONA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #persona { display: grid; grid-template-columns: 44% 56%; min-height: 90vh; overflow: hidden; }
+    .persona-img { position: relative; overflow: hidden; }
+    .persona-img img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+    .persona-tag {
+      position: absolute; bottom: 28px; left: 28px;
+      background: rgba(255,255,255,.94); backdrop-filter: blur(14px);
+      border-radius: 14px; padding: 14px 20px;
+      border: 1px solid rgba(214,214,239,.5);
+    }
+    .persona-tag .pn { font-family: var(--fd); font-size: 17px; font-weight: 700; }
+    .persona-tag .pa { font-size: 12px; color: var(--ink-dim); margin-top: 4px; }
+    .persona-body {
+      background: var(--surface); padding: 88px 72px 88px 64px;
+      display: flex; flex-direction: column; justify-content: center; gap: 32px;
+    }
+    .quote {
+      font-family: var(--fd); font-size: clamp(1.4rem,2.2vw,2rem);
+      font-weight: 600; color: var(--ink); line-height: 1.4; font-style: italic;
+      border-left: 3px solid var(--cobalt); padding-left: 24px;
+    }
+    .attr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .attr .at {
+      font-size: 10px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--cobalt); margin-bottom: 12px;
+    }
+    .attr ul { list-style: none; }
+    .attr ul li {
+      font-size: 13.5px; color: var(--ink-soft); line-height: 1.9;
+      padding-left: 16px; position: relative;
+    }
+    .attr ul li::before { content:'>'; position:absolute; left:0; color:var(--cobalt); font-size:10px; top:3px; }
+    .attr-full { grid-column: 1/-1; }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ARCHITECTURE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #arch { background: var(--white); padding: 120px 0 80px; }
+    .arch-intro { margin-bottom: 72px; }
+    .arch-intro h2 {
+      font-family: var(--fd); font-size: clamp(2.4rem,4vw,3.6rem);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.06; color: var(--ink);
+      margin: 14px 0 14px;
+    }
+    .flow-block { margin-bottom: 64px; }
+    .flow-block:last-child { margin-bottom: 0; }
+    .flow-label {
+      display: flex; align-items: center; gap: 12px;
+      font-family: var(--fd); font-size: 14px; font-weight: 700; color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .flow-label::after { content:''; flex:1; height:1px; background:var(--pale); }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ USER JOURNEY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #journey { background: var(--white); padding: 120px 0 0; }
+    .journey-intro { margin-bottom: 72px; }
+    .journey-intro h2 {
+      font-family: var(--fd); font-size: clamp(2.4rem,4vw,3.6rem);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.06; color: var(--ink);
+      margin: 14px 0 14px;
+    }
+    /* Table */
+    .jt { max-width: 1280px; margin: 0 auto; padding: 0 56px 120px; }
+    .jt-head {
+      display: grid;
+      grid-template-columns: 80px 220px 1fr;
+      padding: 12px 0 14px;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+    .jt-hc {
+      font-size: 12px; font-weight: 400; color: var(--ink-dim);
+    }
+    .jt-hc-r { display: none; }
+    .jt-row {
+      display: grid;
+      grid-template-columns: 80px 220px 1fr;
+      grid-template-rows: auto auto;
+      padding: 52px 0;
+      border-bottom: 1px solid var(--pale);
+    }
+    .jt-no {
+      grid-column: 1; grid-row: 1;
+      font-size: 13px; font-weight: 400; color: var(--ink-dim); padding-top: 6px;
+    }
+    .jt-subject {
+      grid-column: 2; grid-row: 1;
+      font-family: var(--fd);
+      font-size: clamp(1.7rem,2.1vw,2.4rem);
+      font-weight: 800; color: var(--cobalt);
+      letter-spacing: -.03em; line-height: 1.1;
+      padding-right: 32px; padding-top: 3px;
+    }
+    .jt-about {
+      grid-column: 3; grid-row: 1;
+      font-size: 14px; line-height: 1.84; color: var(--ink-dim);
+      padding-right: 24px;
+    }
+    .jt-screens {
+      grid-column: 1 / -1; grid-row: 2;
+      display: flex; gap: 24px;
+      align-items: flex-start; justify-content: center;
+      padding-top: 48px;
+    }
+    .jt-sc {
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      flex: 0 0 auto;
+    }
+    .jt-sc img {
+      height: 480px; width: auto; border-radius: 28px;
+      filter: drop-shadow(0 20px 48px rgba(56,59,203,.16));
+      transition: transform .4s var(--ease);
+    }
+    .jt-sc img:hover { transform: translateY(-12px) scale(1.02); }
+    .jt-sc-label {
+      font-size: 12px; font-weight: 500; color: var(--ink-dim);
+      letter-spacing: .04em; text-align: center;
+    }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ONBOARDING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #onboarding {
+      background: var(--cobalt); padding: 120px 0 80px;
+      position: relative; overflow: hidden;
+    }
+    .ob-watermark {
+      position: absolute; bottom: -24px; left: 0; right: 0;
+      font-family: var(--fd); font-size: 17vw; font-weight: 800;
+      color: rgba(255,255,255,.04); letter-spacing: -.04em;
+      white-space: nowrap; pointer-events: none; line-height: 1;
+    }
+    .ob-head { position: relative; z-index: 2; margin-bottom: 80px; }
+    .ob-head h2 {
+      font-family: var(--fd); font-size: clamp(2.4rem,4vw,3.6rem);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.06;
+      color: white; margin: 14px 0 14px;
+    }
+    .ob-head p { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,.5); max-width: 440px; }
+    .ob-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 36px; align-items: end;
+      position: relative; z-index: 2;
+    }
+    .ob-card { display: flex; flex-direction: column; gap: 24px; }
+    .ob-card:nth-child(2) { transform: translateY(-52px); }
+    .ob-card:nth-child(3) { transform: translateY(-24px); }
+    .ob-phone {
+      width: 100%; display: block;
+      filter: drop-shadow(0 28px 60px rgba(0,0,0,.32));
+      transition: transform .45s var(--ease);
+    }
+    .ob-phone:hover { transform: translateY(-14px); }
+    .ob-cap .cn {
+      font-size: 10px; font-weight: 600; letter-spacing: .13em;
+      text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 7px;
+    }
+    .ob-cap .ct { font-family: var(--fd); font-size: 17px; font-weight: 700; color: white; margin-bottom: 6px; }
+    .ob-cap .cd { font-size: 13px; color: rgba(255,255,255,.45); line-height: 1.65; }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FEATURES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #features { background: var(--surface); }
+
+    .feat-split {
+      display: grid; grid-template-columns: 55% 45%;
+      min-height: 86vh; overflow: hidden;
+    }
+    .feat-split.rev { direction: rtl; }
+    .feat-split.rev > * { direction: ltr; }
+
+    .feat-vis {
+      background: var(--sky);
+      display: flex; align-items: center; justify-content: center;
+      padding: 80px 48px; position: relative; overflow: hidden;
+    }
+    .feat-vis.dark { background: var(--ink); }
+    .feat-vis.cobalt { background: var(--cobalt); }
+    .fp-pair {
+      display: flex; align-items: flex-end; justify-content: center;
+      gap: 0; width: 100%; max-width: 560px;
+    }
+    .fp {
+      width: 46%;
+      filter: drop-shadow(0 24px 52px rgba(56,59,203,.22));
+    }
+    .fp:first-child { transform: rotate(-4deg) translateX(18px) translateY(14px); z-index:1; }
+    .fp:last-child  { transform: rotate(3.5deg) translateX(-18px); z-index:2; }
+    .fp-solo { width: 58%; filter: drop-shadow(0 24px 52px rgba(56,59,203,.22)); }
+
+    .feat-copy {
+      padding: 88px 64px 88px 64px;
+      display: flex; flex-direction: column; justify-content: center; gap: 20px;
+    }
+    .feat-copy.dark { background: var(--ink); }
+    .feat-copy.dark h3, .feat-copy.dark .eyebrow { color: white; }
+    .feat-copy.dark .eyebrow::before { background: rgba(255,255,255,.35); }
+    .feat-copy.dark .eyebrow { color: rgba(255,255,255,.4); letter-spacing: .13em; font-size:11px; }
+    .feat-copy.dark p { color: rgba(255,255,255,.5); }
+
+    .feat-copy h3 {
+      font-family: var(--fd);
+      font-size: clamp(2rem,3.2vw,3rem);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.1; color: var(--ink);
+    }
+    .feat-copy p { font-size: 15px; line-height: 1.82; color: var(--ink-dim); }
+    .feat-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      background: var(--cobalt); display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+    .feat-icon.ghost { background: rgba(255,255,255,.12); }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .tag {
+      padding: 6px 13px; border-radius: 100px;
+      font-size: 12px; font-weight: 500;
+      background: var(--white); border: 1px solid var(--pale); color: var(--ink-soft);
+    }
+    .tag.ghost { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.14); color: rgba(255,255,255,.7); }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ PASS / RESULT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #pass {
+      background: var(--ink); padding: 112px 0;
+      position: relative; overflow: hidden;
+    }
+    .pass-bg {
+      position: absolute; bottom: -20px; left: 0; right: 0;
+      font-family: var(--fd); font-size: 12vw; font-weight: 800;
+      color: rgba(255,255,255,.03); letter-spacing: -.04em;
+      white-space: nowrap; pointer-events: none; line-height: 1;
+    }
+    .pass-inner {
+      position: relative; z-index: 2;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: center;
+      max-width: 1280px; margin: 0 auto; padding: 0 56px;
+    }
+    .pass-copy { display: flex; flex-direction: column; gap: 20px; }
+    .pass-copy h2 {
+      font-family: var(--fd); font-size: clamp(2.4rem,4vw,3.8rem);
+      font-weight: 800; letter-spacing: -.035em; line-height: 1.06; color: white;
+    }
+    .pass-copy p { font-size: 16px; line-height: 1.78; color: rgba(255,255,255,.45); max-width: 400px; }
+    .pass-phones {
+      display: flex; align-items: flex-end; justify-content: center; gap: 20px;
+    }
+    .pass-phones img {
+      width: 46%;
+      filter: drop-shadow(0 28px 72px rgba(56,59,203,.45));
+      border-radius: 32px;
+    }
+    .pass-phones img:first-child { transform: rotate(-3deg) translateY(18px); }
+    .pass-phones img:last-child  { transform: rotate(2deg); }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ GALLERY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #gallery { background: var(--white); padding: 112px 0 80px; overflow: hidden; }
+    .gallery-head { margin-bottom: 56px; }
+    .gallery-head h2 {
+      font-family: var(--fd); font-size: clamp(2.4rem,4vw,3.6rem);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.06; color: var(--ink);
+      margin: 14px 0 10px;
+    }
+    .gtrack {
+      display: flex; gap: 20px;
+      overflow-x: scroll; padding: 12px 56px 64px;
+      scrollbar-width: none; cursor: grab;
+      -webkit-overflow-scrolling: touch;
+    }
+    .gtrack:active { cursor: grabbing; }
+    .gtrack::-webkit-scrollbar { display: none; }
+    .gcard { flex: 0 0 220px; }
+    .gcard img {
+      width: 100%; border-radius: 20px;
+      filter: drop-shadow(0 12px 32px rgba(56,59,203,.13));
+      transition: transform .4s var(--ease);
+    }
+    .gcard img:hover { transform: translateY(-12px); }
+    .gcap {
+      font-size: 11px; font-weight: 500; color: var(--ink-dim);
+      text-align: center; margin-top: 10px;
+    }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ IDENTITY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #identity { background: var(--surface); }
+    .id-intro { padding: 112px 56px 56px; max-width: 1280px; margin: 0 auto; }
+    .id-intro h2 {
+      font-family: var(--fd); font-size: clamp(2.4rem,4vw,3.6rem);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.06; color: var(--ink);
+      margin: 14px 0 14px;
+    }
+    .id-logo-band {
+      background: var(--cobalt); padding: 80px 56px;
+      display: flex; align-items: center; justify-content: space-between; gap: 48px;
+    }
+    .id-logo-band img { height: clamp(52px,8vw,96px); filter: brightness(0) invert(1); }
+    .id-logo-note {
+      font-family: var(--fd); font-size: clamp(.95rem,1.3vw,1.1rem);
+      font-weight: 500; color: rgba(255,255,255,.4); max-width: 320px; line-height: 1.75;
+    }
+    .id-swatches { display: grid; grid-template-columns: repeat(4,1fr); }
+    .swatch {
+      height: 144px; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 20px 24px;
+    }
+    .swatch .sn { font-size: 10px; font-weight: 600; letter-spacing:.1em; text-transform:uppercase; opacity:.45; margin-bottom:4px; }
+    .swatch .sv { font-family: var(--fd); font-size: 18px; font-weight: 700; }
+    .id-type {
+      padding: 72px 56px; background: var(--white);
+    }
+    .typespec {
+      font-family: var(--fd); font-size: clamp(3rem,7vw,7.5rem);
+      font-weight: 800; letter-spacing: -.04em; line-height: .9;
+      color: var(--ink); white-space: nowrap; overflow: hidden;
+    }
+    .typespec em { color: var(--cobalt); font-style: normal; }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CLOSING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #closing { position: relative; overflow: hidden; }
+    .closing-img { width: 100%; height: 90vh; object-fit: cover; display: block; object-position: center 30%; }
+    .closing-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,15,26,.92) 0%, rgba(13,15,26,.18) 55%, transparent 100%);
+    }
+    .closing-copy { position: absolute; bottom: 0; left: 0; right: 0; padding: 96px 56px; }
+    .closing-copy h2 {
+      font-family: var(--fd); font-size: clamp(2.4rem,5vw,4.4rem);
+      font-weight: 800; letter-spacing: -.035em; color: white;
+      line-height: 1.08; max-width: 580px; margin: 14px 0 28px;
+    }
+    .closing-copy p {
+      font-size: 16px; line-height: 1.85; color: rgba(255,255,255,1);
+      max-width: 760px; margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; background: white; color: var(--cobalt);
+      font-size: 14px; font-weight: 600; border-radius: 100px; text-decoration: none;
+      transition: transform .22s, box-shadow .22s;
+    }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(0,0,0,.28); }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FOOTER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    footer {
+      background: var(--ink); padding: 36px 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px; color: rgba(255,255,255,.25);
+    }
+    footer a { color: rgba(255,255,255,.4); text-decoration: none; }
+
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ RESPONSIVE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    @media (max-width: 720px) {
+      nav { padding: 0 24px; }
+      .nav-cta { display: none; }
+      .flylens-detail .site-header { padding: 12px 18px; }
+      .flylens-detail .brand,
+      .flylens-detail .brand__image { width: 82px; min-width: 82px; }
+      .flylens-detail .nav-links { display: flex; gap: 13px; }
+      .flylens-detail .nav-links a { font-size: 13px; }
+      .w, .w-sm { padding: 0 24px; }
+
+      #hero { grid-template-columns: 1fr; }
+      .hero-r { display: none; }
+      .hero-l { padding: 100px 24px 72px; }
+      .hero-scroll-hint { left: 24px; }
+
+      .strip-inner { grid-template-columns: repeat(2,1fr); }
+      .strip-cell {
+        border-right: none; border-bottom: 1px solid rgba(255,255,255,.1);
+        padding: 28px 24px;
+      }
+      .strip-cell:nth-child(odd) { border-right: 1px solid rgba(255,255,255,.1); }
+      .strip-cell:nth-last-child(-n+2) { border-bottom: none; }
+
+      #problem { grid-template-columns: 1fr; }
+      .problem-l { padding: 80px 24px; }
+      .problem-r { min-height: 55vw; }
+
+      .bleed { padding: 0 16px; }
+
+      #persona { grid-template-columns: 1fr; }
+      .persona-img { min-height: 72vw; }
+      .persona-body { padding: 48px 24px; }
+
+      #arch { padding: 80px 0; }
+
+      /* Journey table â†’ mobile stack */
+      .jt { padding: 0 24px 80px; }
+      .jt-head { grid-template-columns: 52px 1fr; }
+      .jt-hc:nth-child(3), .jt-hc:nth-child(4) { display: none; }
+      .jt-row {
+        grid-template-columns: 52px 1fr;
+        grid-template-rows: auto auto auto;
+        row-gap: 18px;
+        padding: 40px 0;
+      }
+      .jt-about { grid-column: 1/-1; padding-right: 0; }
+      .jt-screens {
+        grid-column: 1/-1; justify-content: flex-start;
+        overflow-x: auto; padding-bottom: 8px; scrollbar-width: none;
+      }
+      .jt-screens::-webkit-scrollbar { display: none; }
+      .jt-sc { flex-shrink: 0; }
+      .jt-sc img { height: 240px; }
+
+      #onboarding { padding: 80px 0 60px; }
+      .ob-grid { grid-template-columns: 1fr; }
+      .ob-card:nth-child(2), .ob-card:nth-child(3) { transform: none; }
+      .ob-phone { max-width: 280px; margin: 0 auto; display: block; }
+
+      .feat-split, .feat-split.rev {
+        grid-template-columns: 1fr; direction: ltr;
+      }
+      .feat-vis { min-height: 64vw; }
+      .feat-copy { padding: 56px 24px; }
+
+      .pass-inner { grid-template-columns: 1fr; padding: 0 24px; gap: 48px; }
+      .pass-phones img { border-radius: 20px; }
+
+      .gtrack { padding: 12px 24px 56px; }
+
+      .id-intro { padding: 80px 24px 48px; }
+      .id-logo-band { flex-direction: column; align-items: flex-start; padding: 56px 24px; }
+      .id-swatches { grid-template-columns: repeat(2,1fr); }
+      .swatch { height: 120px; }
+      .id-type { padding: 48px 24px; }
+      .typespec { font-size: clamp(2rem,9vw,3.5rem); white-space: normal; }
+
+      .closing-copy { padding: 48px 24px; }
+      .flylens-detail .portfolio-footer { flex-direction: column; gap: 12px; padding: 28px 24px; text-align: center; }
+      .flylens-detail .project-more-work-cta { padding: 42px 20px 56px; }
+    }
+  </style>
+</head>
+<body class="flylens-detail">
+
+<header id="nav" class="site-header">
+  <a class="brand" href="/" aria-label="Angel Yu home">
+    <img class="brand__image" src="/assets/angel-yu.png" alt="Angel Yu">
+  </a>
+  <nav class="nav-links" aria-label="Primary navigation">
+    <a href="/">home</a>
+    <a class="active" href="/work/?v=portfolio-clean-trash-v1">work</a>
+    <a href="/art/?v=portfolio-clean-trash-v1">art</a>
+  </nav>
+</header>
+
+<!-- FlyLens case study -->
+
+
+<!-- â”€â”€ HERO â”€â”€ -->
+<section id="hero">
+  <div class="hero-glow"></div>
+
+  <div class="hero-l">
+    <div class="hero-badge up">
+      <span class="hero-badge-pip">*</span>
+      UX / UI Case Study &nbsp;&middot;&nbsp; 2026
+    </div>
+    <div class="hero-logo up d1">
+      <svg width="151" height="41" viewBox="0 0 151 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.14915 33V8.27273H18.5213V12.5831H7.37713V18.4751H17.4347V22.7855H7.37713V33H2.14915ZM27.0847 8.27273V33H21.9412V8.27273H27.0847ZM34.3803 39.9545C33.7283 39.9545 33.1166 39.9022 32.5451 39.7976C31.9817 39.701 31.5148 39.5762 31.1445 39.4233L32.3036 35.5838C32.9073 35.7689 33.4506 35.8696 33.9336 35.8857C34.4246 35.9018 34.8472 35.7891 35.2013 35.5476C35.5636 35.3061 35.8574 34.8956 36.0827 34.3161L36.3846 33.5312L29.7319 14.4545H35.141L38.9805 28.0739H39.1737L43.0494 14.4545H48.4947L41.2866 35.0043C40.9405 36.0024 40.4696 36.8717 39.8739 37.6122C39.2863 38.3608 38.5418 38.9363 37.6403 39.3388C36.7388 39.7493 35.6521 39.9545 34.3803 39.9545ZM51.2234 33V8.27273H56.4513V28.6896H67.0522V33H51.2234ZM78.8695 33.3622C76.9618 33.3622 75.3198 32.9759 73.9434 32.2031C72.575 31.4223 71.5205 30.3196 70.78 28.8949C70.0395 27.4621 69.6692 25.7678 69.6692 23.8118C69.6692 21.9041 70.0395 20.2299 70.78 18.7891C71.5205 17.3482 72.5629 16.2254 73.9071 15.4205C75.2594 14.6155 76.8451 14.2131 78.6642 14.2131C79.8877 14.2131 81.0267 14.4103 82.0811 14.8047C83.1436 15.1911 84.0693 15.7746 84.8581 16.5554C85.655 17.3362 86.2748 18.3182 86.7175 19.5014C87.1602 20.6766 87.3816 22.053 87.3816 23.6307V25.0433H71.7218V21.8558H82.54C82.54 21.1153 82.379 20.4593 82.057 19.8878C81.735 19.3163 81.2883 18.8696 80.7168 18.5476C80.1534 18.2176 79.4973 18.0526 78.7488 18.0526C77.968 18.0526 77.2757 18.2337 76.6721 18.5959C76.0764 18.95 75.6096 19.429 75.2715 20.0327C74.9334 20.6283 74.7604 21.2924 74.7523 22.0249V25.0554C74.7523 25.973 74.9213 26.7659 75.2594 27.4339C75.6055 28.102 76.0925 28.6172 76.7203 28.9794C77.3482 29.3416 78.0927 29.5227 78.954 29.5227C79.5255 29.5227 80.0487 29.4422 80.5236 29.2812C80.9985 29.1203 81.405 28.8788 81.7431 28.5568C82.0811 28.2348 82.3387 27.8404 82.5158 27.3736L87.2729 27.6875C87.0314 28.8305 86.5364 29.8286 85.7878 30.6818C85.0473 31.527 84.0894 32.187 82.9142 32.6619C81.7471 33.1288 80.3989 33.3622 78.8695 33.3622ZM95.8816 22.2784V33H90.7381V14.4545H95.6401V17.7266H95.8574C96.2679 16.648 96.9561 15.7947 97.9221 15.1669C98.888 14.531 100.059 14.2131 101.436 14.2131C102.723 14.2131 103.846 14.4948 104.804 15.0582C105.762 15.6217 106.507 16.4266 107.038 17.473C107.569 18.5114 107.835 19.7509 107.835 21.1918V33H102.691V22.1094C102.699 20.9744 102.41 20.089 101.822 19.4531C101.234 18.8092 100.425 18.4872 99.3951 18.4872C98.7028 18.4872 98.0911 18.6361 97.5598 18.9339C97.0366 19.2318 96.6261 19.6664 96.3283 20.2379C96.0385 20.8014 95.8896 21.4815 95.8816 22.2784ZM127.319 19.7429L122.61 20.0327C122.53 19.6302 122.357 19.268 122.091 18.946C121.825 18.616 121.475 18.3544 121.04 18.1612C120.614 17.96 120.103 17.8594 119.507 17.8594C118.71 17.8594 118.038 18.0284 117.491 18.3665C116.943 18.6965 116.67 19.1392 116.67 19.6946C116.67 20.1373 116.847 20.5116 117.201 20.8175C117.555 21.1233 118.163 21.3688 119.024 21.554L122.381 22.2301C124.184 22.6004 125.528 23.196 126.413 24.017C127.299 24.8381 127.741 25.9167 127.741 27.2528C127.741 28.4683 127.383 29.5348 126.667 30.4524C125.959 31.37 124.985 32.0864 123.745 32.6016C122.513 33.1087 121.093 33.3622 119.483 33.3622C117.028 33.3622 115.072 32.8511 113.615 31.8288C112.166 30.7985 111.317 29.398 111.067 27.6271L116.126 27.3615C116.279 28.1101 116.65 28.6816 117.237 29.076C117.825 29.4624 118.577 29.6555 119.495 29.6555C120.397 29.6555 121.121 29.4825 121.668 29.1364C122.224 28.7822 122.505 28.3274 122.513 27.772C122.505 27.3052 122.308 26.9228 121.922 26.625C121.536 26.3191 120.94 26.0857 120.135 25.9247L116.923 25.2848C115.112 24.9226 113.764 24.2947 112.879 23.4013C112.001 22.5078 111.562 21.3688 111.562 19.9844C111.562 18.7931 111.884 17.7668 112.528 16.9055C113.18 16.0443 114.094 15.3802 115.269 14.9134C116.452 14.4465 117.837 14.2131 119.423 14.2131C121.765 14.2131 123.608 14.7081 124.952 15.6982C126.305 16.6882 127.094 18.0365 127.319 19.7429Z" fill="#111816"/>
+        <path d="M141.3 28.84C141.153 27.9733 140.767 27.04 140.14 26.04C139.513 25.0267 138.62 24.0867 137.46 23.22C136.313 22.3533 135.167 21.8 134.02 21.56V20.72C135.153 20.4533 136.24 19.96 137.28 19.24C138.333 18.5067 139.213 17.6267 139.92 16.6C140.64 15.5467 141.1 14.5067 141.3 13.48H142.14C142.26 14.1467 142.5 14.8333 142.86 15.54C143.22 16.2333 143.68 16.9 144.24 17.54C144.813 18.1667 145.453 18.7333 146.16 19.24C147.213 19.9867 148.287 20.48 149.38 20.72V21.56C148.647 21.7067 147.887 22.0067 147.1 22.46C146.327 22.9133 145.607 23.4533 144.94 24.08C144.273 24.6933 143.727 25.34 143.3 26.02C142.673 27.02 142.287 27.96 142.14 28.84H141.3Z" fill="#5257E8"/>
+      </svg>
+    </div>
+    <p class="hero-sub up d2">
+      An AI-driven flight search app that turns scattered flight prices into clear booking decisions, compare fares, and watch routes before prices change.
+    </p>
+    <div class="hero-pills up d3">
+      <span class="pill pill-blue">Lead UX/UI Designer</span>
+      <span class="pill pill-ghost">iOS Mobile</span>
+      <span class="pill pill-ghost">Figma &middot; Photoshop &middot; Illustrator</span>
+    </div>
+  </div>
+
+  <div class="hero-r">
+    <img src="Assets/hero-phone-results.png" alt="FlyLens price results screen">
+  </div>
+
+  <div class="hero-scroll-hint up d4">Scroll to explore</div>
+</section>
+
+
+<!-- â”€â”€ OVERVIEW STRIP â”€â”€ -->
+<section id="strip">
+  <div class="strip-inner">
+    <div class="strip-cell up"><div class="strip-label">Role</div><div class="strip-val">Lead UX/UI Designer</div></div>
+    <div class="strip-cell up d1"><div class="strip-label">Platform</div><div class="strip-val">iOS Mobile App</div></div>
+    <div class="strip-cell up d3"><div class="strip-label">Tools</div><div class="strip-icons"><img src="Assets/figma-icon.png" alt="Figma"><img src="Assets/ps-icon.png" alt="Photoshop"><img src="Assets/ai-icon.png" alt="Illustrator"></div></div>
+  </div>
+</section>
+
+
+<!-- â”€â”€ PROBLEM â”€â”€ -->
+<section id="problem">
+  <div class="problem-l">
+    <div class="problem-content">
+      <div class="eyebrow up">01 The Problem</div>
+      <h2 class="problem-h up d1">Travellers were<br>checking 8 tabs.<br>For one flight.</h2>
+      <p class="body up d2">
+        Flight search is broken. Prices scatter across Trip.com, Expedia, Skyscanner, Kiwi, and more with no single source of truth. FlyLens was designed to consolidate live pricing data, surface the lowest fare, and give travellers the confidence to act.
+      </p>
+      <div class="kpi-row up d3">
+        <div class="kpi"><div class="n">8+</div><div class="l">Sources analysed</div></div>
+        <div class="kpi"><div class="n">1</div><div class="l">Unified clear view</div></div>
+        <div class="kpi"><div class="n">AI</div><div class="l">Price prediction</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="problem-r up d1">
+    <img src="Assets/overview-plane-photo.png" alt="Plane overhead in blue sky">
+  </div>
+</section>
+
+
+<!-- â”€â”€ DESIGN PROCESS â”€â”€ -->
+<section id="process">
+  <div class="eyebrow up" style="padding: 0 56px; margin-bottom: 48px;">02 Design Process</div>
+  <div class="bleed up">
+    <img src="Assets/design-process.png" alt="Design process: Research, Define, Wireframing, UI, Presentation">
+  </div>
+</section>
+
+
+<!-- â”€â”€ USER PERSONA â”€â”€ -->
+<section id="persona">
+  <div class="persona-img up">
+    <img src="Assets/persona-malisa.png" alt="Malisa Chen persona photo">
+    <div class="persona-tag">
+      <div class="pn">Malisa Chen</div>
+      <div class="pa">28 &middot; Marketing Manager &middot; Vancouver</div>
+    </div>
+  </div>
+  <div class="persona-body">
+    <div class="eyebrow up">03 User Research</div>
+    <p class="quote up d1">"I find a flight, close the tab, check again the next day, and somehow I'm still not sure if I should book it."</p>
+    <div class="attr-grid up d2">
+      <div class="attr">
+        <div class="at">Goals</div>
+        <ul>
+          <li>Find the lowest fare quickly</li>
+          <li>Know when the right time to book is</li>
+          <li>Track prices without constant checking</li>
+          <li>Smooth, trustworthy booking flow</li>
+        </ul>
+      </div>
+      <div class="attr">
+        <div class="at">Frustrations</div>
+        <ul>
+          <li>Prices change between browser tabs</li>
+          <li>No single reliable source of truth</li>
+          <li>Unclear if a price is actually fair</li>
+          <li>Missing deals because of bad timing</li>
+        </ul>
+      </div>
+      <div class="attr attr-full">
+        <div class="at">Behaviours</div>
+        <ul style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+          <li>Travels 4-6x per year</li>
+          <li>Books 3-6 weeks in advance</li>
+          <li>Heavy mobile user</li>
+          <li>Price-conscious, values speed</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â”€â”€ ARCHITECTURE â”€â”€ -->
+<section id="arch">
+  <div class="w">
+    <div class="arch-intro">
+      <div class="eyebrow up">04 Architecture</div>
+      <h2 class="up d1">Mapping the journey.</h2>
+      <p class="body up d2">Before screens, the structure. User flow and information architecture grounded every design decision.</p>
+    </div>
+    <div class="flow-block">
+      <div class="flow-label up">User Flow</div>
+      <div class="bleed up"><img src="Assets/user-flow.png" alt="User flow diagram"></div>
+    </div>
+    <div class="flow-block" style="margin-top:56px">
+      <div class="flow-label up">Information Architecture</div>
+      <div class="bleed up"><img src="Assets/information-architecture.png" alt="Information architecture diagram"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â”€â”€ VISUAL IDENTITY â”€â”€ -->
+<section id="identity">
+  <div class="id-intro">
+    <div class="eyebrow up">05 Visual Identity</div>
+    <h2 class="up d1">Built on clarity<br>and trust.</h2>
+    <p class="body up d2">A palette of soft blues and cobalt, a wordmark with a spark. FlyLens looks like a brand that knows what it's doing.</p>
+  </div>
+
+  <div class="id-logo-band up">
+    <img src="Assets/LOGO.svg" alt="FlyLens logo">
+    <div class="id-logo-note">
+      The FlyLens wordmark pairs a spark mark with a clean sans-serif, readable at a glance, trustworthy at scale. Cobalt blue as primary; white for all reversed contexts.
+    </div>
+  </div>
+
+  <div class="id-swatches up">
+    <div class="swatch" style="background:#383BCB">
+      <div class="sn" style="color:rgba(255,255,255,.45)">Primary</div>
+      <div class="sv" style="color:white">#383BCB</div>
+    </div>
+    <div class="swatch" style="background:#D6D6EF">
+      <div class="sn" style="color:rgba(0,0,0,.3)">Lavender</div>
+      <div class="sv" style="color:#2A2D4A">#D6D6EF</div>
+    </div>
+    <div class="swatch" style="background:#F3F4F9;border-right:1px solid #ECEDF8">
+      <div class="sn" style="color:rgba(0,0,0,.25)">Surface</div>
+      <div class="sv" style="color:#2A2D4A">#F3F4F9</div>
+    </div>
+    <div class="swatch" style="background:#0D0F1A">
+      <div class="sn" style="color:rgba(255,255,255,.3)">Ink</div>
+      <div class="sv" style="color:white">#0D0F1A</div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- â”€â”€ USER JOURNEY â”€â”€ -->
+<section id="journey">
+  <div class="w">
+    <div class="journey-intro">
+      <div class="eyebrow up">06 User Journey</div>
+      <h2 class="up d1">Six moments that<br>define the experience.</h2>
+    </div>
+  </div>
+
+  <div class="jt">
+    <!-- Header row -->
+    <div class="jt-head">
+      <span class="jt-hc">No</span>
+      <span class="jt-hc">Subject</span>
+      <span class="jt-hc">About</span>
+      <span class="jt-hc jt-hc-r">Flight Tracking App</span>
+    </div>
+
+    <!-- 01 Onboarding -->
+    <div class="jt-row up">
+      <span class="jt-no">(01)</span>
+      <div class="jt-subject">Onboarding</div>
+      <p class="jt-about">Onboarding introduces FlyLens through a simple, guided flow. It helps first-time users understand how the app compares fares, explains price signals, and supports smarter booking decisions.</p>
+      <div class="jt-screens">
+        <div class="jt-sc"><img src="Assets/onboarding1.png" alt="Onboarding screen 1"><span class="jt-sc-label">Stop Checking 8 Tabs</span></div>
+        <div class="jt-sc"><img src="Assets/onboarding2.png" alt="Onboarding screen 2"><span class="jt-sc-label">Watch the Right Price</span></div>
+        <div class="jt-sc"><img src="Assets/onboarding3.png" alt="Onboarding screen 3"><span class="jt-sc-label">Know If the Price Is Fair</span></div>
+      </div>
+    </div>
+
+    <!-- 02 Registration -->
+    <div class="jt-row up">
+      <span class="jt-no">(02)</span>
+      <div class="jt-subject">Registration</div>
+      <p class="jt-about">After the introduction, users can quickly enter the app through Google, email, or guest access. The registration step is kept minimal so users can start searching flights without unnecessary friction.</p>
+      <div class="jt-screens">
+        <div class="jt-sc"><img src="Assets/login.png" alt="Login screen"><span class="jt-sc-label">Sign In / Register</span></div>
+      </div>
+    </div>
+
+    <!-- 03 Booking Journey -->
+    <div class="jt-row up">
+      <span class="jt-no">(03)</span>
+      <div class="jt-subject">Booking Journey</div>
+      <p class="jt-about">Our booking journey is the main experience in FlyLens. Users enter their route, travel dates, traveler details, and price prediction preference, then FlyLens compares available fare options and presents the results in a clearer format. The results screen does not only show the lowest price; it also shows the provider source, price trend, and AI Prediction guidance.</p>
+      <div class="jt-screens">
+        <div class="jt-sc"><img src="Assets/location-date.png" alt="Route input"><span class="jt-sc-label">Route & Date Input</span></div>
+        <div class="jt-sc"><img src="Assets/price-results.png" alt="Price results"><span class="jt-sc-label">Price Results</span></div>
+        <div class="jt-sc"><img src="Assets/ai-prediction.png" alt="AI prediction"><span class="jt-sc-label">AI Prediction</span></div>
+      </div>
+    </div>
+
+    <!-- 04 Watchlist -->
+    <div class="jt-row up">
+      <span class="jt-no">(04)</span>
+      <div class="jt-subject">Watchlist</div>
+      <p class="jt-about">The Watchlist works as a price monitoring hub for users who are not ready to book immediately. It allows users to save routes, compare the current fare against their target price, review recent price changes, and receive alerts when a route becomes worth booking. This turns the app from a one-time search tool into an ongoing travel assistant.</p>
+      <div class="jt-screens">
+        <div class="jt-sc"><img src="Assets/watchlist.png" alt="Watchlist screen"><span class="jt-sc-label">Price Watchlist</span></div>
+      </div>
+    </div>
+
+    <!-- 05 Profile -->
+    <div class="jt-row up">
+      <span class="jt-no">(05)</span>
+      <div class="jt-subject">Profile</div>
+      <p class="jt-about">Profile brings together saved routes, fare updates, travel preferences, notifications, and account settings so users can manage their travel decisions from one place. This reduces repeated setup work and makes future searches more relevant. Instead of starting from zero every time, users can rely on FlyLens to remember their travel habits and support faster, more confident booking decisions.</p>
+      <div class="jt-screens">
+        <div class="jt-sc"><img src="Assets/traveler.png" alt="Profile screen"><span class="jt-sc-label">Profile & Preferences</span></div>
+      </div>
+    </div>
+
+    <!-- 06 Success Booking -->
+    <div class="jt-row up">
+      <span class="jt-no">(06)</span>
+      <div class="jt-subject">Success Booking</div>
+      <p class="jt-about">The Success Booking screen confirms that the user's flight information is ready after choosing a deal. The ticket-style layout highlights key trip details such as destination, flight number, gate, seat, passenger, and digital pass.</p>
+      <div class="jt-screens">
+        <div class="jt-sc"><img src="Assets/digital-pass.png" alt="Digital boarding pass"><span class="jt-sc-label">Digital Boarding Pass</span></div>
+        <div class="jt-sc"><img src="Assets/calendar-pass-mockup.png" alt="Calendar confirmation"><span class="jt-sc-label">Add to Calendar</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â”€â”€ ALL SCREENS â”€â”€ -->
+<section id="gallery">
+  <div class="w gallery-head">
+    <div class="eyebrow up">07 Full Screen</div>
+    <h2 class="up d1">The full system.</h2>
+    <p class="body up d2" style="margin-top:6px">Drag to explore every screen.</p>
+  </div>
+  <div class="gtrack" id="gtrack">
+    <div class="gcard"><img src="Assets/login.png" alt="Login"><div class="gcap">Login</div></div>
+    <div class="gcard"><img src="Assets/onboarding1.png" alt="Onboarding 1"><div class="gcap">Onboarding 1</div></div>
+    <div class="gcard"><img src="Assets/onboarding2.png" alt="Onboarding 2"><div class="gcap">Onboarding 2</div></div>
+    <div class="gcard"><img src="Assets/onboarding3.png" alt="Onboarding 3"><div class="gcap">Onboarding 3</div></div>
+    <div class="gcard"><img src="Assets/location-date.png" alt="Route Input"><div class="gcap">Route Input</div></div>
+    <div class="gcard"><img src="Assets/calendar.png" alt="Calendar"><div class="gcap">Calendar</div></div>
+    <div class="gcard"><img src="Assets/price-results.png" alt="Price Results"><div class="gcap">Price Results</div></div>
+    <div class="gcard"><img src="Assets/watchlist.png" alt="Watchlist"><div class="gcap">Watchlist</div></div>
+    <div class="gcard"><img src="Assets/traveler.png" alt="Profile"><div class="gcap">Profile</div></div>
+    <div class="gcard"><img src="Assets/digital-pass.png" alt="Digital Pass"><div class="gcap">Digital Pass</div></div>
+    <div class="gcard"><img src="Assets/calendar-pass-mockup.png" alt="Calendar Pass"><div class="gcap">Calendar Pass</div></div>
+  </div>
+</section>
+
+
+<!-- â”€â”€ CLOSING â”€â”€ -->
+<section id="closing">
+  <img class="closing-img" src="Assets/hero-stair-phone.png" alt="FlyLens final shot">
+  <div class="closing-overlay"></div>
+  <div class="closing-copy">
+    <div class="eyebrow light up">08 Reflection</div>
+    <h2 class="up d1">Reflection</h2>
+    <p class="up d2">FlyLens began with my own experience as an international student. I often need to travel between school and home, and booking flights has always been a stressful process. Prices change quickly, information is scattered across different platforms, and even when I find a fare that looks reasonable, it is still difficult to know whether I should book it immediately or wait.</p>
+    <p class="up d2" style="margin-top:20px">That is why I wanted to design FlyLens as more than another flight search tool. I see it as an AI-assisted travel product that helps users compare fares, understand price changes, and make more confident booking decisions. Instead of forcing users to repeatedly check different websites, FlyLens brings the information together and provides clearer guidance on whether a fare is worth booking, watching, or reconsidering.</p>
+    <p class="up d2" style="margin-top:20px">Throughout the project, I focused on how AI could support users in a practical way rather than simply being added as a trendy feature. For FlyLens, the value of AI is in reducing search friction, organizing complex fare information, and helping users feel less anxious about missing the right ticket.</p>
+    <p class="up d2" style="margin-top:20px">I hope FlyLens can support people with similar experiences, especially international students and frequent travelers, by making it easier to find suitable flights and feel more confident about when to book.</p>
+  </div>
+</section>
+
+<div class="project-more-work-cta">
+  <a href="/work/?v=portfolio-clean-trash-v1">View More Work</a>
+</div>
+
+<footer class="portfolio-footer">
+  <span>&copy; 2026 Angel Yu</span>
+  <a href="mailto:angel19190828@gmail.com">angel19190828@gmail.com</a>
+  <span>BASED IN VANCOUVER</span>
+</footer>
+
+
+<script>
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+  }, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
+  document.querySelectorAll('.up').forEach(el => io.observe(el));
+
+  // Drag-to-scroll gallery with momentum
+  (function() {
+    const t = document.getElementById('gtrack');
+    if (!t) return;
+
+    // Clone for infinite loop
+    [...t.children].forEach(c => t.appendChild(c.cloneNode(true)));
+    const half = () => t.scrollWidth / 2;
+
+    let looping = false;
+    t.addEventListener('scroll', () => {
+      if (looping) return;
+      const h = half();
+      if (t.scrollLeft >= h) { looping = true; t.scrollLeft -= h; looping = false; }
+      else if (t.scrollLeft < 0) { looping = true; t.scrollLeft += h; looping = false; }
+    }, { passive: true });
+
+    let drag = false, sx = 0, sl = 0, vel = 0, lx = 0, raf;
+    t.addEventListener('mousedown', e => {
+      drag = true; sx = e.pageX; sl = t.scrollLeft; vel = 0; lx = e.pageX;
+      t.style.cursor = 'grabbing'; cancelAnimationFrame(raf); e.preventDefault();
+    });
+    window.addEventListener('mousemove', e => {
+      if (!drag) return;
+      vel = e.pageX - lx; lx = e.pageX;
+      t.scrollLeft = sl - (e.pageX - sx);
+    });
+    window.addEventListener('mouseup', () => {
+      if (!drag) return;
+      drag = false; t.style.cursor = 'grab';
+      (function go() {
+        if (Math.abs(vel) < .5) return;
+        vel *= .93; t.scrollLeft -= vel; raf = requestAnimationFrame(go);
+      })();
+    });
+
+    t.style.cursor = 'grab'; t.style.userSelect = 'none';
+
+    let tx = 0, tsl = 0;
+    t.addEventListener('touchstart', e => { tx = e.touches[0].pageX; tsl = t.scrollLeft; cancelAnimationFrame(raf); }, { passive: true });
+    t.addEventListener('touchmove', e => { t.scrollLeft = tsl - (e.touches[0].pageX - tx); }, { passive: true });
+  })();
+</script>
+</body>
+</html>
+
+
+
+

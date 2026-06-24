@@ -1,0 +1,294 @@
+(function () {
+  if (!window.gsap || !window.ScrollTrigger) return;
+
+  const section = document.querySelector(".featured-work");
+  const orbit = document.querySelector(".orbit-copy");
+  const stack = document.querySelector(".project-stack");
+  if (!section || !orbit || !stack) return;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const cards = gsap.utils.toArray(".stack-card");
+  const completeLink = document.querySelector(".work-complete");
+  let orbitItems = gsap.utils.toArray(".orbit-copy span");
+  const focusDot = document.querySelector(".wheel-focus-dot");
+  const isMobile = () => window.matchMedia("(max-width: 809px)").matches;
+
+  let activeIndex = -1;
+  let projectAngles = [];
+  let orbitLayout = [];
+  let currentRotation = 0;
+  const workState = { position: 0, outro: 0 };
+  let workTimeline = null;
+  let track = null;
+  let cardSlot = 0;
+
+  function extendOrbitForLoopRead() {
+    if (orbit.dataset.extended === "true") return;
+    const baseItems = orbitItems.slice();
+    baseItems.forEach((item) => {
+      const clone = item.cloneNode(true);
+      clone.classList.remove("active-orbit", "near-orbit", "active-dot");
+      clone.setAttribute("aria-hidden", "true");
+      clone.dataset.loopCopy = "true";
+      orbit.appendChild(clone);
+    });
+    orbit.dataset.extended = "true";
+    orbitItems = gsap.utils.toArray(".orbit-copy span");
+  }
+
+  function orbitIndexForCard(index) {
+    return Number(cards[index]?.dataset.orbit || index + 6);
+  }
+
+  function setupCardTrack() {
+    if (!track) {
+      track = document.createElement("div");
+      track.className = "project-track";
+      cards.forEach((card) => track.appendChild(card));
+      stack.appendChild(track);
+    }
+
+    const mobile = isMobile();
+    const gap = mobile ? 78 : 96;
+    gsap.set(cards, {
+      clearProps: "position,inset",
+      autoAlpha: 1,
+      y: 0,
+      scale: 1,
+      filter: "blur(0px)"
+    });
+    cards.forEach((card, index) => {
+      card.style.marginBottom = index === cards.length - 1 ? "0px" : `${gap}px`;
+    });
+
+    cards.forEach((card) => {
+      card.style.height = "";
+      card.style.minHeight = "";
+    });
+
+    const measuredHeight = Math.max(...cards.map((card) => card.offsetHeight), stack.offsetHeight);
+    cardSlot = measuredHeight + gap;
+    stack.style.height = `${measuredHeight}px`;
+    cards.forEach((card, index) => {
+      card.style.height = `${measuredHeight}px`;
+      card.style.marginBottom = index === cards.length - 1 ? "0px" : `${gap}px`;
+    });
+    gsap.set(track, { y: 0 });
+  }
+
+  function layoutWheel() {
+    const mobile = isMobile();
+    const size = mobile ? 920 : 1280;
+    const center = size / 2;
+    const radius = mobile ? 380 : 440;
+    const focusX = mobile ? 156 : gsap.utils.clamp(300, 420, window.innerWidth * 0.2);
+    const focusY = mobile ? 284 : window.innerHeight * 0.5;
+    const wheelLeft = focusX - center - radius;
+    const wheelTop = focusY - center;
+    const step = mobile ? 9.6 : 8.2;
+    const firstProjectOrbitIndex = orbitIndexForCard(0);
+
+    orbit.style.left = `${wheelLeft}px`;
+    orbit.style.top = `${wheelTop}px`;
+    orbit.style.width = `${size}px`;
+    orbit.style.height = `${size}px`;
+    orbit.style.transformOrigin = `${center}px ${center}px`;
+
+    if (focusDot) {
+      focusDot.style.left = `${focusX - (mobile ? 36 : 48)}px`;
+      focusDot.style.top = `${focusY - 6}px`;
+    }
+
+    orbitLayout = [];
+    orbitItems.forEach((item, index) => {
+      const angle = (index - firstProjectOrbitIndex) * step;
+      const radians = angle * Math.PI / 180;
+      const x = center + Math.cos(radians) * radius;
+      const y = center + Math.sin(radians) * radius;
+      orbitLayout[index] = { x, y, angle };
+
+      gsap.set(item, {
+        x,
+        y,
+        xPercent: 0,
+        yPercent: -50,
+        rotation: angle - 2,
+        transformOrigin: "left center"
+      });
+    });
+
+    projectAngles = cards.map((_, index) => {
+      const orbitIndex = orbitIndexForCard(index);
+      return (orbitIndex - firstProjectOrbitIndex) * step;
+    });
+
+    gsap.set(orbit, { rotation: currentRotation, x: 0, y: 0, scale: 1 });
+    setActive(0, true);
+  }
+
+  function setActive(index, immediate) {
+    const clamped = gsap.utils.clamp(0, cards.length - 1, index);
+    if (clamped === activeIndex && !immediate) return;
+    activeIndex = clamped;
+
+    const activeOrbit = orbitIndexForCard(clamped);
+    orbitItems.forEach((item, itemIndex) => {
+      item.classList.toggle("active-orbit", itemIndex === activeOrbit);
+      item.classList.toggle("near-orbit", Math.abs(itemIndex - activeOrbit) === 1 && !item.dataset.loopCopy);
+    });
+  }
+
+  function rotationFromPosition(position) {
+    const carouselProgress = gsap.utils.clamp(0, 1, position / Math.max(1, cards.length - 1));
+    const first = projectAngles[0] || 0;
+    const last = projectAngles[cards.length - 1] || first;
+    return -gsap.utils.interpolate(first, last, carouselProgress);
+  }
+
+  function activeFromPosition(position) {
+    return gsap.utils.clamp(0, cards.length - 1, Math.round(position));
+  }
+
+  function magneticPosition(rawPosition) {
+    const nearest = Math.round(rawPosition);
+    const distance = rawPosition - nearest;
+    const range = 0.36;
+    const pull = gsap.utils.clamp(0, 1, 1 - Math.abs(distance) / range);
+    const softened = pull * pull * (3 - 2 * pull);
+    return rawPosition - distance * softened * 0.28;
+  }
+
+  function applyOrbitDepth(position) {
+    const focusOrbit = orbitIndexForCard(0) + position;
+
+    orbitItems.forEach((item, itemIndex) => {
+      const base = orbitLayout[itemIndex];
+      if (!base) return;
+
+      const distance = Math.abs(itemIndex - focusOrbit);
+      const depth = gsap.utils.clamp(0, 1, distance / 5.2);
+      const side = itemIndex - focusOrbit;
+      const activeProximity = gsap.utils.clamp(0, 1, 1 - distance / 0.72);
+      const nearProximity = gsap.utils.clamp(0, 1, 1 - Math.max(0, distance - 0.6) / 2.4);
+      const scale = gsap.utils.interpolate(1.015, 0.92, depth) + activeProximity * 0.02;
+      const opacity = gsap.utils.clamp(0.26, 1, 0.28 + nearProximity * 0.38 + activeProximity * 0.42);
+      const color = gsap.utils.interpolate("rgba(46, 47, 49, .72)", "#f28a34", activeProximity);
+
+      gsap.set(item, {
+        scale,
+        opacity,
+        color,
+        zIndex: Math.round(100 - distance * 10)
+      });
+    });
+  }
+
+  function renderCardStack(position) {
+    const activeCard = activeFromPosition(position);
+    if (!track || !cardSlot) setupCardTrack();
+    const trackY = -position * cardSlot;
+
+    gsap.set(track, { y: trackY });
+
+    cards.forEach((card, cardIndex) => {
+      const offset = cardIndex - position;
+      const absOffset = Math.abs(offset);
+      const selected = cardIndex === activeCard;
+      const scale = 1 - Math.min(absOffset, 1) * 0.012;
+
+      card.classList.toggle("is-current", selected);
+      card.setAttribute("aria-current", selected ? "true" : "false");
+      gsap.set(card, {
+        autoAlpha: 1,
+        y: selected ? -4 * (1 - Math.min(absOffset, 1)) : 0,
+        scale: scale + (selected ? 0.006 : 0),
+        filter: "blur(0px)",
+        zIndex: 20 - Math.round(absOffset * 4),
+        pointerEvents: selected && absOffset < 0.34 ? "auto" : "none"
+      });
+    });
+  }
+
+  function renderFromState(immediate) {
+    const cardPosition = gsap.utils.clamp(0, cards.length - 1 + 0.12, workState.position);
+    currentRotation = rotationFromPosition(cardPosition);
+    gsap.set(orbit, { rotation: currentRotation });
+    setActive(activeFromPosition(cardPosition), immediate);
+    applyOrbitDepth(cardPosition);
+    renderCardStack(cardPosition);
+
+    const outro = gsap.utils.clamp(0, 1, workState.outro);
+    gsap.set(stack, {
+      autoAlpha: 1 - outro,
+      y: -28 * outro
+    });
+    gsap.set([orbit, focusDot].filter(Boolean), {
+      autoAlpha: 1 - outro
+    });
+    if (completeLink) {
+      gsap.set(completeLink, {
+        autoAlpha: outro,
+        y: 18 * (1 - outro),
+        pointerEvents: outro > 0.5 ? "auto" : "none"
+      });
+    }
+  }
+
+  function buildWorkTimeline() {
+    if (workTimeline) {
+      workTimeline.kill();
+    }
+
+    workState.position = 0;
+    workState.outro = 0;
+    renderFromState(true);
+
+    workTimeline = ScrollTrigger.create({
+      id: "section1-work-carousel",
+      trigger: section,
+      start: "top top",
+      end: () => `+=${Math.max(4600, window.innerHeight * 6.8)}`,
+      pin: true,
+      scrub: 1,
+      anticipatePin: 1,
+      refreshPriority: 20,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        const carouselProgress = gsap.utils.clamp(0, 1, self.progress / 0.86);
+        const rawPosition = carouselProgress * (cards.length - 1);
+        workState.position = magneticPosition(rawPosition);
+        workState.outro = gsap.utils.clamp(0, 1, (self.progress - 0.87) / 0.13);
+        renderFromState(false);
+      },
+      onRefresh: (self) => {
+        setupCardTrack();
+        layoutWheel();
+        const carouselProgress = gsap.utils.clamp(0, 1, (self.progress || 0) / 0.86);
+        workState.position = magneticPosition(carouselProgress * (cards.length - 1));
+        workState.outro = gsap.utils.clamp(0, 1, ((self.progress || 0) - 0.87) / 0.13);
+        renderFromState(true);
+      }
+    });
+  }
+
+  gsap.set(cards, {
+    autoAlpha: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    pointerEvents: "none"
+  });
+  gsap.set(completeLink, { autoAlpha: 0, y: 18, pointerEvents: "none" });
+
+  extendOrbitForLoopRead();
+  setupCardTrack();
+  layoutWheel();
+  buildWorkTimeline();
+
+  window.addEventListener("resize", () => {
+    setupCardTrack();
+    layoutWheel();
+    ScrollTrigger.refresh();
+  }, { passive: true });
+})();

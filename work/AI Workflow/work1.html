@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work 01 — AI Workspace Infrastructure · AI COWORK</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400&family=PT+Mono&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #0d0d10; --ink: #f0f0ee; --muted: rgba(240,240,238,0.38); --red: #d90000; --accent: #b0b4c4; }
+
+    html, body { background: var(--bg); color: var(--ink); overflow-x: hidden; min-height: 100vh; }
+
+    /* ── CANVAS ── */
+    #work-canvas {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.8vw 3vw;
+      border-bottom: 1px solid rgba(240,240,238,0.08);
+      backdrop-filter: blur(12px);
+    }
+    .nav-back {
+      font-family: 'PT Mono', monospace; font-size: 0.62vw;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--ink); text-decoration: none; opacity: 0.6;
+      transition: opacity 0.2s;
+      display: flex; align-items: center; gap: 0.5vw;
+    }
+    .nav-back:hover { opacity: 1; }
+    .nav-back::before { content: '←'; }
+    .nav-logo {
+      font-family: 'PT Mono', monospace; font-size: 0.62vw;
+      text-transform: uppercase; letter-spacing: 0.07em; opacity: 0.5;
+    }
+    .nav-num {
+      font-family: 'Inter', sans-serif; font-weight: 100;
+      font-size: 0.62vw; text-transform: uppercase; letter-spacing: 0.07em; opacity: 0.35;
+    }
+
+    /* ── HERO BLOCK ── */
+    .work-hero {
+      min-height: 100vh; display: flex; align-items: flex-end;
+      padding: 0 8vw 6vw;
+      position: relative; z-index: 2;
+    }
+    .work-hero-inner { width: 100%; }
+    .work-tag {
+      font-family: 'PT Mono', monospace; font-size: 0.58vw;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      color: var(--accent); margin-bottom: 2vw; display: block;
+      opacity: 0;
+    }
+    .work-title {
+      font-family: 'Inter', sans-serif; font-weight: 100;
+      font-size: 10.5vw; line-height: 0.88;
+      text-transform: uppercase; letter-spacing: -0.03em;
+      max-width: 80vw; opacity: 0;
+    }
+    .work-title em { font-style: normal; color: var(--accent); }
+    .work-meta {
+      display: flex; gap: 6vw; margin-top: 4vw;
+      border-top: 1px solid rgba(240,240,238,0.1);
+      padding-top: 2.5vw; opacity: 0;
+    }
+    .work-meta-item { }
+    .work-meta-label {
+      font-family: 'PT Mono', monospace; font-size: 0.52vw;
+      text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.4;
+      margin-bottom: 0.4vw;
+    }
+    .work-meta-val {
+      font-family: 'Inter', sans-serif; font-weight: 100;
+      font-size: 1.1vw; text-transform: uppercase; letter-spacing: -0.01em;
+    }
+
+    /* ── CONTENT SECTIONS ── */
+    .work-body {
+      position: relative; z-index: 2;
+      padding: 0 8vw 12vw;
+    }
+    .section-rule {
+      width: 100%; height: 1px;
+      background: rgba(240,240,238,0.1); margin-bottom: 6vw;
+    }
+
+    /* Overview */
+    .overview-grid {
+      display: grid; grid-template-columns: 1fr 1.6fr; gap: 8vw;
+      margin-bottom: 8vw;
+    }
+    .overview-label {
+      font-family: 'PT Mono', monospace; font-size: 0.52vw;
+      text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.38;
+      margin-bottom: 1.2vw;
+    }
+    .overview-num {
+      font-family: 'Inter', sans-serif; font-weight: 100;
+      font-size: 5vw; line-height: 1; opacity: 0.08; margin-bottom: 1vw;
+    }
+    .overview-heading {
+      font-family: 'Inter', sans-serif; font-weight: 100;
+      font-size: 2.4vw; text-transform: uppercase;
+      letter-spacing: -0.025em; line-height: 1.05; margin-bottom: 2vw;
+    }
+    .overview-body {
+      font-family: 'Inter', sans-serif; font-weight: 400;
+      font-size: 0.95vw; line-height: 1.75; opacity: 0.65;
+    }
+    .overview-body p + p { margin-top: 1em; }
+
+    /* Stats row */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: rgba(240,240,238,0.08);
+      border: 1px solid rgba(240,240,238,0.08);
+      border-radius: 0.4vw; margin-bottom: 8vw; overflow: hidden;
+    }
+    .stat-block {
+      background: var(--bg); padding: 2.5vw 2vw;
+    }
+    .stat-block-val {
+      font-family: 'Inter', sans-serif; font-weight: 100;
+      font-size: 3.5vw; line-height: 1; color: var(--accent);
+    }
+    .stat-block-lbl {
+      font-family: 'PT Mono', monospace; font-size: 0.55vw;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      opacity: 0.4; margin-top: 0.5vw;
+    }
+
+    /* Features */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: rgba(240,240,238,0.08);
+      border: 1px solid rgba(240,240,238,0.08);
+      border-radius: 0.4vw; overflow: hidden; margin-bottom: 8vw;
+    }
+    .feature-item {
+      background: var(--bg); padding: 2.5vw 2vw;
+    }
+    .feature-num {
+      font-family: 'PT Mono', monospace; font-size: 0.5vw;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      opacity: 0.3; margin-bottom: 1.2vw;
+    }
+    .feature-title {
+      font-family: 'Inter', sans-serif; font-weight: 300;
+      font-size: 1.1vw; text-transform: uppercase;
+      letter-spacing: -0.01em; margin-bottom: 0.8vw;
+    }
+    .feature-desc {
+      font-family: 'Inter', sans-serif; font-weight: 100;
+      font-size: 0.75vw; line-height: 1.6; opacity: 0.5;
+    }
+
+    /* Tech stack */
+    .tech-row {
+      display: flex; flex-wrap: wrap; gap: 0.6vw; margin-bottom: 8vw;
+    }
+    .tech-tag {
+      font-family: 'PT Mono', monospace; font-size: 0.58vw;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      border: 1px solid rgba(240,240,238,0.2);
+      border-radius: 2vw; padding: 0.4vw 1vw;
+      color: var(--ink); opacity: 0.7;
+    }
+
+    /* ── CAMERA DEMO ── */
+    .cam-label {
+      font-family: 'PT Mono', monospace; font-size: 0.52vw;
+      text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.38;
+      margin-bottom: 1.2vw;
+    }
+    .cam-section { margin-bottom: 8vw; }
+    .cam-frame {
+      position: relative; background: #060608;
+      border: 1px solid rgba(240,240,238,0.1); border-radius: 0.4vw;
+      overflow: hidden; width: 100%; aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #cam-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; transform: scaleX(-1); display: none;
+    }
+    #cam-snap-img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; display: none;
+    }
+    .cam-placeholder {
+      display: flex; flex-direction: column; align-items: center; gap: 0.8vw;
+    }
+    .cam-icon {
+      font-family: 'Inter', sans-serif; font-weight: 100;
+      font-size: 4vw; opacity: 0.08; line-height: 1; user-select: none;
+    }
+    .cam-hint {
+      font-family: 'PT Mono', monospace; font-size: 0.50vw;
+      text-transform: uppercase; letter-spacing: 0.18em; opacity: 0.18;
+    }
+    /* Corner sight-line decorators */
+    .cam-corner {
+      position: absolute; width: 1.2vw; height: 1.2vw;
+      border-color: rgba(240,240,238,0.18); border-style: solid; border-width: 0;
+      pointer-events: none;
+    }
+    .cam-corner.tl { top: 0.7vw; left: 0.7vw; border-top-width:1px; border-left-width:1px; }
+    .cam-corner.tr { top: 0.7vw; right: 0.7vw; border-top-width:1px; border-right-width:1px; }
+    .cam-corner.bl { bottom: 0.7vw; left: 0.7vw; border-bottom-width:1px; border-left-width:1px; }
+    .cam-corner.br { bottom: 0.7vw; right: 0.7vw; border-bottom-width:1px; border-right-width:1px; }
+    .cam-controls {
+      display: flex; gap: 0.65vw; margin-top: 0.9vw; align-items: center;
+    }
+    .cam-btn {
+      font-family: 'PT Mono', monospace; font-size: 0.54vw;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      border: 1px solid rgba(240,240,238,0.2); border-radius: 2vw;
+      padding: 0.46vw 1.3vw; color: var(--ink); background: transparent;
+      cursor: pointer; transition: opacity 0.18s, border-color 0.18s; opacity: 0.55;
+    }
+    .cam-btn:hover:not(:disabled) { opacity: 1; border-color: rgba(240,240,238,0.5); }
+    .cam-btn:disabled { opacity: 0.16; cursor: default; }
+    /* Trash / clear button — red tint, arrow points DOWN into the bin */
+    .cam-btn-del {
+      display: inline-flex; align-items: center; gap: 0.35vw;
+      border-color: rgba(200,60,60,0.3); color: #d07070;
+    }
+    .cam-btn-del:hover:not(:disabled) { border-color: rgba(217,0,0,0.6); color: #ff7070; opacity: 1; }
+    .cam-del-arrow { font-size: 0.75vw; line-height: 1; }
+    .cam-status {
+      font-family: 'PT Mono', monospace; font-size: 0.48vw;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      opacity: 0.28; margin-left: auto;
+    }
+    .cam-status.live   { color: #70d090; opacity: 0.85; }
+    .cam-status.denied { color: #d07070; opacity: 0.75; }
+    @keyframes blink { 0%,100%{opacity:0.85} 50%{opacity:0.25} }
+    .cam-status.live::after { content: ' ●'; animation: blink 1.5s ease-in-out infinite; }
+    .cam-help {
+      margin-top: 0.65vw;
+      font-family: 'PT Mono', monospace;
+      font-size: 0.48vw;
+      line-height: 1.55;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(240,240,238,0.42);
+      display: none;
+    }
+    .cam-help.on { display: block; }
+
+    /* CTA */
+    .work-cta-row {
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid rgba(240,240,238,0.1);
+      padding-top: 3vw;
+    }
+    .cta-label { font-family: 'PT Mono', monospace; font-size: 0.55vw; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.3; }
+    .cta-btn {
+      font-family: 'PT Mono', monospace; font-size: 0.65vw;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--ink); text-decoration: none;
+      border: 1px solid rgba(240,240,238,0.3);
+      border-radius: 2vw; padding: 0.6vw 1.8vw;
+      transition: border-color 0.2s, opacity 0.2s; opacity: 0.75;
+    }
+    .cta-btn:hover { opacity: 1; border-color: rgba(240,240,238,0.7); }
+    .next-project-link {
+      font-family: 'Inter', sans-serif; font-weight: 100;
+      font-size: 2.2vw; text-transform: uppercase;
+      letter-spacing: -0.02em; color: var(--ink);
+      text-decoration: none; opacity: 0.4;
+      transition: opacity 0.3s;
+    }
+    .next-project-link:hover { opacity: 1; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav { padding: 4vw 5vw; }
+      .nav-back, .nav-logo, .nav-num { font-size: 2.2vw; }
+      .work-hero { padding: 0 5vw 10vw; }
+      .work-tag { font-size: 2vw; margin-bottom: 5vw; }
+      .work-title { font-size: 14vw; max-width: 95vw; }
+      .work-meta { flex-wrap: wrap; gap: 6vw; margin-top: 7vw; padding-top: 5vw; }
+      .work-meta-label { font-size: 1.8vw; }
+      .work-meta-val { font-size: 3.5vw; }
+      .work-body { padding: 0 5vw 15vw; }
+      .overview-grid { grid-template-columns: 1fr; gap: 6vw; }
+      .overview-heading { font-size: 7vw; }
+      .overview-body { font-size: 3.2vw; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .stat-block-val { font-size: 10vw; }
+      .stat-block-lbl { font-size: 2vw; }
+      .features-grid { grid-template-columns: 1fr; }
+      .feature-title { font-size: 4vw; }
+      .feature-desc { font-size: 2.5vw; }
+      .tech-tag { font-size: 2vw; }
+      .next-project-link { font-size: 6vw; }
+      .cta-btn, .cta-label { font-size: 2.2vw; }
+      .cam-label { font-size: 1.8vw; }
+      .cam-icon { font-size: 12vw; }
+      .cam-hint { font-size: 1.8vw; }
+      .cam-btn { font-size: 2vw; padding: 1.5vw 3.5vw; border-radius: 6vw; }
+      .cam-status { font-size: 1.7vw; }
+      .cam-help { font-size: 1.7vw; margin-top: 2vw; }
+      .cam-corner { width: 3.5vw; height: 3.5vw; }
+      .cam-corner.tl { top: 2vw; left: 2vw; }
+      .cam-corner.tr { top: 2vw; right: 2vw; }
+      .cam-corner.bl { bottom: 2vw; left: 2vw; }
+      .cam-corner.br { bottom: 2vw; right: 2vw; }
+      .cam-controls { gap: 2vw; margin-top: 2.5vw; flex-wrap: wrap; }
+      .cam-del-arrow { font-size: 2.2vw; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="work-canvas"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-back">All Projects</a>
+  <span class="nav-logo">AI COWORK ® STUDIO</span>
+  <span class="nav-num">01 / 03</span>
+</nav>
+
+<div class="work-hero">
+  <div class="work-hero-inner">
+    <span class="work-tag">Project 01 · AI Infrastructure</span>
+    <h1 class="work-title">AI Workspace<br><em>Infrastructure</em></h1>
+    <div class="work-meta">
+      <div class="work-meta-item">
+        <div class="work-meta-label">Category</div>
+        <div class="work-meta-val">Infrastructure</div>
+      </div>
+      <div class="work-meta-item">
+        <div class="work-meta-label">Stack</div>
+        <div class="work-meta-val">AI Native</div>
+      </div>
+      <div class="work-meta-item">
+        <div class="work-meta-label">Status</div>
+        <div class="work-meta-val">Live</div>
+      </div>
+      <div class="work-meta-item">
+        <div class="work-meta-label">Year</div>
+        <div class="work-meta-val">2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="work-body">
+  <div class="section-rule"></div>
+
+  <div class="overview-grid">
+    <div>
+      <div class="overview-label">Overview</div>
+      <div class="overview-num">01</div>
+    </div>
+    <div>
+      <div class="overview-heading">The workspace<br>built for builders</div>
+      <div class="overview-body">
+        <p>AI Workspace Infrastructure reimagines the foundation of collaborative work. Designed from the ground up for AI-native teams, it provides the primitives that modern builders actually need — real-time sync, persistent context, and agent-ready APIs.</p>
+        <p>Every component is composable, every integration is first-class, and every experience is engineered for the speed that today's AI workflows demand. No vendor lock-in. No legacy baggage.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-block">
+      <div class="stat-block-val">98%</div>
+      <div class="stat-block-lbl">Speed score</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-block-val">99%</div>
+      <div class="stat-block-lbl">Reliability</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-block-val">100%</div>
+      <div class="stat-block-lbl">AI Native</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-block-val">0%</div>
+      <div class="stat-block-lbl">Boring tools</div>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="features-grid">
+    <div class="feature-item">
+      <div class="feature-num">Feature 01</div>
+      <div class="feature-title">Real-time Sync</div>
+      <div class="feature-desc">Sub-50ms latency across all workspace primitives. CRDT-based conflict resolution that just works.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-num">Feature 02</div>
+      <div class="feature-title">AI Agents</div>
+      <div class="feature-desc">First-class agent runtime with persistent memory, tool access, and multi-agent coordination built in.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-num">Feature 03</div>
+      <div class="feature-title">Collaborative Canvas</div>
+      <div class="feature-desc">Infinite shared canvas where humans and agents coexist. Visual thinking at the speed of conversation.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-num">Feature 04</div>
+      <div class="feature-title">Smart Docs</div>
+      <div class="feature-desc">Documents that understand context. Automatic linking, summarization, and cross-reference as you write.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-num">Feature 05</div>
+      <div class="feature-title">Zero Lock-in</div>
+      <div class="feature-desc">Open APIs, standard protocols, and full data portability. Your workspace, your rules.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-num">Feature 06</div>
+      <div class="feature-title">Presence Layers</div>
+      <div class="feature-desc">See exactly who — and what agents — are active in any space. Real collaboration awareness.</div>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+  <div class="overview-label" style="margin-bottom:1.5vw">Tech Stack</div>
+  <div class="tech-row">
+    <span class="tech-tag">WebSocket</span>
+    <span class="tech-tag">CRDT</span>
+    <span class="tech-tag">LLM APIs</span>
+    <span class="tech-tag">React</span>
+    <span class="tech-tag">Three.js</span>
+    <span class="tech-tag">Rust</span>
+    <span class="tech-tag">Postgres</span>
+    <span class="tech-tag">Redis</span>
+    <span class="tech-tag">S3</span>
+    <span class="tech-tag">Docker</span>
+    <span class="tech-tag">k8s</span>
+  </div>
+
+  <div class="section-rule"></div>
+  <div class="cam-label">Live Demo · Hand Tracking</div>
+  <div class="cam-section">
+    <div class="cam-frame" id="cam-frame">
+      <div class="cam-corner tl"></div>
+      <div class="cam-corner tr"></div>
+      <div class="cam-corner bl"></div>
+      <div class="cam-corner br"></div>
+      <!-- hidden video — input source for MediaPipe -->
+      <video id="cam-video" autoplay playsinline muted style="display:none"></video>
+      <!-- main display: composited video + hand + PNG -->
+      <canvas id="cam-canvas" style="position:absolute;inset:0;width:100%;height:100%;display:none;"></canvas>
+      <img id="cam-snap-img" alt="Snapshot">
+      <div class="cam-placeholder" id="cam-placeholder">
+        <div class="cam-icon">◎</div>
+        <div class="cam-hint">Camera not connected</div>
+      </div>
+    </div>
+    <div class="cam-controls">
+      <button class="cam-btn" id="btn-connect">Connect Camera</button>
+      <label class="cam-btn" style="cursor:pointer;opacity:0.55;">
+        Upload PNG
+        <input type="file" id="png-upload" accept="image/png,image/gif,image/webp" style="display:none">
+      </label>
+      <button class="cam-btn" id="btn-capture" disabled>Capture</button>
+      <button class="cam-btn cam-btn-del" id="btn-trash" disabled>
+        <span class="cam-del-arrow">↓</span>Clear
+      </button>
+      <span class="cam-status" id="cam-status">Awaiting Auth</span>
+    </div>
+    <div class="cam-help" id="cam-help"></div>
+  </div>
+
+  <div class="work-cta-row">
+    <div>
+      <div class="cta-label">Next project</div>
+      <a href="work1.html" class="next-project-link">AI Agent Workflows →</a>
+    </div>
+    <a href="index.html" class="cta-btn">← Back to all</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+<script>
+// ── ENTRANCE ANIMATIONS ──
+window.addEventListener('DOMContentLoaded', () => {
+  gsap.to('.work-tag',   {opacity:1,    y:0, duration:0.7, delay:0.3, ease:'power3.out', from:{opacity:0, y:16}})
+  gsap.fromTo('.work-title', {opacity:0, y:40}, {opacity:1, y:0, duration:1.0, delay:0.5, ease:'power4.out'})
+  gsap.fromTo('.work-meta',  {opacity:0, y:20}, {opacity:1, y:0, duration:0.8, delay:0.9, ease:'power3.out'})
+})
+
+// ── BACKGROUND: LineWaves shader field ──
+const canvas = document.getElementById('work-canvas')
+
+// Detect WebGL support using a throwaway canvas (avoids locking our canvas to a non-Three context)
+const hasWebGL = (() => {
+  try { const c = document.createElement('canvas'); return !!(c.getContext('webgl') || c.getContext('experimental-webgl')) }
+  catch(e) { return false }
+})()
+
+if (!hasWebGL) {
+  canvas.style.display = 'none'
+} else {
+  // React Bits LineWaves effect, ported into the existing static Three.js page.
+  const lineWaves = {
+    speed: 0.3,
+    innerLineCount: 32.0,
+    outerLineCount: 36.0,
+    warpIntensity: 1.0,
+    rotation: -45,
+    edgeFadeWidth: 0.0,
+    colorCycleSpeed: 1.0,
+    brightness: 0.2,
+    color1: new THREE.Color('#ffffff'),
+    color2: new THREE.Color('#ffffff'),
+    color3: new THREE.Color('#ffffff'),
+    enableMouseInteraction: true,
+    mouseInfluence: 2.0
+  }
+  const waveMouse = {
+    x: 0.5,
+    y: 0.5,
+    tx: 0.5,
+    ty: 0.5
+  }
+
+  const scene = new THREE.Scene()
+  const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
+  const rend = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true })
+  rend.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
+  rend.setSize(window.innerWidth, window.innerHeight)
+
+  const mat = new THREE.ShaderMaterial({
+    transparent: true,
+    depthWrite: false,
+    uniforms: {
+      uTime: { value: 0 },
+      uResolution: { value: new THREE.Vector3(canvas.width, canvas.height, canvas.width / canvas.height) },
+      uSpeed: { value: lineWaves.speed },
+      uInnerLines: { value: lineWaves.innerLineCount },
+      uOuterLines: { value: lineWaves.outerLineCount },
+      uWarpIntensity: { value: lineWaves.warpIntensity },
+      uRotation: { value: lineWaves.rotation * Math.PI / 180 },
+      uEdgeFadeWidth: { value: lineWaves.edgeFadeWidth },
+      uColorCycleSpeed: { value: lineWaves.colorCycleSpeed },
+      uBrightness: { value: lineWaves.brightness },
+      uColor1: { value: lineWaves.color1 },
+      uColor2: { value: lineWaves.color2 },
+      uColor3: { value: lineWaves.color3 },
+      uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+      uMouseInfluence: { value: lineWaves.mouseInfluence },
+      uEnableMouse: { value: lineWaves.enableMouseInteraction }
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = vec4(position.xy, 0.0, 1.0);
+      }
+    `,
+    fragmentShader: `
+      precision highp float;
+
+      uniform float uTime;
+      uniform vec3 uResolution;
+      uniform float uSpeed;
+      uniform float uInnerLines;
+      uniform float uOuterLines;
+      uniform float uWarpIntensity;
+      uniform float uRotation;
+      uniform float uEdgeFadeWidth;
+      uniform float uColorCycleSpeed;
+      uniform float uBrightness;
+      uniform vec3 uColor1;
+      uniform vec3 uColor2;
+      uniform vec3 uColor3;
+      uniform vec2 uMouse;
+      uniform float uMouseInfluence;
+      uniform bool uEnableMouse;
+
+      #define HALF_PI 1.5707963
+
+      float hashF(float n) {
+        return fract(sin(n * 127.1) * 43758.5453123);
+      }
+
+      float smoothNoise(float x) {
+        float i = floor(x);
+        float f = fract(x);
+        float u = f * f * (3.0 - 2.0 * f);
+        return mix(hashF(i), hashF(i + 1.0), u);
+      }
+
+      float displaceA(float coord, float t) {
+        float result = sin(coord * 2.123) * 0.2;
+        result += sin(coord * 3.234 + t * 4.345) * 0.1;
+        result += sin(coord * 0.589 + t * 0.934) * 0.5;
+        return result;
+      }
+
+      float displaceB(float coord, float t) {
+        float result = sin(coord * 1.345) * 0.3;
+        result += sin(coord * 2.734 + t * 3.345) * 0.2;
+        result += sin(coord * 0.189 + t * 0.934) * 0.3;
+        return result;
+      }
+
+      vec2 rotate2D(vec2 p, float angle) {
+        float c = cos(angle);
+        float s = sin(angle);
+        return vec2(p.x * c - p.y * s, p.x * s + p.y * c);
+      }
+
+      void main() {
+        vec2 coords = gl_FragCoord.xy / uResolution.xy;
+        coords = coords * 2.0 - 1.0;
+        coords.x *= uResolution.z;
+        coords = rotate2D(coords, uRotation);
+
+        float halfT = uTime * uSpeed * 0.5;
+        float fullT = uTime * uSpeed;
+
+        float mouseWarp = 0.0;
+        if (uEnableMouse) {
+          vec2 mPos = uMouse * 2.0 - 1.0;
+          mPos.x *= uResolution.z;
+          mPos = rotate2D(mPos, uRotation);
+          float mDist = length(coords - mPos);
+          mouseWarp = uMouseInfluence * exp(-mDist * mDist * 4.0);
+        }
+
+        float warpAx = coords.x + displaceA(coords.y, halfT) * uWarpIntensity + mouseWarp;
+        float warpAy = coords.y - displaceA(coords.x * cos(fullT) * 1.235, halfT) * uWarpIntensity;
+        float warpBx = coords.x + displaceB(coords.y, halfT) * uWarpIntensity + mouseWarp;
+        float warpBy = coords.y - displaceB(coords.x * sin(fullT) * 1.235, halfT) * uWarpIntensity;
+
+        vec2 fieldA = vec2(warpAx, warpAy);
+        vec2 fieldB = vec2(warpBx, warpBy);
+        vec2 blended = mix(fieldA, fieldB, mix(fieldA, fieldB, 0.5));
+
+        float fadeTop = smoothstep(uEdgeFadeWidth, uEdgeFadeWidth + 0.4, blended.y);
+        float fadeBottom = smoothstep(-uEdgeFadeWidth, -(uEdgeFadeWidth + 0.4), blended.y);
+        float vMask = 1.0 - max(fadeTop, fadeBottom);
+
+        float tileCount = mix(uOuterLines, uInnerLines, vMask);
+        float scaledY = blended.y * tileCount;
+        float nY = smoothNoise(abs(scaledY));
+
+        float ridge = pow(
+          step(abs(nY - blended.x) * 2.0, HALF_PI) * cos(2.0 * (nY - blended.x)),
+          5.0
+        );
+
+        float lines = 0.0;
+        for (float i = 1.0; i < 3.0; i += 1.0) {
+          lines += pow(max(fract(scaledY), fract(-scaledY)), i * 2.0);
+        }
+
+        float pattern = vMask * lines;
+        float cycleT = fullT * uColorCycleSpeed;
+        float rChannel = (pattern + lines * ridge) * (cos(blended.y + cycleT * 0.234) * 0.5 + 1.0);
+        float gChannel = (pattern + vMask * ridge) * (sin(blended.x + cycleT * 1.745) * 0.5 + 1.0);
+        float bChannel = (pattern + lines * ridge) * (cos(blended.x + cycleT * 0.534) * 0.5 + 1.0);
+
+        vec3 col = (rChannel * uColor1 + gChannel * uColor2 + bChannel * uColor3) * uBrightness;
+        float alpha = clamp(length(col), 0.0, 1.0);
+        gl_FragColor = vec4(col, alpha);
+      }
+    `
+  })
+
+  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat))
+
+  // Animate the shader and ease pointer input into the wave field.
+  const clock = new THREE.Clock()
+  ;(function tick() {
+    requestAnimationFrame(tick)
+    mat.uniforms.uTime.value = clock.getElapsedTime()
+    if (lineWaves.enableMouseInteraction) {
+      waveMouse.x += (waveMouse.tx - waveMouse.x) * 0.05
+      waveMouse.y += (waveMouse.ty - waveMouse.y) * 0.05
+      mat.uniforms.uMouse.value.set(waveMouse.x, waveMouse.y)
+    }
+    rend.render(scene, cam)
+  })()
+
+  window.addEventListener('resize', () => {
+    const w = window.innerWidth
+    const h = window.innerHeight
+    rend.setSize(w, h)
+    mat.uniforms.uResolution.value.set(canvas.width, canvas.height, canvas.width / canvas.height)
+  })
+
+  window.addEventListener('mousemove', e => {
+    waveMouse.tx = e.clientX / window.innerWidth
+    waveMouse.ty = 1 - e.clientY / window.innerHeight
+  })
+
+  window.addEventListener('mouseleave', () => {
+    waveMouse.tx = 0.5
+    waveMouse.ty = 0.5
+  })
+
+  window.addEventListener('touchmove', e => {
+    if (!e.touches.length) return
+    waveMouse.tx = e.touches[0].clientX / window.innerWidth
+    waveMouse.ty = 1 - e.touches[0].clientY / window.innerHeight
+  }, { passive: true })
+
+  window.addEventListener('touchend', () => {
+    waveMouse.tx = 0.5
+    waveMouse.ty = 0.5
+  })
+}
+
+// ── CAMERA + HAND TRACKING ──────────────────────────────────
+const camVideo       = document.getElementById('cam-video')
+const camCanvas      = document.getElementById('cam-canvas')
+const camCtx         = camCanvas.getContext('2d')
+const camSnapImg     = document.getElementById('cam-snap-img')
+const camPlaceholder = document.getElementById('cam-placeholder')
+const btnConnect     = document.getElementById('btn-connect')
+const btnCapture     = document.getElementById('btn-capture')
+const btnTrash       = document.getElementById('btn-trash')
+const camStatusEl    = document.getElementById('cam-status')
+const camHelpEl      = document.getElementById('cam-help')
+const pngUpload      = document.getElementById('png-upload')
+
+let camStream    = null
+let handTracker  = null
+let rafId        = null
+let userPng      = null   // user-uploaded PNG
+let handPts      = null   // latest hand landmarks
+
+// ── Default PNG: targeting reticle (used until user uploads one)
+function makeDefaultPng() {
+  const c = document.createElement('canvas'); c.width = 96; c.height = 96
+  const x = c.getContext('2d')
+  x.strokeStyle = 'rgba(176,180,196,0.95)'; x.lineWidth = 1.5
+  x.beginPath(); x.arc(48,48,32,0,Math.PI*2); x.stroke()
+  x.beginPath(); x.arc(48,48,8,0,Math.PI*2);  x.stroke()
+  x.beginPath(); x.moveTo(48,10); x.lineTo(48,38); x.stroke()
+  x.beginPath(); x.moveTo(48,58); x.lineTo(48,86); x.stroke()
+  x.beginPath(); x.moveTo(10,48); x.lineTo(38,48); x.stroke()
+  x.beginPath(); x.moveTo(58,48); x.lineTo(86,48); x.stroke()
+  const img = new Image(); img.src = c.toDataURL(); return img
+}
+
+// ── Upload custom PNG
+pngUpload.addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return
+  const img = new Image()
+  img.onload = () => { userPng = img }
+  img.src = URL.createObjectURL(f)
+})
+
+function setCamStatus(t, cls) {
+  camStatusEl.textContent = t
+  camStatusEl.className = 'cam-status' + (cls ? ' '+cls : '')
+}
+function setCamHelp(t) {
+  camHelpEl.textContent = t || ''
+  camHelpEl.className = 'cam-help' + (t ? ' on' : '')
+}
+
+// ── Hand skeleton connections (MediaPipe 21-point model)
+const HAND_CONNECTIONS = [
+  [0,1],[1,2],[2,3],[3,4],
+  [0,5],[5,6],[6,7],[7,8],
+  [0,9],[9,10],[10,11],[11,12],
+  [0,13],[13,14],[14,15],[15,16],
+  [0,17],[17,18],[18,19],[19,20],
+  [5,9],[9,13],[13,17]
+]
+
+function drawFrame() {
+  const w = camCanvas.width, h = camCanvas.height
+  camCtx.clearRect(0,0,w,h)
+
+  // Draw mirrored video
+  camCtx.save()
+  camCtx.scale(-1,1)
+  camCtx.drawImage(camVideo,-w,0,w,h)
+  camCtx.restore()
+
+  if (!handPts) return
+
+  // Mirror x: MediaPipe x=0 is left of raw video; we display mirrored
+  const mx = l => (1 - l.x) * w
+  const my = l => l.y * h
+
+  // Skeleton lines
+  camCtx.strokeStyle = 'rgba(176,180,196,0.22)'
+  camCtx.lineWidth = 1.2
+  HAND_CONNECTIONS.forEach(([a,b]) => {
+    camCtx.beginPath()
+    camCtx.moveTo(mx(handPts[a]), my(handPts[a]))
+    camCtx.lineTo(mx(handPts[b]), my(handPts[b]))
+    camCtx.stroke()
+  })
+
+  // Landmark dots
+  camCtx.fillStyle = 'rgba(176,180,196,0.35)'
+  handPts.forEach(l => {
+    camCtx.beginPath(); camCtx.arc(mx(l),my(l),2.5,0,Math.PI*2); camCtx.fill()
+  })
+
+  // Index finger tip (landmark 8) drives the PNG
+  const tip   = handPts[8]
+  const thumb = handPts[4]
+  const px = mx(tip), py = my(tip)
+
+  // Pinch detection: thumb tip ↔ index tip distance
+  const pinchDist = Math.hypot((mx(thumb)-px), (my(thumb)-py))
+  const isPinching = pinchDist < w * 0.05
+
+  // PNG size: 11% of canvas width; shrinks slightly on pinch
+  const pngSize = w * (isPinching ? 0.085 : 0.11)
+  const img = userPng || makeDefaultPng()
+  camCtx.globalAlpha = isPinching ? 1.0 : 0.88
+  camCtx.drawImage(img, px - pngSize/2, py - pngSize/2, pngSize, pngSize)
+  camCtx.globalAlpha = 1
+
+  // Pinch ring indicator
+  if (isPinching) {
+    camCtx.strokeStyle = 'rgba(176,180,196,0.7)'
+    camCtx.lineWidth = 1.5
+    camCtx.beginPath(); camCtx.arc(px, py, pngSize*0.55, 0, Math.PI*2); camCtx.stroke()
+  }
+}
+
+// ── rAF render loop (sends frames to MediaPipe)
+async function renderLoop() {
+  if (!camStream || !handTracker) return
+  if (camVideo.readyState >= 2) {
+    await handTracker.send({ image: camVideo })
+  }
+  rafId = requestAnimationFrame(renderLoop)
+}
+
+async function startCam() {
+  setCamStatus('Requesting auth…')
+  setCamHelp('')
+  btnConnect.disabled = true
+  try {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw Object.assign(new Error('Camera API unavailable'), { name: 'NotSupportedError' })
+    }
+    camStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode:'user', width:{ideal:1280}, height:{ideal:720} },
+      audio: false
+    })
+    camVideo.srcObject = camStream
+    await new Promise(r => { camVideo.onloadedmetadata = r })
+    camVideo.play()
+
+    // Fit canvas to frame
+    const fr = document.getElementById('cam-frame')
+    camCanvas.width  = fr.clientWidth  * window.devicePixelRatio
+    camCanvas.height = fr.clientHeight * window.devicePixelRatio
+    camCtx.scale(window.devicePixelRatio, window.devicePixelRatio)
+    camCanvas.style.display = 'block'
+    camPlaceholder.style.display = 'none'
+
+    // Set up MediaPipe Hands
+    setCamStatus('Loading hands…')
+    handTracker = new Hands({
+      locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}`
+    })
+    handTracker.setOptions({
+      maxNumHands: 1,
+      modelComplexity: 1,
+      minDetectionConfidence: 0.72,
+      minTrackingConfidence: 0.5
+    })
+    handTracker.onResults(results => {
+      handPts = results.multiHandLandmarks?.[0] || null
+      drawFrame()
+    })
+    await handTracker.initialize()
+
+    rafId = requestAnimationFrame(renderLoop)
+    btnConnect.textContent = 'Disconnect'
+    btnConnect.disabled = false
+    btnCapture.disabled = false
+    setCamStatus('Live', 'live')
+    setCamHelp('')
+
+  } catch(e) {
+    const msg = e.name==='NotAllowedError' ? 'Camera Blocked' :
+                e.name==='NotFoundError'   ? 'No Camera Found' :
+                e.name==='NotSupportedError' ? 'Camera Unsupported' : 'Camera Error'
+    setCamStatus(msg, 'denied')
+    if (e.name === 'NotAllowedError') {
+      setCamHelp('Permission is blocked for this site. Click the camera icon in the address bar, choose Allow, then reload this page.')
+    } else if (e.name === 'NotFoundError') {
+      setCamHelp('No camera device was found. Check that your webcam is connected and not used by another app.')
+    } else if (e.name === 'NotSupportedError') {
+      setCamHelp('Camera access requires localhost, https, or a browser that supports getUserMedia.')
+    } else {
+      setCamHelp('Camera failed to start. Reload the page and try again.')
+    }
+    btnConnect.disabled = false
+  }
+}
+
+function stopCam() {
+  if (rafId) { cancelAnimationFrame(rafId); rafId = null }
+  if (handTracker) { handTracker.close(); handTracker = null }
+  if (camStream) { camStream.getTracks().forEach(t=>t.stop()); camStream = null }
+  camVideo.srcObject = null
+  camCanvas.style.display = 'none'
+  camCtx.clearRect(0,0,camCanvas.width,camCanvas.height)
+  camSnapImg.src = ''; camSnapImg.style.display = 'none'
+  camPlaceholder.style.display = 'flex'
+  btnConnect.textContent = 'Connect Camera'
+  btnCapture.disabled = true; btnTrash.disabled = true
+  handPts = null
+  setCamStatus('Awaiting Auth')
+  setCamHelp('')
+}
+
+btnConnect.addEventListener('click', () => camStream ? stopCam() : startCam())
+
+// Capture: snapshot of the composited canvas (video + hand + PNG)
+btnCapture.addEventListener('click', () => {
+  if (!camStream) return
+  camSnapImg.src = camCanvas.toDataURL('image/jpeg', 0.92)
+  camSnapImg.style.display = 'block'
+  btnTrash.disabled = false
+  setCamStatus('Captured')
+})
+
+// Clear: ↓ into trash — restores live feed
+btnTrash.addEventListener('click', () => {
+  camSnapImg.src = ''; camSnapImg.style.display = 'none'
+  setCamStatus(camStream ? 'Live' : 'Awaiting Auth', camStream ? 'live' : '')
+  btnTrash.disabled = true
+})
+</script>
+</body>
+</html>

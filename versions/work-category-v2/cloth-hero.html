@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Angel Yu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f3f3f4;
+      --ink: #050505;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+      color: var(--ink);
+      background: var(--paper);
+      overflow: hidden;
+      cursor: grab;
+    }
+
+    body:active { cursor: grabbing; }
+
+    #container {
+      position: fixed;
+      inset: 0;
+      touch-action: none;
+      background: var(--paper);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Name overlay — sits above the cloth */
+    #nameplate {
+      display: none;
+      position: fixed;
+      bottom: 40px;
+      right: 48px;
+      text-align: right;
+      pointer-events: none;
+      z-index: 10;
+      mix-blend-mode: multiply;
+    }
+
+    #nameplate .name {
+      font-family: "Noto Serif SC", serif;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #8a7a6a;
+    }
+
+    #nameplate .role {
+      font-family: "Noto Serif SC", serif;
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
+      color: #b0a090;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="container" aria-label="布料文字"></div>
+
+<div id="nameplate">
+  <div class="name">红楼梦</div>
+  <div class="role">曹雪芹　第二十七回</div>
+</div>
+
+<script>
+  const TEXT = `花谢花飞花满天，红消香断有谁怜？游丝软系飘春榭，落絮轻沾扑绣帘。闺中女儿惜春暮，愁绪满怀无释处，手把花锄出绣闺，忍踏落花来复去。柳丝榆荚自芳菲，不管桃飘与李飞。桃李明年能再发，明年闺中知有谁？三月香巢已垒成，梁间燕子太无情！明年花发虽可啄，却不道人去梁空巢也倾。一年三百六十日，风刀霜剑严相逼，明媚鲜妍能几时，一朝飘泊难寻觅。花开易见落难寻，阶前闷杀葬花人，独倚花锄泪暗洒，洒上空枝见血痕。杜鹃无语正黄昏，荷锄归去掩重门。青灯照壁人初睡，冷雨敲窗被未温。怪奴底事倍伤神，半为怜春半恼春：怜春忽至恼忽去，至又无言去不闻。昨宵庭外悲歌发，知是花魂与鸟魂？花魂鸟魂总难留，鸟自无言花自羞。愿奴胁下生双翼，随花飞到天尽头。天尽头，何处有香丘？未若锦囊收艳骨，一抔净土掩风流。质本洁来还洁去，强于污淖陷渠沟。尔今死去侬收葬，未卜侬身何日丧？侬今葬花人笑痴，他年葬侬知是谁？试看春残花渐落，便是红颜老死时。一朝春尽红颜老，花落人亡两不知。林黛玉因夜间失寐，次日起来迟了，闻得众姊妹都在园中作饯花会，恐人笑他痴懒，连忙梳洗了出来。宝玉因不见了林黛玉，便知他躲了别处去了，索性迟两日，等他的气消一消再去也罢了。因低头看见许多凤仙石榴等各色落花，锦重重的落了一地，因叹道：待我送了去，明儿再问著他。说毕，便把那花兜了起来，登山渡水，过树穿花，一直奔了那日同林黛玉葬桃花的去处来。将已到了花冢，犹未转过山坡，只听山坡那边有呜咽之声，一行数落著，哭的好不伤感。宝玉心下想道：这不知是那房里的丫头，受了委曲，跑到这个地方来哭。一面想，一面煞住脚步，听他哭道。`;
+
+  const TEXT_STREAM = Array.from(TEXT);
+  const container = document.getElementById("container");
+
+  let canvas, ctx;
+  let particles = [], constraints = [];
+  let charCache = new Map();
+  let input, config;
+  let animationFrame = 0;
+  let lastTime = 0;
+  let resizeTimer = 0;
+
+  function clamp(v, mn, mx) { return Math.min(mx, Math.max(mn, v)); }
+
+  function smoothstep(e0, e1, x) {
+    const t = clamp((x - e0) / (e1 - e0), 0, 1);
+    return t * t * (3 - 2 * t);
+  }
+
+  function getPointId(row, col, rowCount) { return col * rowCount + row; }
+
+  class Vec2 {
+    constructor(x=0,y=0){this.x=x;this.y=y;}
+    copy(o){this.x=o.x;this.y=o.y;}
+    clone(){return new Vec2(this.x,this.y);}
+    add(o){this.x+=o.x;this.y+=o.y;return this;}
+    sub(o){this.x-=o.x;this.y-=o.y;return this;}
+    scale(a){this.x*=a;this.y*=a;return this;}
+    length(){return Math.hypot(this.x,this.y);}
+    normalize(){const l=this.length()||1;this.x/=l;this.y/=l;return this;}
+    set(x,y){this.x=x;this.y=y;return this;}
+    clear(){this.x=0;this.y=0;return this;}
+  }
+
+  class Particle {
+    constructor(x,y,size,index,character){
+      this.pos=new Vec2(x,y);
+      this.oldPos=new Vec2(x,y);
+      this.acceleration=new Vec2(0,0);
+      this.pinned=false;
+      this.pinPos=new Vec2(x,y);
+      this.rotation=0;
+      this.size=size;
+      this.index=index;
+      this.character=character;
+    }
+    applyForce(f){this.acceleration.add(f);}
+    pin(){this.pinned=true;this.pinPos.copy(this.pos);}
+    update(dt){
+      if(this.pinned){
+        this.pos.copy(this.pinPos);
+        this.oldPos.copy(this.pinPos);
+        this.acceleration.clear();
+        return;
+      }
+      const vx=(this.pos.x-this.oldPos.x)*config.damping;
+      const vy=(this.pos.y-this.oldPos.y)*config.damping;
+      const nx=this.pos.x+vx+this.acceleration.x*dt*dt;
+      const ny=this.pos.y+vy+this.acceleration.y*dt*dt;
+      this.oldPos.copy(this.pos);
+      this.pos.set(nx,ny);
+      this.acceleration.clear();
+    }
+    draw(){
+      if(this.character===' ')return;
+      const g=charCache.get(this.character);
+      if(!g)return;
+      ctx.setTransform(
+        Math.cos(this.rotation)*config.pixelRatio,
+        Math.sin(this.rotation)*config.pixelRatio,
+        -Math.sin(this.rotation)*config.pixelRatio,
+        Math.cos(this.rotation)*config.pixelRatio,
+        (this.pos.x+config.offsetX)*config.pixelRatio,
+        (this.pos.y+config.offsetY)*config.pixelRatio
+      );
+      ctx.drawImage(g,-this.size*0.5,-this.size*0.5,this.size,this.size);
+    }
+  }
+
+  class Constraint {
+    constructor(a,b,length){this.a=a;this.b=b;this.length=length;}
+    satisfy(){
+      const delta=this.b.pos.clone().sub(this.a.pos);
+      const dist=delta.length()||1;
+      const diff=(this.length-dist)/dist*config.stiffness;
+      const offset=delta.scale(diff*0.5);
+      if(!this.a.pinned)this.a.pos.sub(offset);
+      if(!this.b.pinned)this.b.pos.add(offset);
+    }
+  }
+
+  class Input {
+    constructor(el){
+      this.element=el;
+      this.pointer=new Vec2(0,0);
+      this.prevPointer=new Vec2(0,0);
+      this.active=false;
+      this.dragged=null;
+      this._down=this._down.bind(this);
+      this._move=this._move.bind(this);
+      this._up=this._up.bind(this);
+      el.addEventListener('pointerdown',this._down);
+      window.addEventListener('pointermove',this._move,{passive:true});
+      window.addEventListener('pointerup',this._up);
+      window.addEventListener('pointercancel',this._up);
+    }
+    toLocal(e){
+      const r=this.element.getBoundingClientRect();
+      return new Vec2(e.clientX-r.left-config.offsetX,e.clientY-r.top-config.offsetY);
+    }
+    _down(e){
+      this.active=true;
+      const l=this.toLocal(e);
+      this.pointer.copy(l);
+      this.prevPointer.copy(l);
+      this.dragged=this.nearest(l);
+      if(this.dragged)this.dragged.pin();
+    }
+    _move(e){this.pointer.copy(this.toLocal(e));}
+    _up(){
+      this.active=false;
+      if(this.dragged){this.dragged.pinned=false;this.dragged=null;}
+    }
+    nearest(pos){
+      let near=null,nearDist=config.influenceRadius;
+      for(const p of particles){
+        const d=Math.hypot(pos.x-p.pos.x,pos.y-p.pos.y);
+        if(d<nearDist){nearDist=d;near=p;}
+      }
+      return near;
+    }
+    update(){
+      const vel=this.pointer.clone().sub(this.prevPointer);
+      if(this.dragged)this.dragged.pinPos.copy(this.pointer);
+      for(const p of particles){
+        const d=this.pointer.clone().sub(p.pos).length();
+        if(d<config.influenceRadius){
+          const f=smoothstep(config.influenceRadius,0,d)*config.mouseForce;
+          p.applyForce(vel.clone().normalize().scale(f));
+        }
+      }
+      this.prevPointer.copy(this.pointer);
+    }
+    destroy(){
+      this.element.removeEventListener('pointerdown',this._down);
+      window.removeEventListener('pointermove',this._move);
+      window.removeEventListener('pointerup',this._up);
+      window.removeEventListener('pointercancel',this._up);
+    }
+  }
+
+  function createGlyph(char,size){
+    const os=config.glyphOversample;
+    const gc=document.createElement('canvas');
+    gc.width=Math.ceil(size*os);
+    gc.height=Math.ceil(size*os);
+    const gx=gc.getContext('2d');
+    gx.scale(os,os);
+    gx.imageSmoothingEnabled=true;
+    gx.imageSmoothingQuality='high';
+    gx.fillStyle=config.glyphColor;
+    gx.textAlign='center';
+    gx.textBaseline='middle';
+    gx.font=`${config.glyphWeight} ${size*0.72}px "Noto Serif SC","Songti SC",serif`;
+    gx.fillText(char,size*0.5,size*0.52);
+    return gc;
+  }
+
+  function createCanvas(){
+    if(canvas)canvas.remove();
+    canvas=document.createElement('canvas');
+    canvas.width=Math.round(config.viewportWidth*config.pixelRatio);
+    canvas.height=Math.round(config.viewportHeight*config.pixelRatio);
+    canvas.style.width='100%';
+    canvas.style.height='100%';
+    ctx=canvas.getContext('2d',{alpha:false});
+    ctx.imageSmoothingEnabled=true;
+    ctx.imageSmoothingQuality='high';
+    container.appendChild(canvas);
+  }
+
+  function calculateConfig(){
+    const vw=container.clientWidth;
+    const vh=container.clientHeight;
+    const pr=clamp(window.devicePixelRatio||1,1,3);
+    const cw=Math.min(vw*0.86,1320);
+    const ch=Math.min(vh*0.78,900);
+    const cols=clamp(Math.floor(cw/14),28,84);
+    const rows=clamp(Math.floor(ch/14),20,60);
+    const cw2=cw/cols;
+    const ch2=ch/rows;
+    const cs=Math.min(cw2,ch2)*0.92;
+    return {
+      viewportWidth:vw, viewportHeight:vh, pixelRatio:pr,
+      clothWidth:cw, clothHeight:ch,
+      gridColumns:cols, gridRows:rows,
+      cellWidth:cw2, cellHeight:ch2, cellSize:cs,
+      offsetX:(vw-cw)*0.5, offsetY:(vh-ch)*0.15,
+      gravity:0.18, damping:0.987, stiffness:0.52,
+      solverPasses:8,
+      pinStride:Math.max(3,Math.floor(cols/10)),
+      influenceRadius:Math.max(cs*2.8,42),
+      mouseForce:Math.max(cs*0.22,1.4),
+      glyphWeight:600,
+      glyphColor:'#050505',
+      glyphOversample:Math.max(2,Math.ceil(pr)),
+    };
+  }
+
+  function rebuildGlyphs(){
+    charCache=new Map();
+    for(const c of new Set(TEXT_STREAM)){
+      if(c===' ')continue;
+      charCache.set(c,createGlyph(c,Math.ceil(config.cellSize)));
+    }
+  }
+
+  function buildScene(){
+    config=calculateConfig();
+    particles=[];
+    constraints=[];
+    createCanvas();
+    rebuildGlyphs();
+
+    for(let x=0;x<config.gridColumns;x++){
+      for(let y=0;y<config.gridRows;y++){
+        const ci=(x+y*config.gridColumns)%TEXT_STREAM.length;
+        const p=new Particle(
+          x*config.cellWidth, y*config.cellHeight,
+          config.cellSize, ci, TEXT_STREAM[ci]
+        );
+        if(y===0 && x%config.pinStride===0)p.pin();
+        particles.push(p);
+      }
+    }
+
+    for(let x=0;x<config.gridColumns;x++){
+      for(let y=0;y<config.gridRows;y++){
+        const cur=particles[getPointId(y,x,config.gridRows)];
+        if(y<config.gridRows-1){
+          const bot=particles[getPointId(y+1,x,config.gridRows)];
+          constraints.push(new Constraint(cur,bot,config.cellHeight));
+        }
+        if(x<config.gridColumns-1){
+          const rgt=particles[getPointId(y,x+1,config.gridRows)];
+          constraints.push(new Constraint(cur,rgt,config.cellWidth));
+        }
+      }
+    }
+
+    if(input)input.destroy();
+    input=new Input(container);
+  }
+
+  function updateParticles(fd){
+    const dt=fd/16.6667;
+    input.update();
+    for(const p of particles){
+      p.applyForce(new Vec2(0,config.gravity));
+      p.update(dt);
+    }
+    for(let pass=0;pass<config.solverPasses;pass++){
+      for(const c of constraints)c.satisfy();
+    }
+    for(let x=0;x<config.gridColumns;x++){
+      for(let y=0;y<config.gridRows;y++){
+        const p=particles[getPointId(y,x,config.gridRows)];
+        if(y>0){
+          const top=particles[getPointId(y-1,x,config.gridRows)];
+          const dx=top.pos.x-p.pos.x;
+          const dy=top.pos.y-p.pos.y;
+          p.rotation=Math.atan2(dy,dx)+Math.PI*0.5;
+        }
+      }
+    }
+  }
+
+  function draw(){
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.fillStyle='#f3f3f4';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    for(const p of particles)p.draw();
+  }
+
+  function tick(ts){
+    const fd=clamp(ts-lastTime||16.6667,12,28);
+    lastTime=ts;
+    updateParticles(fd);
+    draw();
+    animationFrame=window.requestAnimationFrame(tick);
+  }
+
+  function scheduleRebuild(){
+    window.clearTimeout(resizeTimer);
+    resizeTimer=window.setTimeout(()=>{lastTime=0;buildScene();},80);
+  }
+
+  function start(){
+    buildScene();
+    animationFrame=window.requestAnimationFrame(tick);
+  }
+
+  container.addEventListener('wheel', (event) => {
+    if (window.parent && window.parent !== window) {
+      event.preventDefault();
+      window.parent.scrollBy({
+        top: event.deltaY,
+        left: event.deltaX,
+        behavior: 'auto'
+      });
+    }
+  }, { passive: false });
+
+  window.addEventListener('resize',scheduleRebuild);
+  if('ResizeObserver' in window){
+    new ResizeObserver(scheduleRebuild).observe(container);
+  }
+  if(document.fonts&&document.fonts.ready){
+    document.fonts.ready.then(()=>{
+      if(animationFrame)window.cancelAnimationFrame(animationFrame);
+      start();
+    });
+  } else {
+    start();
+  }
+</script>
+</body>
+</html>
