@@ -1,13 +1,16 @@
 (function () {
   const isStaleBabyStepsPage = (() => {
     const path = decodeURIComponent(window.location.pathname).replace(/\/+$/, "");
-    return path === "/work/Baby Steps"
+    return /\/work\/Baby Steps$/i.test(path)
       && document.title === "Baby Steps - Angel Yu"
       && !document.querySelector(".cs-timeline");
   })();
 
   if (isStaleBabyStepsPage) {
-    fetch(`/work/Baby%20Steps/index.html?cache-rescue=${Date.now()}`, { cache: "no-store" })
+    const rescueUrl = new URL("./index.html", window.location.href);
+    rescueUrl.searchParams.set("cache-rescue", Date.now().toString());
+
+    fetch(rescueUrl.href, { cache: "no-store" })
       .then((response) => response.text())
       .then((html) => {
         document.open();
@@ -15,7 +18,7 @@
         document.close();
       })
       .catch(() => {
-        window.location.replace(`/work/Baby%20Steps/index.html?cache-rescue=${Date.now()}`);
+        window.location.replace(rescueUrl.href);
       });
     return;
   }
