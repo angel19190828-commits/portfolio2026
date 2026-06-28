@@ -49,6 +49,20 @@
     orbitItems = gsap.utils.toArray(".orbit-copy span");
   }
 
+  function setupOrbitClicks() {
+    orbitItems.forEach((span, index) => {
+      const cardIndex = index % cards.length;
+      span.style.pointerEvents = "auto";
+      span.style.cursor = "pointer";
+      span.addEventListener("click", () => {
+        if (!workTimeline) return;
+        const targetProgress = (cardIndex / Math.max(1, cards.length - 1)) * 0.86;
+        const scrollPos = workTimeline.start + targetProgress * (workTimeline.end - workTimeline.start);
+        window.scrollTo({ top: scrollPos, behavior: "smooth" });
+      });
+    });
+  }
+
   function orbitIndexForCard(index) {
     return Number(cards[index]?.dataset.orbit || index + 6);
   }
@@ -244,6 +258,12 @@
 
       card.classList.toggle("is-current", selected);
       card.setAttribute("aria-current", selected ? "true" : "false");
+
+      const video = card.querySelector("video");
+      if (video && selected && absOffset < 0.42 && video.paused) {
+        video.play().catch(() => {});
+      }
+
       gsap.set(card, {
         autoAlpha: 1,
         y: 0,
@@ -396,6 +416,7 @@
   gsap.set(completeLink, { autoAlpha: 0, y: 18, pointerEvents: "none" });
 
   extendOrbitForLoopRead();
+  setupOrbitClicks();
   setupCardTrack();
   layoutWheel();
   buildWorkTimeline();
