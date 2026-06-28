@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -27,7 +27,7 @@
     .shell { width: min(1200px, calc(100vw - 48px)); margin: 0 auto; }
     .section { padding: 100px 0; position: relative; }
     .section-label {
-      font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
       color: rgba(180,210,255,0.6); margin-bottom: 1rem;
     }
     .section-title {
@@ -136,7 +136,8 @@
       font-size: 0.72rem; letter-spacing: 0.26em; text-transform: uppercase;
       color: rgba(255,255,255,0.4);
     }
-    .cs-hero-collab img { height: 32px; width: auto; object-fit: contain; opacity: 0.8; }
+    .cs-hero-collab img { height: 40px; width: auto; object-fit: contain; opacity: 0.8; }
+    .cs-hero-collab img[alt="Panoruk"] { height: 56px; }
     .cs-hero-phones {
       width: min(900px, 90vw); margin: 0 auto;
       height: 400px;
@@ -331,6 +332,8 @@
     .cs-timeline-meta-text { font-size: 0.82rem; color: rgba(255,255,255,0.6); }
     .cs-timeline-track {
       position: relative; padding: 32px 0;
+      max-width: 640px;
+      margin: 0 auto;
     }
     .cs-timeline-line {
       position: absolute; left: 20px; top: 0; bottom: 0; width: 2px;
@@ -382,10 +385,8 @@
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       gap: 10px;
-      transition: background 0.25s, border-color 0.25s;
       padding: 16px;
     }
-    .cs-tool-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); }
     .cs-tool-card .img-slot { width: 56px; height: 56px; border: none; background: transparent; border-radius: 12px; }
     .cs-tool-name { font-size: 0.72rem; letter-spacing: 0.08em; color: rgba(255,255,255,0.6); text-align: center; }
 
@@ -400,21 +401,29 @@
       gap: 24px; margin-top: 56px;
     }
     .cs-testing-card {
-      padding: 36px 28px;
-      border-radius: 24px;
+      padding: 28px 24px;
+      border-radius: 20px;
       background: rgba(255,255,255,0.035);
       border: 1px solid rgba(255,255,255,0.09);
       backdrop-filter: blur(12px);
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 140px;
+    }
+    .cs-testing-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
     }
     .cs-testing-num {
       font-family: "Arial Black","Helvetica Neue",sans-serif;
-      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-size: clamp(2rem, 3.5vw, 3rem);
       letter-spacing: -0.04em; color: #fff; line-height: 1;
-      margin-bottom: 12px;
+      margin-top: 16px;
     }
     .cs-testing-num span { color: rgba(140,197,252,0.9); }
-    .cs-testing-label { font-size: 0.82rem; line-height: 1.55; color: rgba(255,255,255,0.58); }
     .cs-testing-note { margin-top: 48px; font-size: 0.88rem; line-height: 1.7; color: rgba(255,255,255,0.55); max-width: 72ch; }
     @media (max-width: 720px) { .cs-testing-grid { grid-template-columns: 1fr; } }
 
@@ -518,7 +527,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 60px;
-      align-items: start;
+      align-items: stretch;
       margin-top: 48px;
     }
     .cs-role-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
@@ -529,11 +538,12 @@
       font-size: 0.78rem; color: rgba(255,255,255,0.72);
       letter-spacing: 0.04em;
     }
-    .cs-role-cards { display: grid; gap: 16px; }
+    .cs-role-cards { display: grid; gap: 16px; height: 100%; grid-template-rows: repeat(3, 1fr); }
     .cs-role-card {
       padding: 24px 28px; border-radius: 20px;
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
+      display: flex; flex-direction: column; justify-content: center;
     }
     .cs-role-card-title {
       font-family: "Arial Black","Helvetica Neue",sans-serif;
@@ -756,6 +766,248 @@
       .portfolio-bridge-footer { display: grid; padding: 30px 20px; }
       .project-more-work-cta { padding: 42px 20px 56px; }
     }
+
+    /* ── Overview Template (replaces cs-support) ─── */
+    .context-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .context-left .project-title {
+      font-weight: 800;
+      font-size: clamp(36px, 4.5vw, 64px);
+      line-height: 1.0;
+      letter-spacing: -.025em;
+      color: #fff;
+      margin: 16px 0 24px;
+    }
+    .context-left .project-title em { font-style: normal; color: rgba(180,210,255,.75); }
+    .context-desc-ov {
+      font-size: clamp(14px,1.2vw,17px);
+      line-height: 1.7;
+      color: rgba(255,255,255,.55);
+      max-width: 480px;
+      margin-bottom: 40px;
+    }
+    .overview-role { margin: -16px 0 0; max-width: 520px; }
+    .overview-role-label {
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(180,210,255,.4);
+      margin-bottom: 10px;
+    }
+    .overview-role-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .overview-role-list span {
+      font-size: 11px;
+      line-height: 1;
+      color: rgba(180,210,255,.85);
+      padding: 9px 14px;
+      border: 1px solid rgba(180,210,255,.2);
+      border-radius: 999px;
+      background: rgba(180,210,255,.07);
+    }
+    .context-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .meta-item {
+      padding: 28px 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .meta-item:nth-child(odd)  { padding-right: 24px; border-right: 1px solid rgba(255,255,255,.08); }
+    .meta-item:nth-child(even) { padding-left: 24px; }
+    .meta-label {
+      font-size: 9px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(180,210,255,.35);
+      margin-bottom: 8px;
+    }
+    .meta-value {
+      font-weight: 400;
+      font-size: 15px;
+      color: rgba(255,255,255,.82);
+      line-height: 1.4;
+    }
+    @media (max-width: 900px) {
+      .context-grid { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    /* ── Feature 3-col grid ───────────────────────────── */
+    #features-grid { padding: 80px 0; }
+    .features-grid-layout {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      align-items: start;
+    }
+    .feature-col {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .feature-col-phone {
+      width: 100%;
+      aspect-ratio: 0.46 / 1;
+      max-width: 220px;
+      margin: 0 auto;
+    }
+    .feature-col-phone img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .feature-col-text { display: flex; flex-direction: column; gap: 10px; }
+    .feature-col-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(180,210,255,.45);
+    }
+    .feature-col-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+    .feature-col-body {
+      font-size: 13px;
+      line-height: 1.65;
+      color: rgba(180,210,255,.6);
+    }
+    @media (max-width: 768px) {
+      .features-grid-layout { grid-template-columns: 1fr; gap: 48px; }
+      .feature-col-phone { max-width: 180px; }
+    }
+
+    /* ── Ideation 3 Concepts ────────────────────────── */
+    .cs-concepts-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .cs-concept-visual { display: flex; flex-direction: column; gap: 10px; }
+    .cs-concept-slide { width: 100%; border-radius: 12px; display: block; }
+    @media (max-width: 768px) { .cs-concepts-row { grid-template-columns: 1fr; } }
+
+    /* ── (legacy concept card, kept for reference) ── */
+    .cs-concept-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      padding: 36px;
+      border: 1px solid rgba(180,210,255,.1);
+      border-radius: 16px;
+      background: rgba(180,210,255,.03);
+    }
+    .cs-concept-tag {
+      display: inline-block;
+      font-size: 10px; font-weight: 700; letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(180,210,255,.9);
+      background: rgba(180,210,255,.12);
+      border: 1px solid rgba(180,210,255,.2);
+      border-radius: 999px;
+      padding: 5px 12px;
+      margin-bottom: 16px;
+    }
+    .cs-concept-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 20px; line-height: 1.1; }
+    .cs-concept-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .cs-concept-list li {
+      font-size: 13px; line-height: 1.6;
+      color: rgba(180,210,255,.65);
+      padding-left: 16px;
+      position: relative;
+    }
+    .cs-concept-list li::before { content: "—"; position: absolute; left: 0; color: rgba(180,210,255,.3); }
+    .cs-concept-img { width: 100%; border-radius: 12px; object-fit: cover; max-height: 320px; display: block; }
+    @media(max-width:768px){ .cs-concept-card { grid-template-columns: 1fr; } }
+
+    /* ── Moodboard ──────────────────────────────────── */
+    .cs-moodboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      grid-auto-rows: 220px;
+      gap: 8px;
+      margin-top: 40px;
+    }
+    .cs-moodboard-grid img { width:100%; height:100%; object-fit:cover; border-radius:6px; }
+    .cs-moodboard-grid img:first-child { grid-row: span 2; }
+    .cs-caption { font-size:12px; color:rgba(180,210,255,.4); margin-top:12px; }
+
+    /* ── Visual Style ───────────────────────────────── */
+    .cs-visual-img { width:100%; border-radius:12px; margin-top:40px; display:block; }
+
+    /* ── Pivot comparison ───────────────────────────── */
+    .cs-pivot-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .cs-pivot-col {
+      padding: 32px;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .cs-pivot-col--no  { border: 1px solid rgba(255,120,120,.2); background: rgba(255,80,80,.05); }
+    .cs-pivot-col--yes { border: 1px solid rgba(100,220,180,.2); background: rgba(100,220,180,.05); }
+    .cs-pivot-col-header { display: flex; align-items: center; gap: 12px; }
+    .cs-pivot-icon {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700; flex-shrink: 0;
+    }
+    .cs-pivot-icon--no  { background: rgba(255,80,80,.15);  color: #ff6b6b; }
+    .cs-pivot-icon--yes { background: rgba(100,220,180,.15); color: #64dcb4; }
+    .cs-pivot-col-title { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .cs-pivot-col--no  .cs-pivot-col-title { color: rgba(255,120,120,.7); }
+    .cs-pivot-col--yes .cs-pivot-col-title { color: rgba(100,220,180,.7); }
+    .cs-pivot-items { display: flex; flex-direction: column; gap: 12px; }
+    .cs-pivot-item { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,.65); }
+    .cs-pivot-ref-img { width: 100%; border-radius: 10px; margin: 4px 0; opacity: 0.75; display: block; }
+    @media(max-width:640px) { .cs-pivot-compare { grid-template-columns: 1fr; } }
+
+    /* ── Art Assets pipeline ────────────────────────── */
+    .cs-artpipe {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      margin-top: 40px;
+    }
+    .cs-artpipe-steps { display: flex; flex-direction: column; gap: 20px; }
+    .cs-artpipe-step { display: flex; align-items: center; gap: 16px; }
+    .cs-artpipe-step-icon {
+      width: 56px; height: 56px;
+      border-radius: 12px;
+      background: rgba(180,210,255,.08);
+      border: 1px solid rgba(180,210,255,.12);
+      display: flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+    }
+    .cs-artpipe-step-icon img { width:36px; height:36px; object-fit:contain; }
+    .cs-artpipe-step-name { font-size:14px; font-weight:600; color:#fff; }
+    .cs-artpipe-step-sub  { font-size:12px; color:rgba(180,210,255,.5); margin-top:2px; }
+    .cs-artpipe-arrow     { font-size:18px; color:rgba(180,210,255,.3); text-align:center; }
+    .cs-artpipe-frames { display:flex; flex-direction:column; gap:12px; }
+    .cs-artpipe-frames img {
+      width:100%; border-radius:10px;
+      border:1px solid rgba(180,210,255,.08);
+      object-fit:cover;
+    }
+    @media(max-width:760px){ .cs-artpipe{ grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -824,28 +1076,31 @@
 ====================================== -->
 <section id="features">
 <div class="shell">
-  <div class="cs-support section">
-    <div class="cs-support-left" style="position:relative;z-index:1">
-      <p class="section-label">Core Goal</p>
-      <h2 class="section-title">Support Emotional<br>Connection</h2>
-      <p class="section-body">BabySteps bridges the gap between expectant parents and their unborn child through immersive AR storytelling — making every stage of pregnancy feel meaningful, personal, and shared.</p>
-    </div>
-    <div class="cs-support-right">
-      <div class="cs-support-cards">
-        <div class="cs-support-card">
-          <p class="cs-support-card-label">Emotional</p>
-          <p class="cs-support-card-text">Building a bond between parents and baby before birth through interactive AR environments and daily check-ins.</p>
-        </div>
-        <div class="cs-support-card">
-          <p class="cs-support-card-label">Educational</p>
-          <p class="cs-support-card-text">Visualising fetal development across 6 growth stages with accurate 3D baby models that evolve over time.</p>
-        </div>
-        <div class="cs-support-card">
-          <p class="cs-support-card-label">Experiential</p>
-          <p class="cs-support-card-text">An AR night sky world that parents can anchor in their physical space and explore as a living story.</p>
+  <div class="context-grid section">
+
+    <div class="context-left">
+      <p class="section-label">00 — Overview</p>
+      <h2 class="project-title">Prenatal Bonding<br/><em>in AR</em></h2>
+      <p class="context-desc-ov">BabySteps bridges the gap between expectant parents and their unborn child through immersive AR storytelling — making every stage of pregnancy feel meaningful, personal, and shared.</p>
+      <div class="overview-role">
+        <div class="overview-role-label">Pillars</div>
+        <div class="overview-role-list">
+          <span>Emotional</span>
+          <span>Educational</span>
+          <span>Experiential</span>
         </div>
       </div>
     </div>
+
+    <div class="context-right">
+      <div class="meta-item"><div class="meta-label">Client</div><div class="meta-value">Tandem</div></div>
+      <div class="meta-item"><div class="meta-label">Team</div><div class="meta-value">Panoruk</div></div>
+      <div class="meta-item"><div class="meta-label">Timeline</div><div class="meta-value">10 weeks<br/>2025</div></div>
+      <div class="meta-item"><div class="meta-label">My Role</div><div class="meta-value">Visual Designer</div></div>
+      <div class="meta-item"><div class="meta-label">Tools</div><div class="meta-value">Figma, AR Kit<br/>Spline</div></div>
+      <div class="meta-item"><div class="meta-label">Deliverables</div><div class="meta-value">AR App<br/>Brand System</div></div>
+    </div>
+
   </div>
 </div>
 </section>
@@ -857,7 +1112,7 @@
 ====================================== -->
 <div class="shell">
   <div class="cs-role section">
-    <p class="section-label">Contribution</p>
+    <p class="section-label">01 — My Role</p>
     <h2 class="section-title">My Role</h2>
     <div class="cs-role-grid">
       <div>
@@ -891,27 +1146,29 @@
 <div class="star-divider"></div>
 
 <!-- ======================================
-     THE NIGHT SKY EXPERIENCE
+     FEATURES 01 / 02 / 03
+====================================== -->
+
+
+<!-- ======================================
+     IDEATION — 3 CONCEPTS
 ====================================== -->
 <div class="shell">
-  <div class="cs-feature section">
-    <div class="cs-feature-inner">
-      <div>
-        <p class="section-label">Feature 01</p>
-        <h2 class="section-title">The Night Sky<br>Experience</h2>
-        <p class="section-body">Users anchor a dynamic AR night sky in their physical space. Stars, clouds, and ambient elements fill the room as the story begins to unfold around them.</p>
-        <p class="section-body" style="margin-top:1rem">Each session starts with the night sky responding to touch — twinkling, shifting, and revealing new characters as the pregnancy progresses.</p>
+  <div class="section">
+    <p class="section-label">02 — Ideation</p>
+    <h2 class="section-title">3 Concepts</h2>
+    <div class="cs-concepts-row">
+      <div class="cs-concept-visual">
+        <span class="cs-concept-tag">Concept 1</span>
+        <img class="cs-concept-slide" src="assets/images/9.png" alt="Concept 1 Scrapbook">
       </div>
-      <div class="cs-feature-phones">
-        <div class="cs-feature-phone">
-          <img src="assets/images/cs-nightsky-01.png" style="width:100%;height:100%;object-fit:contain;">
-        </div>
-        <div class="cs-feature-phone large">
-          <img src="assets/images/cs-nightsky-02.png" style="width:100%;height:100%;object-fit:contain;">
-        </div>
-        <div class="cs-feature-phone">
-          <img src="assets/images/cs-nightsky-03.png" style="width:100%;height:100%;object-fit:contain;">
-        </div>
+      <div class="cs-concept-visual">
+        <span class="cs-concept-tag">Concept 2</span>
+        <img class="cs-concept-slide" src="assets/images/11.png" alt="Concept 2 Bookcase">
+      </div>
+      <div class="cs-concept-visual">
+        <span class="cs-concept-tag">Concept 3</span>
+        <img class="cs-concept-slide" src="assets/images/12.png" alt="Concept 3 Constellations">
       </div>
     </div>
   </div>
@@ -919,28 +1176,33 @@
 
 <div class="star-divider"></div>
 
-
 <!-- ======================================
-     3D BABY VISUALIZATION
+     PIVOT
 ====================================== -->
 <div class="shell">
-  <div class="cs-feature section">
-    <div class="cs-feature-inner reverse">
-      <div>
-        <p class="section-label">Feature 02</p>
-        <h2 class="section-title">3D Baby<br>Visualization</h2>
-        <p class="section-body">An interactive 3D model of the baby evolves alongside each development stage. Parents can rotate, zoom, and explore the model in AR — seeing their baby grow in real scale.</p>
-        <p class="section-body" style="margin-top:1rem">The 3D baby responds to audio input, playing animations when it detects the parent's voice or music playing nearby.</p>
+  <div class="section">
+    <p class="section-label">03 — Pivot</p>
+    <h2 class="section-title">Pivot</h2>
+    <div class="cs-pivot-compare">
+      <div class="cs-pivot-col cs-pivot-col--no">
+        <div class="cs-pivot-col-header">
+          <span class="cs-pivot-icon cs-pivot-icon--no">✕</span>
+          <span class="cs-pivot-col-title">Original Direction</span>
+        </div>
+        <div class="cs-pivot-items">
+          <p class="cs-pivot-item">Constellations as fetal milestones — clients felt it tied the app to astrology &amp; mysticism</p>
+          <img class="cs-pivot-ref-img" src="assets/images/pivot-ref.png" alt="Constellation reference">
+          <p class="cs-pivot-item">After Effects for animation workflow — mismatched with our painterly art direction</p>
+        </div>
       </div>
-      <div class="cs-feature-phones">
-        <div class="cs-feature-phone">
-          <img src="assets/images/cs-3dbaby-01.png" style="width:100%;height:100%;object-fit:contain;">
+      <div class="cs-pivot-col cs-pivot-col--yes">
+        <div class="cs-pivot-col-header">
+          <span class="cs-pivot-icon cs-pivot-icon--yes">✓</span>
+          <span class="cs-pivot-col-title">Pivoted To</span>
         </div>
-        <div class="cs-feature-phone large">
-          <img src="assets/images/cs-3dbaby-02.png" style="width:100%;height:100%;object-fit:contain;">
-        </div>
-        <div class="cs-feature-phone">
-          <img src="assets/images/cs-3dbaby-03.png" style="width:100%;height:100%;object-fit:contain;">
+        <div class="cs-pivot-items">
+          <p class="cs-pivot-item">Story-based AR night sky — warmth and wonder, no zodiac associations</p>
+          <p class="cs-pivot-item">Hand-drawn frame-by-frame in Procreate — matched the storybook feel perfectly</p>
         </div>
       </div>
     </div>
@@ -949,275 +1211,98 @@
 
 <div class="star-divider"></div>
 
-
 <!-- ======================================
-     JOURNEY & DAILY TASK
-====================================== -->
-<div class="shell" id="features2">
-  <div class="cs-journey section">
-    <p class="section-label">Feature 03</p>
-    <h2 class="section-title">Journey &amp; Daily Task</h2>
-    <p class="section-body">A structured journey maps out the pregnancy from week 1 to birth. Each day presents a small task — breathing exercises, journaling prompts, or AR interactions — that deepens the bond.</p>
-    <div class="cs-journey-phones">
-      <div class="cs-journey-phone"><img src="assets/images/cs-journey-01.png" style="width:100%;height:100%;object-fit:contain;"></div>
-      <div class="cs-journey-phone"><img src="assets/images/cs-journey-02.png" style="width:100%;height:100%;object-fit:contain;"></div>
-      <div class="cs-journey-phone"><img src="assets/images/cs-journey-03.png" style="width:100%;height:100%;object-fit:contain;"></div>
-    </div>
-  </div>
-</div>
-
-<div class="star-divider"></div>
-
-
-<!-- ======================================
-     ONBOARDING
+     MOODBOARD
 ====================================== -->
 <div class="shell">
-  <div class="cs-onboard section">
-    <p class="section-label">Feature 04</p>
-    <h2 class="section-title">Onboarding</h2>
-    <p class="section-body">A gentle three-step onboarding flow introduces parents to the night sky world, sets up their due date, and immediately places them inside their first AR scene.</p>
-    <div class="cs-onboard-screens">
-      <div class="cs-onboard-screen"><img src="assets/images/cs-onboard-01.png" style="width:100%;height:100%;object-fit:contain;"></div>
-      <div class="cs-onboard-screen"><img src="assets/images/cs-onboard-02.png" style="width:100%;height:100%;object-fit:contain;"></div>
-      <div class="cs-onboard-screen"><img src="assets/images/cs-onboard-03.png" style="width:100%;height:100%;object-fit:contain;"></div>
+  <div class="section">
+    <p class="section-label">04 — Moodboard</p>
+    <h2 class="section-title">Moodboard</h2>
+    <p class="section-body">The visual direction is inspired by a storybook aesthetic, where textures and brush strokes remain visible, creating a sense of warmth, tactility, and hand-crafted intimacy. Motion is suggested through painterly strokes and elongated shapes, particularly in the depiction of comets and falling stars.</p>
+    <div class="cs-moodboard-grid">
+      <img src="assets/images/moodboard-01.jpg" alt="">
+      <img src="assets/images/moodboard-02.jpg" alt="">
+      <img src="assets/images/moodboard-03.jpg" alt="">
+      <img src="assets/images/moodboard-04.jpg" alt="">
+      <img src="assets/images/moodboard-05.jpg" alt="">
+      <img src="assets/images/moodboard-06.jpg" alt="">
+      <img src="assets/images/moodboard-07.jpg" alt="">
     </div>
+    <p class="cs-caption">Source from Pinterest</p>
   </div>
 </div>
 
 <div class="star-divider"></div>
 
-
 <!-- ======================================
-     TEAM DECISIONS
-====================================== -->
-<div class="shell" id="process">
-  <div class="cs-decisions section">
-    <p class="section-label">Process</p>
-    <h2 class="section-title">Team Decisions &amp;<br>Client Communication</h2>
-    <div class="cs-decisions-grid">
-      <div class="cs-decision-card">
-        <div class="cs-decision-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21h6"/><path d="M12 3a6 6 0 0 1 6 6c0 2.5-1.5 4.5-3 6H9c-1.5-1.5-3-3.5-3-6a6 6 0 0 1 6-6z"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </div>
-        <p class="cs-decision-title">Concept Merge</p>
-        <p class="cs-decision-body">We evaluated 3 directions. No single concept was enough. We merged <strong>Constellation</strong> (AR immersion) + <strong>Scrapbook</strong> (personal memory) into the Night Sky experience—creating something more powerful than either alone.</p>
-      </div>
-      <div class="cs-decision-card">
-        <div class="cs-decision-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="19" cy="7" r="2"/><path d="M23 21v-1a3 3 0 0 0-2-2.83"/></svg>
-        </div>
-        <p class="cs-decision-title">Partner-First Constraint</p>
-        <p class="cs-decision-body">Client feedback mid-sprint: AR and partner engagement must be core, not add-ons. Every feature now requires a <strong>Partner View</strong>. This constraint forced us to think inclusively from the start.</p>
-      </div>
-      <div class="cs-decision-card">
-        <div class="cs-decision-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
-        </div>
-        <p class="cs-decision-title">Scope Protection</p>
-        <p class="cs-decision-body">Explicitly cut 6 features to protect 12-week delivery: medical monitoring, social sharing, user login, 3D animation rigging. <strong>Quality over quantity</strong>—we shipped something polished rather than something rushed.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="star-divider"></div>
-
-
-<!-- ======================================
-     DEVELOPMENT TIMELINE
+     VISUAL STYLE
 ====================================== -->
 <div class="shell">
-  <div class="cs-timeline section">
-    <p class="section-label">Timeline</p>
-    <h2 class="section-title">Development Timeline</h2>
-    <div class="cs-timeline-meta">
-      <div class="cs-timeline-meta-item">
-        <div class="cs-timeline-meta-dot"></div>
-        <span class="cs-timeline-meta-text">12 Weeks</span>
-      </div>
-      <div class="cs-timeline-meta-item">
-        <div class="cs-timeline-meta-dot" style="background:rgba(180,140,255,0.8)"></div>
-        <span class="cs-timeline-meta-text">4 Sprints</span>
-      </div>
-      <div class="cs-timeline-meta-item">
-        <div class="cs-timeline-meta-dot" style="background:rgba(255,200,80,0.8)"></div>
-        <span class="cs-timeline-meta-text">3 Phases</span>
-      </div>
-    </div>
-    <div class="cs-timeline-track">
-      <div class="cs-timeline-line"></div>
-      <div class="cs-timeline-items">
-        <div class="cs-timeline-item">
-          <div class="cs-timeline-dot"></div>
-          <p class="cs-timeline-phase">Phase 01 — Weeks 1–2</p>
-          <h3 class="cs-timeline-name">Research &amp; Ideation</h3>
-          <p class="cs-timeline-desc">User interviews with expectant parents, competitive analysis of existing pregnancy apps, and definition of the core emotional problem space.</p>
-          <span class="cs-timeline-badge">Discovery</span>
-        </div>
-        <div class="cs-timeline-item">
-          <div class="cs-timeline-dot"></div>
-          <p class="cs-timeline-phase">Phase 02 — Weeks 3–5</p>
-          <h3 class="cs-timeline-name">Prototyping &amp; AR Exploration</h3>
-          <p class="cs-timeline-desc">Low-fidelity wireframes tested with 12 participants. AR anchoring and night sky environment explored in RealityKit and Unity AR Foundation.</p>
-          <span class="cs-timeline-badge">Design + Prototype</span>
-        </div>
-        <div class="cs-timeline-item">
-          <div class="cs-timeline-dot"></div>
-          <p class="cs-timeline-phase">Phase 03 — Weeks 6–7</p>
-          <h3 class="cs-timeline-name">MVP &amp; First Feature</h3>
-          <p class="cs-timeline-desc">Night sky AR scene shipped as the core MVP. Onboarding flow and due-date setup integrated. Internal alpha tested with 18 users.</p>
-          <span class="cs-timeline-badge">Sprint 01–02</span>
-        </div>
-        <div class="cs-timeline-item">
-          <div class="cs-timeline-dot"></div>
-          <p class="cs-timeline-phase">Phase 04 — Weeks 8–9</p>
-          <h3 class="cs-timeline-name">Iteration &amp; Second Feature</h3>
-          <p class="cs-timeline-desc">3D baby model integrated with week-based progression. Daily task system built and connected to the journey map. Feedback incorporated from first alpha.</p>
-          <span class="cs-timeline-badge">Sprint 03</span>
-        </div>
-        <div class="cs-timeline-item">
-          <div class="cs-timeline-dot"></div>
-          <p class="cs-timeline-phase">Phase 05 — Weeks 10–11</p>
-          <h3 class="cs-timeline-name">Integration &amp; Second Feature</h3>
-          <p class="cs-timeline-desc">Full user journey connected end-to-end. Push notifications for daily tasks. Wider beta with 107 users across two cohorts.</p>
-          <span class="cs-timeline-badge">Sprint 04</span>
-        </div>
-        <div class="cs-timeline-item">
-          <div class="cs-timeline-dot" style="background:rgba(255,200,80,0.9);box-shadow:0 0 12px rgba(255,200,80,0.5)"></div>
-          <p class="cs-timeline-phase">Phase 06 — Week 12</p>
-          <h3 class="cs-timeline-name">Polish &amp; Handoff</h3>
-          <p class="cs-timeline-desc">Animation polish, performance optimisation, and full design handoff package delivered to the Tandem engineering team.</p>
-          <span class="cs-timeline-badge" style="background:rgba(255,200,80,0.12);border-color:rgba(255,200,80,0.3);color:rgba(255,200,80,0.9)">Handoff</span>
-        </div>
-      </div>
-    </div>
+  <div class="section">
+    <p class="section-label">05 — Visual Style</p>
+    <h2 class="section-title">Visual Style</h2>
+    <p class="section-body">The night sky is treated as an emotional space. Deep blues, soft purples, and muted blacks form the base, while glowing yellow and whites introduce moments of warmth and focus. Light is used as a central storytelling element — bright glowing forms guide attention and evoke wonder.</p>
+    <img class="cs-visual-img" src="assets/images/cs-visual-style.png" alt="Visual Style — Night Sky">
+    <p class="cs-caption">Envisioning the Placement of an Asset in the Night Sky</p>
   </div>
 </div>
 
 <div class="star-divider"></div>
 
-
 <!-- ======================================
-     TOOLS USED
+     STORY MAKING
 ====================================== -->
 <div class="shell">
-  <div class="cs-tools section">
-    <p class="section-label">Stack</p>
-    <h2 class="section-title">Tools Used</h2>
-    <div class="cs-tools-grid">
-      <div class="cs-tool-card">
-        <img src="assets/images/Brand=Figma, Color=ON.png" style="width:56px;height:56px;object-fit:contain;" alt="Figma">
-        <span class="cs-tool-name">Figma</span>
-      </div>
-      <div class="cs-tool-card">
-        <img src="assets/images/Unity.png" style="width:56px;height:56px;object-fit:contain;filter:brightness(0) invert(1);" alt="Unity">
-        <span class="cs-tool-name">Unity</span>
-      </div>
-      <div class="cs-tool-card">
-        <img src="assets/images/xcode.png" style="width:56px;height:56px;object-fit:contain;" alt="Xcode">
-        <span class="cs-tool-name">Xcode</span>
-      </div>
-      <div class="cs-tool-card">
-        <img src="assets/images/ARKit_pre-release_icon.webp" style="width:56px;height:56px;object-fit:contain;" alt="ARKit">
-        <span class="cs-tool-name">ARKit</span>
-      </div>
-      <div class="cs-tool-card">
-        <img src="assets/images/notion.png" style="width:56px;height:56px;object-fit:contain;filter:brightness(0) invert(1);" alt="Notion">
-        <span class="cs-tool-name">Notion</span>
-      </div>
-      <div class="cs-tool-card">
-        <img src="assets/images/procreate.png" style="width:56px;height:56px;object-fit:contain;" alt="Procreate">
-        <span class="cs-tool-name">Procreate</span>
-      </div>
-    </div>
+  <div class="section">
+    <p class="section-label">06 — Story Making</p>
+    <h2 class="section-title">Story Making</h2>
+    <p class="section-body">With the constellation concept behind us, we built a layered AR narrative — the night sky becomes a living storybook that grows alongside the pregnancy. Each AR scene is composed of three depth layers that stack to form a complete environment.</p>
+    <img class="cs-visual-img" src="assets/images/cs-artprocess-layers.png" alt="AR Depth Layers">
+    <p class="cs-caption">AR layer system: Default assets → Depth of stars → Story</p>
   </div>
 </div>
 
 <div class="star-divider"></div>
 
-
 <!-- ======================================
-     TESTING RESULTS
-====================================== -->
-<div class="shell" id="results">
-  <div class="cs-testing section">
-    <p class="section-label">Validation</p>
-    <h2 class="section-title">Testing Results</h2>
-    <div class="cs-testing-grid">
-      <div class="cs-testing-card">
-        <div class="cs-testing-num">90<span>%</span></div>
-        <p class="cs-testing-label">of users felt emotionally connected to their baby during the AR session</p>
-      </div>
-      <div class="cs-testing-card">
-        <div class="cs-testing-num">50.8<span>%</span></div>
-        <p class="cs-testing-label">increase in daily app engagement vs. baseline prenatal apps</p>
-      </div>
-      <div class="cs-testing-card">
-        <div class="cs-testing-num">49.2<span>%</span></div>
-        <p class="cs-testing-label">reduction in reported anxiety around fetal development milestones</p>
-      </div>
-      <div class="cs-testing-card">
-        <div class="cs-testing-num">88.1<span>%</span></div>
-        <p class="cs-testing-label">task completion rate across all 6 development stage interactions</p>
-      </div>
-      <div class="cs-testing-card">
-        <div class="cs-testing-num">3.6<span>/5</span></div>
-        <p class="cs-testing-label">average usability score (SUS) across 107 beta participants</p>
-      </div>
-      <div class="cs-testing-card">
-        <div class="cs-testing-num">8</div>
-        <p class="cs-testing-label">design iterations shipped based on live user feedback during beta</p>
-      </div>
-    </div>
-    <p class="cs-testing-note">Testing was conducted with 107 users across two cohorts (expectant mothers and partners) over a 3-week beta period. All sessions were moderated remotely with think-aloud protocol.</p>
-  </div>
-</div>
-
-<div class="star-divider"></div>
-
-
-<!-- ======================================
-     EVERYTHING HANDED OFF
+     ART ASSETS PIPELINE
 ====================================== -->
 <div class="shell">
-  <div class="cs-handoff section">
-    <div class="cs-handoff-inner">
-      <p class="section-label">Deliverables</p>
-      <h2 class="section-title" style="text-align:center">Everything Handed Off</h2>
-      <p class="section-body" style="margin:0 auto;text-align:center">A complete handoff package was delivered to the Tandem engineering team — ready for production.</p>
-      <div class="cs-handoff-deliverables">
-        <div class="cs-handoff-item">
-          <div class="cs-handoff-item-icon">🎨</div>
-          Figma Design File with auto-layout, tokens &amp; dev mode annotations
+  <div class="section">
+    <p class="section-label">07 — Art Assets</p>
+    <h2 class="section-title">Production Pipeline</h2>
+    <p class="section-body">All 2D assets were created from scratch using a three-stage pipeline — from hand-drawn illustration to Unity-ready PNG sequences.</p>
+    <div class="cs-artpipe">
+      <div class="cs-artpipe-steps">
+        <div class="cs-artpipe-step">
+          <div class="cs-artpipe-step-icon"><img src="assets/images/procreate.png" alt="Procreate"></div>
+          <div><p class="cs-artpipe-step-name">Procreate</p><p class="cs-artpipe-step-sub">Hand-draw + animate frame by frame</p></div>
         </div>
-        <div class="cs-handoff-item">
-          <div class="cs-handoff-item-icon">🎬</div>
-          2D Animation assets &amp; Art Style Guide (PDF)
+        <div class="cs-artpipe-arrow">↓</div>
+        <div class="cs-artpipe-step">
+          <div class="cs-artpipe-step-icon" style="background:rgba(180,210,255,.05)">
+            <span style="font-size:15px;font-weight:800;color:rgba(100,149,237,.9);letter-spacing:.01em">Ps</span>
+          </div>
+          <div><p class="cs-artpipe-step-name">Photoshop</p><p class="cs-artpipe-step-sub">Composite layers, color grade, export</p></div>
         </div>
-        <div class="cs-handoff-item">
-          <div class="cs-handoff-item-icon">📱</div>
-          Unity AR project + 3D baby model across 6 growth stages
-        </div>
-        <div class="cs-handoff-item">
-          <div class="cs-handoff-item-icon">📝</div>
-          Component library with documented variants and states
-        </div>
-        <div class="cs-handoff-item">
-          <div class="cs-handoff-item-icon">🧪</div>
-          User testing reports &amp; synthesis documentation
-        </div>
-        <div class="cs-handoff-item">
-          <div class="cs-handoff-item-icon">🗺️</div>
-          Full product roadmap for post-launch feature expansion
+        <div class="cs-artpipe-arrow">↓</div>
+        <div class="cs-artpipe-step">
+          <div class="cs-artpipe-step-icon" style="background:rgba(180,210,255,.05)">
+            <span style="font-size:11px;font-weight:700;color:rgba(180,210,255,.7);letter-spacing:.05em">PNG</span>
+          </div>
+          <div><p class="cs-artpipe-step-name">PNG Sequence</p><p class="cs-artpipe-step-sub">Frame-by-frame PNGs → Unity AR</p></div>
         </div>
       </div>
-      <a class="cs-handoff-cta" href="https://freight.cargo.site/m/V2858892256888053613611591343303/BabyStep-Art-Style-Guide.pdf" target="_blank">
-        View Art Style Guide →
-      </a>
+      <div class="cs-artpipe-frames">
+        <img src="assets/images/cs-artprocess-hearts.png" alt="Heart Beat animation frames">
+        <img src="assets/images/cs-artprocess-sky-frames.png" alt="Night sky texture frames">
+      </div>
     </div>
   </div>
 </div>
+
+<div class="star-divider"></div>
+
 
 <div class="star-divider"></div>
 
@@ -1227,7 +1312,7 @@
 <section class="as-page" data-as-initialized="true">
   <div class="as-shell">
     <div style="max-width:min(1200px,calc(100vw - 48px)); margin: 0 auto 48px;">
-      <p class="section-label">Assets</p>
+      <p class="section-label">08 — Showcase</p>
       <h2 class="section-title">Animation Showcase</h2>
       <p class="section-body">A compact asset gallery with category switching, uniform frames, and a dedicated ordered stage progression.</p>
     </div>
@@ -1315,6 +1400,286 @@
   </div>
 </section>
 
+<!-- ======================================
+     TEAM DECISIONS
+====================================== -->
+<div class="shell" id="process">
+  <div class="cs-decisions section">
+    <p class="section-label">09 — Team Decisions</p>
+    <h2 class="section-title">Team Decisions &amp;<br>Client Communication</h2>
+    <div class="cs-decisions-grid">
+      <div class="cs-decision-card">
+        <div class="cs-decision-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21h6"/><path d="M12 3a6 6 0 0 1 6 6c0 2.5-1.5 4.5-3 6H9c-1.5-1.5-3-3.5-3-6a6 6 0 0 1 6-6z"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <p class="cs-decision-title">Concept Merge</p>
+        <p class="cs-decision-body">We evaluated 3 directions. No single concept was enough. We merged <strong>Constellation</strong> (AR immersion) + <strong>Scrapbook</strong> (personal memory) into the Night Sky experience—creating something more powerful than either alone.</p>
+      </div>
+      <div class="cs-decision-card">
+        <div class="cs-decision-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="19" cy="7" r="2"/><path d="M23 21v-1a3 3 0 0 0-2-2.83"/></svg>
+        </div>
+        <p class="cs-decision-title">Partner-First Constraint</p>
+        <p class="cs-decision-body">Client feedback mid-sprint: AR and partner engagement must be core, not add-ons. Every feature now requires a <strong>Partner View</strong>. This constraint forced us to think inclusively from the start.</p>
+      </div>
+      <div class="cs-decision-card">
+        <div class="cs-decision-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <p class="cs-decision-title">Scope Protection</p>
+        <p class="cs-decision-body">Explicitly cut 6 features to protect 12-week delivery: medical monitoring, social sharing, user login, 3D animation rigging. <strong>Quality over quantity</strong>—we shipped something polished rather than something rushed.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="star-divider"></div>
+
+
+<!-- ======================================
+     DEVELOPMENT TIMELINE
+====================================== -->
+<div class="shell">
+  <div class="cs-timeline section">
+    <p class="section-label">10 — Timeline</p>
+    <h2 class="section-title">Development Timeline</h2>
+    <div class="cs-timeline-meta">
+      <div class="cs-timeline-meta-item">
+        <div class="cs-timeline-meta-dot"></div>
+        <span class="cs-timeline-meta-text">12 Weeks</span>
+      </div>
+      <div class="cs-timeline-meta-item">
+        <div class="cs-timeline-meta-dot" style="background:rgba(180,140,255,0.8)"></div>
+        <span class="cs-timeline-meta-text">4 Sprints</span>
+      </div>
+      <div class="cs-timeline-meta-item">
+        <div class="cs-timeline-meta-dot" style="background:rgba(255,200,80,0.8)"></div>
+        <span class="cs-timeline-meta-text">3 Phases</span>
+      </div>
+    </div>
+    <div class="cs-timeline-track">
+      <div class="cs-timeline-line"></div>
+      <div class="cs-timeline-items">
+        <div class="cs-timeline-item">
+          <div class="cs-timeline-dot"></div>
+          <p class="cs-timeline-phase">Phase 01 — Weeks 1–2</p>
+          <h3 class="cs-timeline-name">Research &amp; Ideation</h3>
+          <p class="cs-timeline-desc">User interviews with expectant parents, competitive analysis of existing pregnancy apps, and definition of the core emotional problem space.</p>
+          <span class="cs-timeline-badge">Discovery</span>
+        </div>
+        <div class="cs-timeline-item">
+          <div class="cs-timeline-dot"></div>
+          <p class="cs-timeline-phase">Phase 02 — Weeks 3–5</p>
+          <h3 class="cs-timeline-name">Prototyping &amp; AR Exploration</h3>
+          <p class="cs-timeline-desc">Low-fidelity wireframes tested with 12 participants. AR anchoring and night sky environment explored in RealityKit and Unity AR Foundation.</p>
+          <span class="cs-timeline-badge">Design + Prototype</span>
+        </div>
+        <div class="cs-timeline-item">
+          <div class="cs-timeline-dot"></div>
+          <p class="cs-timeline-phase">Phase 03 — Weeks 6–7</p>
+          <h3 class="cs-timeline-name">MVP &amp; First Feature</h3>
+          <p class="cs-timeline-desc">Night sky AR scene shipped as the core MVP. Onboarding flow and due-date setup integrated. Internal alpha tested with 18 users.</p>
+          <span class="cs-timeline-badge">Sprint 01–02</span>
+        </div>
+        <div class="cs-timeline-item">
+          <div class="cs-timeline-dot"></div>
+          <p class="cs-timeline-phase">Phase 04 — Weeks 8–9</p>
+          <h3 class="cs-timeline-name">Iteration &amp; Second Feature</h3>
+          <p class="cs-timeline-desc">3D baby model integrated with week-based progression. Daily task system built and connected to the journey map. Feedback incorporated from first alpha.</p>
+          <span class="cs-timeline-badge">Sprint 03</span>
+        </div>
+        <div class="cs-timeline-item">
+          <div class="cs-timeline-dot"></div>
+          <p class="cs-timeline-phase">Phase 05 — Weeks 10–11</p>
+          <h3 class="cs-timeline-name">Integration &amp; Second Feature</h3>
+          <p class="cs-timeline-desc">Full user journey connected end-to-end. Push notifications for daily tasks. Wider beta with 107 users across two cohorts.</p>
+          <span class="cs-timeline-badge">Sprint 04</span>
+        </div>
+        <div class="cs-timeline-item">
+          <div class="cs-timeline-dot" style="background:rgba(255,200,80,0.9);box-shadow:0 0 12px rgba(255,200,80,0.5)"></div>
+          <p class="cs-timeline-phase">Phase 06 — Week 12</p>
+          <h3 class="cs-timeline-name">Polish &amp; Handoff</h3>
+          <p class="cs-timeline-desc">Animation polish, performance optimisation, and full design handoff package delivered to the Tandem engineering team.</p>
+          <span class="cs-timeline-badge" style="background:rgba(255,200,80,0.12);border-color:rgba(255,200,80,0.3);color:rgba(255,200,80,0.9)">Handoff</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="star-divider"></div>
+
+
+<!-- ======================================
+     TOOLS USED
+====================================== -->
+<div class="shell">
+  <div class="cs-tools section">
+    <p class="section-label">11 — Tools</p>
+    <h2 class="section-title">Tools Used</h2>
+    <div class="cs-tools-grid">
+      <div class="cs-tool-card">
+        <img src="assets/images/Brand=Figma, Color=ON.png" style="width:56px;height:56px;object-fit:contain;" alt="Figma">
+        <span class="cs-tool-name">Figma</span>
+      </div>
+      <div class="cs-tool-card">
+        <img src="assets/images/Unity.png" style="width:56px;height:56px;object-fit:contain;filter:brightness(0) invert(1);" alt="Unity">
+        <span class="cs-tool-name">Unity</span>
+      </div>
+      <div class="cs-tool-card">
+        <img src="assets/images/xcode.png" style="width:56px;height:56px;object-fit:contain;" alt="Xcode">
+        <span class="cs-tool-name">Xcode</span>
+      </div>
+      <div class="cs-tool-card">
+        <img src="assets/images/ARKit_pre-release_icon.webp" style="width:56px;height:56px;object-fit:contain;" alt="ARKit">
+        <span class="cs-tool-name">ARKit</span>
+      </div>
+      <div class="cs-tool-card">
+        <img src="assets/images/notion.png" style="width:56px;height:56px;object-fit:contain;filter:brightness(0) invert(1);" alt="Notion">
+        <span class="cs-tool-name">Notion</span>
+      </div>
+      <div class="cs-tool-card">
+        <img src="assets/images/procreate.png" style="width:56px;height:56px;object-fit:contain;" alt="Procreate">
+        <span class="cs-tool-name">Procreate</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="star-divider"></div>
+
+
+<!-- ======================================
+     TESTING RESULTS
+====================================== -->
+<div class="shell" id="results">
+  <div class="cs-testing section">
+    <p class="section-label">12 — Testing</p>
+    <h2 class="section-title">Testing Results</h2>
+    <div class="cs-testing-grid">
+      <div class="cs-testing-card">
+        <p class="cs-testing-title">Emotional Connection</p>
+        <div class="cs-testing-num">90<span>%</span></div>
+      </div>
+      <div class="cs-testing-card">
+        <p class="cs-testing-title">Daily Engagement</p>
+        <div class="cs-testing-num">50.8<span>%</span></div>
+      </div>
+      <div class="cs-testing-card">
+        <p class="cs-testing-title">Anxiety Reduction</p>
+        <div class="cs-testing-num">49.2<span>%</span></div>
+      </div>
+      <div class="cs-testing-card">
+        <p class="cs-testing-title">Task Completion</p>
+        <div class="cs-testing-num">88.1<span>%</span></div>
+      </div>
+      <div class="cs-testing-card">
+        <p class="cs-testing-title">Usability Score</p>
+        <div class="cs-testing-num">3.6<span>/5</span></div>
+      </div>
+      <div class="cs-testing-card">
+        <p class="cs-testing-title">Design Iterations</p>
+        <div class="cs-testing-num">8</div>
+      </div>
+    </div>
+    <p class="cs-testing-note">Testing was conducted with 107 users across two cohorts (expectant mothers and partners) over a 3-week beta period. All sessions were moderated remotely with think-aloud protocol.</p>
+  </div>
+</div>
+
+<div class="star-divider"></div>
+
+
+<!-- ======================================
+     EVERYTHING HANDED OFF
+====================================== -->
+<div class="shell">
+  <div class="cs-handoff section">
+    <div class="cs-handoff-inner">
+      <p class="section-label">13 — Handoff</p>
+      <h2 class="section-title" style="text-align:center">Everything Handed Off</h2>
+      <p class="section-body" style="margin:0 auto;text-align:center">A complete handoff package was delivered to the Tandem engineering team — ready for production.</p>
+      <div class="cs-handoff-deliverables">
+        <div class="cs-handoff-item">
+          <div class="cs-handoff-item-icon">🎨</div>
+          Figma Design File with auto-layout, tokens &amp; dev mode annotations
+        </div>
+        <div class="cs-handoff-item">
+          <div class="cs-handoff-item-icon">🎬</div>
+          2D Animation assets &amp; Art Style Guide (PDF)
+        </div>
+        <div class="cs-handoff-item">
+          <div class="cs-handoff-item-icon">📱</div>
+          Unity AR project + 3D baby model across 6 growth stages
+        </div>
+        <div class="cs-handoff-item">
+          <div class="cs-handoff-item-icon">📝</div>
+          Component library with documented variants and states
+        </div>
+        <div class="cs-handoff-item">
+          <div class="cs-handoff-item-icon">🧪</div>
+          User testing reports &amp; synthesis documentation
+        </div>
+        <div class="cs-handoff-item">
+          <div class="cs-handoff-item-icon">🗺️</div>
+          Full product roadmap for post-launch feature expansion
+        </div>
+      </div>
+      <a class="cs-handoff-cta" href="https://freight.cargo.site/m/V2858892256888053613611591343303/BabyStep-Art-Style-Guide.pdf" target="_blank">
+        View Art Style Guide →
+      </a>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="star-divider"></div>
+
+<section id="features-grid">
+  <div class="shell">
+    <div class="section" style="padding-bottom:0">
+      <p class="section-label">14 — Features</p>
+      <h2 class="section-title">Core Features</h2>
+    </div>
+    <div class="features-grid-layout">
+
+      <div class="feature-col">
+        <div class="feature-col-phone">
+          <img src="assets/images/cs-nightsky-02.png" alt="Night Sky feature">
+        </div>
+        <div class="feature-col-text">
+          <span class="feature-col-num">Feature 01</span>
+          <h3 class="feature-col-title">The Night Sky Experience</h3>
+          <p class="feature-col-body">Users anchor a dynamic AR night sky in their physical space. Stars, clouds, and ambient elements fill the room as the story begins to unfold around them.</p>
+        </div>
+      </div>
+
+      <div class="feature-col">
+        <div class="feature-col-phone">
+          <img src="assets/images/cs-3dbaby-02.png" alt="3D Baby feature">
+        </div>
+        <div class="feature-col-text">
+          <span class="feature-col-num">Feature 02</span>
+          <h3 class="feature-col-title">3D Baby Visualization</h3>
+          <p class="feature-col-body">An interactive 3D model of the baby evolves alongside each development stage. Parents can rotate, zoom, and explore the model in AR.</p>
+        </div>
+      </div>
+
+      <div class="feature-col">
+        <div class="feature-col-phone">
+          <img src="assets/images/cs-journey-02.png" alt="Journey feature">
+        </div>
+        <div class="feature-col-text">
+          <span class="feature-col-num">Feature 03</span>
+          <h3 class="feature-col-title">Journey &amp; Daily Task</h3>
+          <p class="feature-col-body">A structured journey maps out the pregnancy from week 1 to birth. Each day presents a small task that deepens the bond.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <div class="star-divider"></div>
 
 <!-- ============================================
@@ -1350,7 +1715,7 @@
         </div>
       </div>
       <div class="ims-copy" data-ims-copy="">
-        <p class="section-label" style="font-size:0.72rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(180,210,255,0.6);margin-bottom:1rem;">Demo</p>
+        <p class="section-label" style="font-size:0.72rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(180,210,255,0.6);margin-bottom:1rem;">15 — Demo</p>
         <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;letter-spacing:-0.04em;color:#fff;margin-bottom:1.5rem;font-family:'Arial Black','Helvetica Neue',sans-serif;">iPhone Mockup Showcase</h2>
         <p class="section-body">The Stage 1 AR story within a realistic mobile device frame — as it appears in-hand.</p>
         <div class="ims-copy-card">
@@ -1373,7 +1738,7 @@
 ====================================== -->
 <div class="shell" id="team">
   <div class="section">
-    <p class="section-label">The People</p>
+    <p class="section-label">15 — Team</p>
     <h2 class="section-title">Team Panoruk</h2>
     <div style="margin-top:48px; border-radius:32px; overflow:hidden;">
       <img src="assets/images/cs-team-photo.png" alt="Team Panoruk" style="width:100%; display:block; object-fit:cover;">
