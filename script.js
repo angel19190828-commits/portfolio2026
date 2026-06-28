@@ -64,8 +64,35 @@
     fallbackReveal();
   } else {
     const loadingAsset = document.querySelector(".loading-corner-asset");
+    const revealSelectors = ".site-header, .hero-copy, .hero-statement, .skill-strip, .resume-button, .geo-panel, .school-panel, .based-panel, .scroll-hint";
     const openingStorageKey = "angel-portfolio-opening-seen";
     const openingCookieKey = "angelPortfolioOpeningSeen";
+    const revealPageChrome = () => {
+      gsap.set(revealSelectors, {
+        autoAlpha: 1,
+        filter: "blur(0px)",
+        y: 0,
+        yPercent: 0,
+        scale: 1
+      });
+    };
+    const parkLoadingAssetInHeader = () => {
+      if (!loadingAsset) return;
+      const brand = document.querySelector(".site-header .brand");
+      brand?.appendChild(loadingAsset);
+      loadingAsset.className = "brand__image";
+      gsap.set(loadingAsset, {
+        clearProps: "position,left,top,width,maxHeight,zIndex,pointerEvents,willChange",
+        x: 0,
+        y: 0,
+        xPercent: 0,
+        yPercent: 0,
+        scale: 1,
+        rotation: -1.5,
+        autoAlpha: 0.95,
+        filter: "blur(0px) saturate(.96)"
+      });
+    };
     const markOpeningSeen = () => {
       try {
         window.localStorage.setItem(openingStorageKey, "true");
@@ -87,22 +114,8 @@
     }
     if (openingSeen) {
       document.querySelector(".opening")?.remove();
-      if (loadingAsset) {
-        const brand = document.querySelector(".site-header .brand");
-        brand?.appendChild(loadingAsset);
-        loadingAsset.className = "brand__image";
-        gsap.set(loadingAsset, {
-          clearProps: "position,left,top,width,maxHeight,zIndex,pointerEvents,willChange",
-          x: 0,
-          y: 0,
-          xPercent: 0,
-          yPercent: 0,
-          scale: 1,
-          rotation: -1.5,
-          autoAlpha: 0.95,
-          filter: "blur(0px) saturate(.96)"
-        });
-      }
+      parkLoadingAssetInHeader();
+      revealPageChrome();
     }
     const hasOpening = !!document.querySelector(".opening") && !openingSeen;
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -125,24 +138,9 @@
         openingFinished = true;
         markOpeningSeen();
         tl.kill();
-        gsap.killTweensOf(".site-header, .hero-copy, .hero-statement, .skill-strip, .resume-button, .geo-panel, .school-panel, .based-panel, .scroll-hint");
-        if (loadingAsset) {
-          const brand = document.querySelector(".site-header .brand");
-          brand?.appendChild(loadingAsset);
-          loadingAsset.className = "brand__image";
-          gsap.set(loadingAsset, {
-            clearProps: "position,left,top,width,maxHeight,zIndex,pointerEvents,willChange",
-            x: 0,
-            y: 0,
-            xPercent: 0,
-            yPercent: 0,
-            scale: 1,
-            rotation: -1.5,
-            autoAlpha: 0.95,
-            filter: "blur(0px) saturate(.96)"
-          });
-        }
-        gsap.to(".site-header, .hero-copy, .hero-statement, .skill-strip, .resume-button, .geo-panel, .school-panel, .based-panel, .scroll-hint", {
+        gsap.killTweensOf(revealSelectors);
+        parkLoadingAssetInHeader();
+        gsap.to(revealSelectors, {
           autoAlpha: 1,
           filter: "blur(0px)",
           y: 0,
@@ -152,7 +150,8 @@
           ease: "power2.out",
           overwrite: "auto"
         });
-        gsap.set(".opening", { autoAlpha: 0, display: "none" });
+        gsap.set(".opening", { autoAlpha: 0, display: "none", pointerEvents: "none" });
+        window.requestAnimationFrame(() => document.querySelector(".opening")?.remove());
       };
       gsap.set(".opening", { autoAlpha: 1, filter: "blur(0px)" });
       if (loadingAsset) {
