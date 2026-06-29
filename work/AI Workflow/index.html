@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -588,6 +588,31 @@
       .portfolio-footer { flex-direction: column; align-items: flex-start; padding: 36px 18px; }
       .project-more-work-cta { padding: 42px 20px 56px; }
     }
+
+    /* ── AW OVERVIEW (00) ── */
+    .aw-label {
+      font-family:'PT Mono',monospace; font-size:0.62vw; letter-spacing:0.18em;
+      text-transform:uppercase; color:rgba(20,20,20,0.45); margin-bottom:1.2rem; display:block;
+    }
+    .aw-overview { padding:8vw 10vw; }
+    .aw-overview-inner { display:grid; grid-template-columns:1fr 1fr; gap:6vw; align-items:start; }
+    .aw-overview-title {
+      font-family:'Inter',sans-serif; font-weight:100;
+      font-size:clamp(2.5rem,5vw,4.5rem); line-height:1.0;
+      letter-spacing:-0.04em; text-transform:uppercase; margin-bottom:2rem;
+    }
+    .aw-overview-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:1.5rem; }
+    .aw-tag {
+      font-family:'PT Mono',monospace; font-size:0.58vw; letter-spacing:0.12em;
+      text-transform:uppercase; padding:0.3em 0.9em;
+      border:1px solid rgba(20,20,20,0.2); border-radius:999px; color:rgba(20,20,20,0.6);
+    }
+    .aw-meta-item { border-top:1px solid rgba(20,20,20,0.1); padding:1rem 0; }
+    .aw-meta-label {
+      font-family:'PT Mono',monospace; font-size:0.52vw; letter-spacing:0.16em;
+      text-transform:uppercase; color:rgba(20,20,20,0.4); margin-bottom:0.3rem;
+    }
+    .aw-meta-value { font-family:'Inter',sans-serif; font-weight:300; font-size:0.9rem; line-height:1.5; color:rgba(20,20,20,0.85); }
   </style>
 </head>
 <body>
@@ -626,12 +651,34 @@
     <div class="hero-scroll">SCROLL TO DISCOVER</div>
   </section>
 
+
+  <!-- ── 00 / OVERVIEW ── -->
+  <section class="aw-overview" id="overview">
+    <div class="aw-overview-inner">
+      <div class="aw-overview-left">
+        <p class="aw-label">00 — Overview</p>
+        <h2 class="aw-overview-title">AI Workflow</h2>
+        <div class="aw-overview-tags">
+          <span class="aw-tag">AI Implementation</span>
+          <span class="aw-tag">Web Design</span>
+          <span class="aw-tag">Motion</span>
+          <span class="aw-tag">Frontend</span>
+        </div>
+      </div>
+      <div class="aw-overview-right">
+        <div class="aw-meta-item"><div class="aw-meta-label">Type</div><div class="aw-meta-value">Self-initiated</div></div>
+        <div class="aw-meta-item"><div class="aw-meta-label">Timeline</div><div class="aw-meta-value">Jan 2026 – Ongoing</div></div>
+        <div class="aw-meta-item"><div class="aw-meta-label">Role</div><div class="aw-meta-value">Frontend Designer</div></div>
+        <div class="aw-meta-item"><div class="aw-meta-label">Tools</div><div class="aw-meta-value">Claude, Codex<br>Three.js, GSAP</div></div>
+      </div>
+    </div>
+  </section>
   <!-- ── 001 / ABOUT ── -->
   <section class="overview-section" id="about">
     <div class="overview-inner">
       <div class="overview-header">
-        <span class="overview-index">§ 001 &nbsp;/&nbsp; ABOUT</span>
-        <span class="overview-tag">ORIGIN</span>
+        <p class="aw-label">01 — About</p>
+        
       </div>
       <h2 class="overview-headline">
         <span class="iw"><span class="iw-inner">How This</span></span>
@@ -650,8 +697,8 @@
       <div class="wf-sticky" id="wf-sticky">
         <div class="wf-intro">
           <div class="overview-header">
-            <span class="overview-index">§ 002 &nbsp;/&nbsp; MY WORKFLOW</span>
-            <span class="overview-tag">PROCESS</span>
+            <p class="aw-label">02 — My Workflow</p>
+            
           </div>
           <h2 class="overview-headline">
             <span class="iw"><span class="iw-inner">How I Work</span></span>
@@ -716,8 +763,8 @@
   <section class="overview-section" id="limitations">
     <div class="overview-inner">
       <div class="overview-header">
-        <span class="overview-index">§ 003 &nbsp;/&nbsp; AI LIMITATIONS</span>
-        <span class="overview-tag">PROBLEMS</span>
+        <p class="aw-label">03 — AI Limitations</p>
+        
       </div>
       <h2 class="overview-headline">
         <span class="iw"><span class="iw-inner">When It</span></span>
@@ -769,7 +816,7 @@
 
   <!-- ── 004 / WHAT I FOUND — HEADER ── -->
   <div class="section-004-header">
-    <span class="section-004-index">§ 004 &nbsp;/&nbsp; WHAT I FOUND</span>
+    <p class="aw-label">04 — What I Found</p>
     <div class="section-004-title">What<br>I Found</div>
   </div>
 
@@ -830,7 +877,7 @@
   <!-- ── 006 / DESIGN ── -->
   <section class="process-section" id="design">
     <div class="process-inner">
-      <span class="process-index">§ 006 &nbsp;/&nbsp; DESIGN</span>
+      <p class="aw-label">05 — Design</p>
       <div class="process-headline">Design</div>
 
       <div class="process-text">
@@ -875,7 +922,7 @@
   <!-- ── 005 / REFLECTION ── -->
   <section class="reflection-section" id="reflection">
     <div class="reflection-inner">
-      <span class="reflection-index">§ 005 &nbsp;/&nbsp; REFLECTION</span>
+      <p class="aw-label">06 — Reflection</p>
       <div class="reflection-headline">Reflection</div>
       <div class="reflection-text">
         <p>This project changed how I think about designing with AI.</p>
