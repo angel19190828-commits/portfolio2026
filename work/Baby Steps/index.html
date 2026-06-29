@@ -137,7 +137,12 @@
       color: rgba(255,255,255,0.4);
     }
     .cs-hero-collab img { height: 40px; width: auto; object-fit: contain; opacity: 0.8; }
-    .cs-hero-collab img[alt="Panoruk"] { height: 56px; }
+    .cs-hero-collab img[alt="Panoruk"] { height: 80px; }
+    .cs-hero-status {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: rgba(180,210,255,0.45);
+      margin: -28px auto 44px; max-width: 60ch;
+    }
     .cs-hero-phones {
       width: min(900px, 90vw); margin: 0 auto;
       height: 400px;
@@ -454,13 +459,15 @@
       gap: 20px; margin: 48px auto; max-width: 800px;
     }
     .cs-handoff-item {
-      padding: 20px;
+      padding: 24px 20px;
       border-radius: 16px;
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.1);
-      font-size: 0.88rem; color: rgba(255,255,255,0.78);
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center; gap: 16px;
     }
-    .cs-handoff-item-icon { font-size: 1.5rem; margin-bottom: 8px; }
+    .cs-handoff-item-title { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .cs-handoff-item-icon { font-size: 1.8rem; }
     .cs-handoff-cta {
       display: inline-flex; align-items: center; gap: 10px;
       padding: 1rem 2.4rem;
@@ -527,8 +534,8 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 60px;
-      align-items: stretch;
-      margin-top: 48px;
+      align-items: start;
+      margin-top: 24px;
     }
     .cs-role-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
     .cs-role-tag {
@@ -538,7 +545,7 @@
       font-size: 0.78rem; color: rgba(255,255,255,0.72);
       letter-spacing: 0.04em;
     }
-    .cs-role-cards { display: grid; gap: 16px; height: 100%; grid-template-rows: repeat(3, 1fr); }
+    .cs-role-cards { display: grid; gap: 16px; }
     .cs-role-card {
       padding: 24px 28px; border-radius: 20px;
       background: rgba(255,255,255,0.04);
@@ -889,7 +896,7 @@
     /* ── Ideation 3 Concepts ────────────────────────── */
     .cs-concepts-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr;
       gap: 16px;
       margin-top: 40px;
     }
@@ -912,9 +919,9 @@
       display: inline-block;
       font-size: 10px; font-weight: 700; letter-spacing: .16em;
       text-transform: uppercase;
-      color: rgba(180,210,255,.9);
-      background: rgba(180,210,255,.12);
-      border: 1px solid rgba(180,210,255,.2);
+      color: rgba(180,210,255,.6);
+      background: none;
+      border: none;
       border-radius: 999px;
       padding: 5px 12px;
       margin-bottom: 16px;
@@ -981,13 +988,12 @@
 
     /* ── Art Assets pipeline ────────────────────────── */
     .cs-artpipe {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: start;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
       margin-top: 40px;
     }
-    .cs-artpipe-steps { display: flex; flex-direction: column; gap: 20px; }
+    .cs-artpipe-steps { display: flex; flex-direction: row; gap: 12px; align-items: center; flex-wrap: wrap; }
     .cs-artpipe-step { display: flex; align-items: center; gap: 16px; }
     .cs-artpipe-step-icon {
       width: 56px; height: 56px;
@@ -1000,14 +1006,16 @@
     .cs-artpipe-step-icon img { width:36px; height:36px; object-fit:contain; }
     .cs-artpipe-step-name { font-size:14px; font-weight:600; color:#fff; }
     .cs-artpipe-step-sub  { font-size:12px; color:rgba(180,210,255,.5); margin-top:2px; }
-    .cs-artpipe-arrow     { font-size:18px; color:rgba(180,210,255,.3); text-align:center; }
-    .cs-artpipe-frames { display:flex; flex-direction:column; gap:12px; }
+    .cs-artpipe-arrow     { font-size:18px; color:rgba(180,210,255,.3); }
+    .cs-artpipe-frames { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .cs-artpipe-frame-item { display:flex; flex-direction:column; gap:8px; }
+    .cs-artpipe-frame-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(180,210,255,.45); }
     .cs-artpipe-frames img {
       width:100%; border-radius:10px;
       border:1px solid rgba(180,210,255,.08);
       object-fit:cover;
     }
-    @media(max-width:760px){ .cs-artpipe{ grid-template-columns:1fr; } }
+    @media(max-width:640px){ .cs-artpipe-frames{ grid-template-columns:1fr; } .cs-artpipe-steps{ flex-direction:column; align-items:flex-start; } }
   </style>
 </head>
 <body>
@@ -1035,6 +1043,7 @@
     <img src="assets/images/logo.png" alt="BabySteps" class="cs-hero-logo">
     <h1 class="cs-hero-sub">AR Storytelling for<br>Prenatal Bonding</h1>
     <p class="cs-hero-desc">An augmented reality prenatal experience that transforms emotional connection between expectant parents and their baby — through an interactive AR night sky, progressive storytelling, and a 3D baby model.</p>
+    <p class="cs-hero-status">Capstone Prototype &nbsp;·&nbsp; UBC MDM 2025</p>
 
     <div class="cs-hero-collab">
       <span class="cs-hero-collab-label">A collaboration of</span>
@@ -1080,8 +1089,7 @@
 
     <div class="context-left">
       <p class="section-label">00 — Overview</p>
-      <h2 class="project-title">Prenatal Bonding<br/><em>in AR</em></h2>
-      <p class="context-desc-ov">BabySteps bridges the gap between expectant parents and their unborn child through immersive AR storytelling — making every stage of pregnancy feel meaningful, personal, and shared.</p>
+      <h2 class="project-title">Prenatal Emotional<br/><em>Connection</em></h2>
       <div class="overview-role">
         <div class="overview-role-label">Pillars</div>
         <div class="overview-role-list">
@@ -1113,9 +1121,9 @@
 <div class="shell">
   <div class="cs-role section">
     <p class="section-label">01 — My Role</p>
-    <h2 class="section-title">My Role</h2>
     <div class="cs-role-grid">
       <div>
+        <h2 class="section-title" style="margin-bottom:24px">My Role</h2>
         <div class="cs-role-tags">
           <span class="cs-role-tag">2D Animation</span>
           <span class="cs-role-tag">Visual Design</span>
@@ -1123,7 +1131,6 @@
           <span class="cs-role-tag">Illustration</span>
           <span class="cs-role-tag">Asset Production</span>
         </div>
-        <p class="section-body" style="margin-top:0">I led the 2D animation and visual identity of BabySteps — designing the full night sky art style, illustrating all character and environment assets, and producing every animation used across the 6 pregnancy stages.</p>
       </div>
       <div class="cs-role-cards">
         <div class="cs-role-card">
@@ -1190,9 +1197,9 @@
           <span class="cs-pivot-col-title">Original Direction</span>
         </div>
         <div class="cs-pivot-items">
-          <p class="cs-pivot-item">Constellations as fetal milestones — clients felt it tied the app to astrology &amp; mysticism</p>
+          <p class="cs-pivot-item">Constellations as fetal milestones. Clients felt it tied the app to astrology &amp; mysticism</p>
+          <p class="cs-pivot-item">After Effects for animation workflow. Mismatched with our painterly art direction</p>
           <img class="cs-pivot-ref-img" src="assets/images/pivot-ref.png" alt="Constellation reference">
-          <p class="cs-pivot-item">After Effects for animation workflow — mismatched with our painterly art direction</p>
         </div>
       </div>
       <div class="cs-pivot-col cs-pivot-col--yes">
@@ -1201,8 +1208,10 @@
           <span class="cs-pivot-col-title">Pivoted To</span>
         </div>
         <div class="cs-pivot-items">
-          <p class="cs-pivot-item">Story-based AR night sky — warmth and wonder, no zodiac associations</p>
-          <p class="cs-pivot-item">Hand-drawn frame-by-frame in Procreate — matched the storybook feel perfectly</p>
+          <p class="cs-pivot-item">Story-based AR night sky. Warmth and wonder, no zodiac associations</p>
+          <p class="cs-pivot-item">Hand-drawn frame-by-frame in Procreate. Matched the storybook feel perfectly</p>
+          <p class="cs-pivot-item">No baby-related illustrations in the AR sky. Abstract warmth over literal imagery</p>
+          <img class="cs-pivot-ref-img" src="assets/images/Heart__With_house-1.png" alt="Heart with house illustration">
         </div>
       </div>
     </div>
@@ -1220,13 +1229,13 @@
     <h2 class="section-title">Moodboard</h2>
     <p class="section-body">The visual direction is inspired by a storybook aesthetic, where textures and brush strokes remain visible, creating a sense of warmth, tactility, and hand-crafted intimacy. Motion is suggested through painterly strokes and elongated shapes, particularly in the depiction of comets and falling stars.</p>
     <div class="cs-moodboard-grid">
-      <img src="assets/images/moodboard-01.jpg" alt="">
-      <img src="assets/images/moodboard-02.jpg" alt="">
-      <img src="assets/images/moodboard-03.jpg" alt="">
-      <img src="assets/images/moodboard-04.jpg" alt="">
-      <img src="assets/images/moodboard-05.jpg" alt="">
-      <img src="assets/images/moodboard-06.jpg" alt="">
-      <img src="assets/images/moodboard-07.jpg" alt="">
+      <img src="assets/images/moodboard 2.jpg" alt="">
+      <img src="assets/images/moodboard 1.jpg" alt="">
+      <img src="assets/images/moodboard 3.jpg" alt="">
+      <img src="assets/images/moodboard 4.jpg" alt="">
+      <img src="assets/images/moodboard 5.jpg" alt="">
+      <img src="assets/images/moodboard 6.jpg" alt="">
+      <img src="assets/images/moodboard 7.jpg" alt="">
     </div>
     <p class="cs-caption">Source from Pinterest</p>
   </div>
@@ -1278,14 +1287,14 @@
           <div class="cs-artpipe-step-icon"><img src="assets/images/procreate.png" alt="Procreate"></div>
           <div><p class="cs-artpipe-step-name">Procreate</p><p class="cs-artpipe-step-sub">Hand-draw + animate frame by frame</p></div>
         </div>
-        <div class="cs-artpipe-arrow">↓</div>
+        <div class="cs-artpipe-arrow">→</div>
         <div class="cs-artpipe-step">
           <div class="cs-artpipe-step-icon" style="background:rgba(180,210,255,.05)">
             <span style="font-size:15px;font-weight:800;color:rgba(100,149,237,.9);letter-spacing:.01em">Ps</span>
           </div>
           <div><p class="cs-artpipe-step-name">Photoshop</p><p class="cs-artpipe-step-sub">Composite layers, color grade, export</p></div>
         </div>
-        <div class="cs-artpipe-arrow">↓</div>
+        <div class="cs-artpipe-arrow">→</div>
         <div class="cs-artpipe-step">
           <div class="cs-artpipe-step-icon" style="background:rgba(180,210,255,.05)">
             <span style="font-size:11px;font-weight:700;color:rgba(180,210,255,.7);letter-spacing:.05em">PNG</span>
@@ -1294,8 +1303,14 @@
         </div>
       </div>
       <div class="cs-artpipe-frames">
-        <img src="assets/images/cs-artprocess-hearts.png" alt="Heart Beat animation frames">
-        <img src="assets/images/cs-artprocess-sky-frames.png" alt="Night sky texture frames">
+        <div class="cs-artpipe-frame-item">
+          <p class="cs-artpipe-frame-label">Heart Beat</p>
+          <img src="assets/images/cs-artprocess-hearts.png" alt="Heart Beat animation frames">
+        </div>
+        <div class="cs-artpipe-frame-item">
+          <p class="cs-artpipe-frame-label">Night Sky</p>
+          <img src="assets/images/cs-artprocess-sky-frames.png" alt="Night sky texture frames">
+        </div>
       </div>
     </div>
   </div>
@@ -1600,28 +1615,28 @@
       <p class="section-body" style="margin:0 auto;text-align:center">A complete handoff package was delivered to the Tandem engineering team — ready for production.</p>
       <div class="cs-handoff-deliverables">
         <div class="cs-handoff-item">
+          <p class="cs-handoff-item-title">Figma Design</p>
           <div class="cs-handoff-item-icon">🎨</div>
-          Figma Design File with auto-layout, tokens &amp; dev mode annotations
         </div>
         <div class="cs-handoff-item">
+          <p class="cs-handoff-item-title">2D Animations</p>
           <div class="cs-handoff-item-icon">🎬</div>
-          2D Animation assets &amp; Art Style Guide (PDF)
         </div>
         <div class="cs-handoff-item">
+          <p class="cs-handoff-item-title">Unity AR Project</p>
           <div class="cs-handoff-item-icon">📱</div>
-          Unity AR project + 3D baby model across 6 growth stages
         </div>
         <div class="cs-handoff-item">
+          <p class="cs-handoff-item-title">Component Library</p>
           <div class="cs-handoff-item-icon">📝</div>
-          Component library with documented variants and states
         </div>
         <div class="cs-handoff-item">
+          <p class="cs-handoff-item-title">User Testing</p>
           <div class="cs-handoff-item-icon">🧪</div>
-          User testing reports &amp; synthesis documentation
         </div>
         <div class="cs-handoff-item">
+          <p class="cs-handoff-item-title">Product Roadmap</p>
           <div class="cs-handoff-item-icon">🗺️</div>
-          Full product roadmap for post-launch feature expansion
         </div>
       </div>
       <a class="cs-handoff-cta" href="https://freight.cargo.site/m/V2858892256888053613611591343303/BabyStep-Art-Style-Guide.pdf" target="_blank">
@@ -1736,9 +1751,25 @@
 <!-- ======================================
      TEAM
 ====================================== -->
+<div class="shell">
+  <div class="section">
+    <p class="section-label">15 — Reflection</p>
+    <h2 class="section-title">Reflection</h2>
+    <div style="max-width:72ch; margin-top:2rem; display:flex; flex-direction:column; gap:1.4rem;">
+      <p class="section-body" style="max-width:none">Looking back over the past twelve weeks, this project taught me much more than how to design an AR experience. It showed me what it feels like to build a product as part of a multidisciplinary team, where every decision, asset, and iteration contributes to a much larger system.</p>
+      <p class="section-body" style="max-width:none">As the project progressed, I gradually became responsible for most of the visual production — the storybook illustrations, night sky assets, animations, and documentation. I learned that creating assets is only one part of the process. Equally important is organizing them, communicating with developers, and ensuring they can be integrated smoothly into the final experience. This shifted my perspective from thinking only as a designer to thinking more like a product creator.</p>
+      <p class="section-body" style="max-width:none">Throughout the project, we constantly iterated based on client feedback and user testing. Many ideas evolved over time, and some had to be completely reworked. Rather than seeing feedback as criticism, I learned to treat it as part of the design process. Every iteration brought us closer to a clearer and more meaningful experience.</p>
+      <p class="section-body" style="max-width:none">What I appreciate most is the team itself. Despite tight deadlines and occasional setbacks, we maintained open communication and supported one another throughout. Small moments outside of work — sharing meals, going bowling, or simply talking during breaks — helped build trust and made collaboration much more enjoyable. Those experiences reminded me that successful projects are built not only through good design, but through strong relationships.</p>
+      <p class="section-body" style="max-width:none">This project has strengthened my confidence in visual storytelling, production planning, and cross-disciplinary collaboration. More importantly, it has changed the way I approach design. I now think beyond individual screens or assets, and instead focus on designing complete experiences that connect storytelling, interaction, and emotion.</p>
+    </div>
+  </div>
+</div>
+
+<div class="star-divider"></div>
+
 <div class="shell" id="team">
   <div class="section">
-    <p class="section-label">15 — Team</p>
+    <p class="section-label">16 — Team</p>
     <h2 class="section-title">Team Panoruk</h2>
     <div style="margin-top:48px; border-radius:32px; overflow:hidden;">
       <img src="assets/images/cs-team-photo.png" alt="Team Panoruk" style="width:100%; display:block; object-fit:cover;">
