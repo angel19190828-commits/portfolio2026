@@ -3,3 +3,4 @@
 assets/ai-workflow-demo.web.mp4 -filter -diff -merge -text
 assets/trash-talk-demo-trim.web.mp4 -filter -diff -merge -text
 work/Baby*/assets/videos/web/*.mp4 -filter -diff -merge -text
+work/Trash*/assets/case-study/web/*.mp4 -filter -diff -merge -text
