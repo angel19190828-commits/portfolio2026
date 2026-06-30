@@ -613,6 +613,17 @@
       text-transform:uppercase; color:rgba(20,20,20,0.4); margin-bottom:0.3rem;
     }
     .aw-meta-value { font-family:'Inter',sans-serif; font-weight:300; font-size:0.9rem; line-height:1.5; color:rgba(20,20,20,0.85); }
+
+    /* ── AW TOOLS (07) ── */
+    .aw-tools { padding:8vw 8vw 8vw 12vw; border-top:1px solid rgba(0,0,0,0.08); }
+    .aw-tools-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:2vw; margin-top:3vw; }
+    .aw-tool-card {
+      border:1px solid rgba(0,0,0,0.08); border-radius:0.4vw;
+      padding:2vw 1.5vw; display:flex; flex-direction:column; gap:0.8vw;
+    }
+    .aw-tool-name { font-family:'Inter',sans-serif; font-weight:100; font-size:1.2vw; letter-spacing:-0.02em; }
+    .aw-tool-role { font-family:'PT Mono',monospace; font-size:0.5vw; letter-spacing:0.12em; text-transform:uppercase; opacity:0.38; }
+    @media(max-width:760px){ .aw-tools-grid { grid-template-columns:repeat(2,1fr); } .aw-tool-name { font-size:5vw; } .aw-tool-role { font-size:2vw; } }
   </style>
 </head>
 <body>
@@ -874,10 +885,43 @@
     </div>
   </section>
 
+
+  <!-- ── 05 / FAILS ── -->
+  <section class="fails-section" id="fails">
+    <p class="aw-label">05 — Fails</p>
+    <div class="fails-section-title">What<br>Broke</div>
+
+    <div class="fails-item">
+      <div class="fails-placeholder">SCREEN CAPTURE</div>
+      <div>
+        <div class="fails-fail-title">Cinematic Camera</div>
+        <div class="fails-dialogue">The camera.position cinematic movement was requested and implemented. It was seen in the browser and immediately felt wrong. It was tried a second time with different values. Still wrong. The original position was restored.</div>
+        <div class="fails-result">Result — Original position locked. No further changes.</div>
+      </div>
+    </div>
+
+    <div class="fails-item">
+      <div class="fails-placeholder">SCREEN CAPTURE</div>
+      <div>
+        <div class="fails-fail-title">Hero Scroll Animation</div>
+        <div class="fails-dialogue">The hero headline scroll animation produced a visual glitch at a specific scroll speed. A fix was written. The fix created a second, worse glitch. The entire approach was discarded and rebuilt from scratch.</div>
+        <div class="fails-result">Result — Full rewrite. Original approach abandoned.</div>
+      </div>
+    </div>
+
+    <div class="fails-item">
+      <div class="fails-placeholder">SCREEN CAPTURE</div>
+      <div>
+        <div class="fails-fail-title">Workflow Layout</div>
+        <div class="fails-dialogue">The first version of the workflow section was built and reviewed on screen. The layout felt off. The pinning behavior broke under fast scroll. The entire section was scrapped and rebuilt with a different scroll structure.</div>
+        <div class="fails-result">Result — Complete rewrite. New pinning logic.</div>
+      </div>
+    </div>
+  </section>
   <!-- ── 006 / DESIGN ── -->
   <section class="process-section" id="design">
     <div class="process-inner">
-      <p class="aw-label">05 — Design</p>
+      <p class="aw-label">06 — Design</p>
       <div class="process-headline">Design</div>
 
       <div class="process-text">
@@ -919,10 +963,38 @@
     </div>
   </section>
 
+
+  <!-- ── 07 / TOOLS ── -->
+  <section class="aw-tools" id="tools">
+    <p class="aw-label">07 — Tools</p>
+    <div class="fails-section-title">Stack</div>
+    <div class="aw-tools-grid">
+      <div class="aw-tool-card">
+        <div class="aw-tool-name">Claude</div>
+        <div class="aw-tool-role">Code Generation</div>
+      </div>
+      <div class="aw-tool-card">
+        <div class="aw-tool-name">Codex</div>
+        <div class="aw-tool-role">Code Generation</div>
+      </div>
+      <div class="aw-tool-card">
+        <div class="aw-tool-name">Three.js</div>
+        <div class="aw-tool-role">3D Rendering</div>
+      </div>
+      <div class="aw-tool-card">
+        <div class="aw-tool-name">GSAP</div>
+        <div class="aw-tool-role">Animation</div>
+      </div>
+      <div class="aw-tool-card">
+        <div class="aw-tool-name">Figma</div>
+        <div class="aw-tool-role">Visual Design</div>
+      </div>
+    </div>
+  </section>
   <!-- ── 005 / REFLECTION ── -->
   <section class="reflection-section" id="reflection">
     <div class="reflection-inner">
-      <p class="aw-label">06 — Reflection</p>
+      <p class="aw-label">08 — Reflection</p>
       <div class="reflection-headline">Reflection</div>
       <div class="reflection-text">
         <p>This project changed how I think about designing with AI.</p>
