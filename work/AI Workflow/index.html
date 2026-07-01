@@ -1299,7 +1299,7 @@ for (let i=0; i<4; i++) {
     for(let j=0;j<=SEG_POINTS;j++) pts.push(knotPt(t0+(t1-t0)*(j/SEG_POINTS)))
     const curve=new THREE.CatmullRomCurve3(pts)
     const geo=new THREE.TubeGeometry(curve,SEG_POINTS,KT,10,false)
-    const mat=metalMat.clone(); mat.transparent=true; mat.opacity=1
+    const mat=metalMat.clone(); mat.transparent=true; mat.opacity=1; mat.side=THREE.DoubleSide
     const mesh=new THREE.Mesh(geo,mat)
     window._segGroup.add(mesh)
     window._segMeshes.push(mesh)
@@ -1437,13 +1437,13 @@ function returnToHero(){
 
 // ── DECOMPOSED KNOT SCROLL TRIGGER ──
 ScrollTrigger.create({
-  trigger:'#about', start:'top 65%', end:'bottom 35%', scrub:1.2,
+  trigger:'#about', start:'top 20%', end:'bottom 20%', scrub:1.2,
   onEnter:()=>{
     window._segGroup.visible=true
     gsap.fromTo(window._segGroup.scale,{x:0.01,y:0.01,z:0.01},{x:0.78,y:0.78,z:0.78,duration:0.8,ease:'power3.out'})
   },
-  onLeave:()=>{ gsap.to(window._segGroup.scale,{x:0.01,y:0.01,z:0.01,duration:0.5,onComplete:()=>{window._segGroup.visible=false}}) },
-  onLeaveBack:()=>{ gsap.to(window._segGroup.scale,{x:0.01,y:0.01,z:0.01,duration:0.5,onComplete:()=>{window._segGroup.visible=false}}) },
+  onLeave:()=>{ window._segGroup.visible=false; window._segGroup.scale.setScalar(0.01) },
+  onLeaveBack:()=>{ window._segGroup.visible=false; window._segGroup.scale.setScalar(0.01) },
   onUpdate:self=>{ window._decompProg=self.progress }
 })
 
