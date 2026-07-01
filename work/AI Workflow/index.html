@@ -1436,14 +1436,22 @@ function returnToHero(){
 }
 
 // ── DECOMPOSED KNOT SCROLL TRIGGER ──
+function showSegGroup(){
+  window._decompProg=0
+  window._segMeshes.forEach(m=>{ m.position.set(0,0,0); m.material.opacity=1 })
+  window._segGroup.visible=true
+  gsap.fromTo(window._segGroup.scale,{x:0.01,y:0.01,z:0.01},{x:0.78,y:0.78,z:0.78,duration:0.8,ease:'power3.out'})
+}
+function hideSegGroup(){
+  window._segGroup.visible=false
+  window._segGroup.scale.setScalar(0.01)
+}
 ScrollTrigger.create({
   trigger:'#about', start:'top 20%', end:'bottom 20%', scrub:1.2,
-  onEnter:()=>{
-    window._segGroup.visible=true
-    gsap.fromTo(window._segGroup.scale,{x:0.01,y:0.01,z:0.01},{x:0.78,y:0.78,z:0.78,duration:0.8,ease:'power3.out'})
-  },
-  onLeave:()=>{ window._segGroup.visible=false; window._segGroup.scale.setScalar(0.01) },
-  onLeaveBack:()=>{ window._segGroup.visible=false; window._segGroup.scale.setScalar(0.01) },
+  onEnter:     showSegGroup,
+  onEnterBack: showSegGroup,
+  onLeave:     hideSegGroup,
+  onLeaveBack: hideSegGroup,
   onUpdate:self=>{ window._decompProg=self.progress }
 })
 
