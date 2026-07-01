@@ -1276,6 +1276,43 @@ for (let i=0; i<4; i++) {
   })
 }
 
+// ── DECOMPOSED KNOT (Define Problem / #about) ──
+;(function(){
+  const N_SEGS=14, SEG_POINTS=18
+  const KR=0.72, KT=0.22, KP=2, KQ=3
+  function knotPt(t){
+    const phi=KP*t*Math.PI*2, psi=KQ*t*Math.PI*2
+    const r=KR*(2+Math.cos(psi))
+    return new THREE.Vector3(r*Math.cos(phi), r*Math.sin(phi), KR*Math.sin(psi))
+  }
+  window._segGroup=new THREE.Group()
+  window._segGroup.position.set(2.8,-0.4,0)
+  window._segGroup.scale.setScalar(0.78)
+  window._segGroup.visible=false
+  scene.add(window._segGroup)
+  window._segMeshes=[]
+  window._segOutDirs=[]
+  window._decompProg=0
+  for(let i=0;i<N_SEGS;i++){
+    const t0=i/N_SEGS, t1=(i+1)/N_SEGS
+    const pts=[]
+    for(let j=0;j<=SEG_POINTS;j++) pts.push(knotPt(t0+(t1-t0)*(j/SEG_POINTS)))
+    const curve=new THREE.CatmullRomCurve3(pts)
+    const geo=new THREE.TubeGeometry(curve,SEG_POINTS,KT,10,false)
+    const mat=metalMat.clone(); mat.transparent=true; mat.opacity=1
+    const mesh=new THREE.Mesh(geo,mat)
+    window._segGroup.add(mesh)
+    window._segMeshes.push(mesh)
+    const mid=knotPt(t0+(t1-t0)*0.5)
+    const dir=mid.clone().normalize()
+    dir.x+=(Math.random()-0.5)*0.4
+    dir.y+=(Math.random()-0.5)*0.4
+    dir.z+=(Math.random()-0.5)*0.4
+    dir.normalize()
+    window._segOutDirs.push(dir)
+  }
+})()
+
 // ── HERO INTRO ──
 function heroIntro() {
   const hs = isMob() ? 0.55 : 0.78
@@ -1398,6 +1435,18 @@ function returnToHero(){
   mode='hero'; current=-1
 }
 
+// ── DECOMPOSED KNOT SCROLL TRIGGER ──
+ScrollTrigger.create({
+  trigger:'#about', start:'top 65%', end:'bottom 35%', scrub:1.2,
+  onEnter:()=>{
+    window._segGroup.visible=true
+    gsap.fromTo(window._segGroup.scale,{x:0.01,y:0.01,z:0.01},{x:0.78,y:0.78,z:0.78,duration:0.8,ease:'power3.out'})
+  },
+  onLeave:()=>{ gsap.to(window._segGroup.scale,{x:0.01,y:0.01,z:0.01,duration:0.5,onComplete:()=>{window._segGroup.visible=false}}) },
+  onLeaveBack:()=>{ gsap.to(window._segGroup.scale,{x:0.01,y:0.01,z:0.01,duration:0.5,onComplete:()=>{window._segGroup.visible=false}}) },
+  onUpdate:self=>{ window._decompProg=self.progress }
+})
+
 ;[1,2,3].forEach((n,i)=>{
   ScrollTrigger.create({
     trigger:`#s${n}`, start:'top 60%', end:'bottom 40%',
@@ -1491,6 +1540,20 @@ const clock = new THREE.Clock()
         g.rotation.x+=(mouse.ly*0.12-g.rotation.x)*0.06
         g.rotation.y+=(mouse.lx*0.12-g.rotation.y)*0.06
       }
+    })
+  }
+
+  // Decomposed knot
+  if(window._segGroup && window._segGroup.visible){
+    window._segGroup.rotation.y+=0.003
+    window._segMeshes.forEach((mesh,i)=>{
+      const spread=window._decompProg*1.8
+      mesh.position.x=window._segOutDirs[i].x*spread
+      mesh.position.y=window._segOutDirs[i].y*spread
+      mesh.position.z=window._segOutDirs[i].z*spread
+      mesh.rotation.x+=0.002+i*0.0003
+      mesh.rotation.y+=0.003-i*0.0002
+      mesh.material.opacity=1-window._decompProg*0.35
     })
   }
 
