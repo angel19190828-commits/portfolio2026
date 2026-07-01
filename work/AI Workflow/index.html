@@ -18,7 +18,7 @@
       position: fixed; left: 1.2vw; top: 50%;
       transform: translateY(-50%) rotate(180deg);
       writing-mode: vertical-rl; font-family: 'Inter', sans-serif;
-      font-weight: 100; font-size: 8.8vw; line-height: 0.82;
+      font-weight: 100; font-size: 8vw; line-height: 0.82;
       text-transform: uppercase; z-index: 5; pointer-events: none;
       letter-spacing: -0.02em; white-space: nowrap;
     }
@@ -28,7 +28,7 @@
     /* ── RECEIPT ── */
     #receipt {
       position: fixed; bottom: 1.8vw; right: 1.8vw;
-      font-family: 'PT Mono', monospace; font-size: 0.72vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       line-height: 1.75; text-align: right; z-index: 10;
       text-transform: uppercase; pointer-events: none;
     }
@@ -46,11 +46,11 @@
       justify-content: space-between; padding: 2vw 2.5vw 2.5vw 10vw;
     }
     .hero-top { display: flex; justify-content: space-between; align-items: flex-start; }
-    .hero-brand { font-family: 'PT Mono', monospace; font-size: 0.62vw; text-transform: uppercase; letter-spacing: 0.07em; }
+    .hero-brand { font-family: 'PT Mono', monospace; font-size: 0.8vw; text-transform: uppercase; letter-spacing: 0.07em; }
     .hero-cta {
       border: 1px solid var(--ink); border-radius: 2vw;
       padding: 0.45vw 1.2vw; font-family: 'PT Mono', monospace;
-      font-size: 0.62vw; text-transform: uppercase;
+      font-size: 0.8vw; text-transform: uppercase;
     }
     .hero-center { flex: 1; display: flex; flex-direction: column; justify-content: center; }
     .hero-headline {
@@ -59,9 +59,9 @@
     }
     .hero-headline .word-wrap { display: block; overflow: hidden; line-height: 0.95; }
     .hero-headline .word-inner { display: block; }
-    .hero-sub { margin-top: 2vw; font-family: 'PT Mono', monospace; font-size: 0.65vw; opacity: 0; letter-spacing: 0.08em; text-transform: uppercase; }
+    .hero-sub { margin-top: 2vw; font-family: 'PT Mono', monospace; font-size: 0.8vw; opacity: 0; letter-spacing: 0.08em; text-transform: uppercase; }
     @keyframes slow-blink { 0%,100% { opacity: 0.45; } 50% { opacity: 0.12; } }
-    .hero-scroll { text-align: center; padding-bottom: 0.5vw; font-family: 'PT Mono', monospace; font-size: 0.55vw; letter-spacing: 0.28em; text-transform: uppercase; animation: slow-blink 2.8s ease-in-out infinite; }
+    .hero-scroll { text-align: center; padding-bottom: 0.5vw; font-family: 'PT Mono', monospace; font-size: 0.8vw; letter-spacing: 0.28em; text-transform: uppercase; animation: slow-blink 2.8s ease-in-out infinite; }
 
     /* ── SERVICE SECTIONS ── */
     .section {
@@ -105,7 +105,7 @@
       padding: 2.5vw 3vw; overflow: hidden;
     }
     .back-label {
-      font-family: 'PT Mono', monospace; font-size: 0.52vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       text-transform: uppercase; letter-spacing: 0.18em;
       color: #b0b4c4; margin-bottom: 1vw;
     }
@@ -116,10 +116,16 @@
       color: #f0f0ee; max-width: 85%;
     }
     .back-sub {
-      font-family: 'PT Mono', monospace; font-size: 0.55vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       text-transform: uppercase; letter-spacing: 0.05em;
       color: rgba(240,240,238,0.42); margin-top: 1.4vw;
       line-height: 1.9; max-width: 90%;
+    }
+    .back-case {
+      font-family: 'Inter', sans-serif; font-weight: 300;
+      font-size: 1.1vw; line-height: 1.75;
+      color: rgba(240,240,238,0.78); max-width: 88%;
+      margin-top: 1.2vw;
     }
     .back-bar {
       width: 0; height: 1px;
@@ -142,7 +148,7 @@
     }
     .card-num {
       font-family: 'Inter', sans-serif; font-weight: 100;
-      font-size: 5.2vw; line-height: 1;
+      font-size: 6vw; line-height: 1;
       padding: 1vw 1.4vw 0.4vw; border-bottom: 1px solid var(--ink); overflow: hidden;
     }
     .card-num .num-inner { display: block; }
@@ -157,7 +163,7 @@
     .card-body.method-body { height: auto; min-height: 9vw; }
     .side-label {
       position: absolute; font-family: 'PT Mono', monospace;
-      font-size: 0.45vw; text-transform: uppercase; letter-spacing: 0.08em;
+      font-size: 0.8vw; text-transform: uppercase; letter-spacing: 0.08em;
       white-space: nowrap; writing-mode: vertical-rl;
       top: 0; bottom: 0; display: flex; align-items: center; padding: 0 0.3vw;
     }
@@ -166,7 +172,7 @@
     .method-desc {
       padding: 1.4vw 2.2vw;
       font-family: 'Inter', sans-serif; font-weight: 300;
-      font-size: 0.78vw; line-height: 1.8; opacity: 0.85;
+      font-size: 0.8vw; line-height: 1.8; opacity: 0.85;
     }
     .card-foot {
       border-top: 1px solid var(--ink); padding: 0.8vw 1.4vw;
@@ -183,12 +189,12 @@
     .method-row:first-child { border-top: none; padding-top: 0; }
     .method-row:last-child { padding-bottom: 0; }
     .method-label {
-      font-family: 'PT Mono', monospace; font-size: 0.45vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       opacity: 0.32; text-transform: uppercase; letter-spacing: 0.1em;
       white-space: nowrap; min-width: 5vw;
     }
     .method-text {
-      font-family: 'PT Mono', monospace; font-size: 0.52vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       opacity: 0.85; line-height: 1.55;
     }
 
@@ -225,6 +231,13 @@
     .overview-body p:last-child { margin-bottom: 0; }
 
     /* ── WORKFLOW TIMELINE ── */
+    .wf-flow-section { padding: 6vw 8vw 0 10vw; }
+    .wf-flow-headline {
+      font-family: 'Inter', sans-serif; font-weight: 100;
+      font-size: 6vw; line-height: 0.9; text-transform: uppercase;
+      letter-spacing: -0.03em; margin: 1vw 0 3vw;
+    }
+    .wf-flow-img { width: 100%; height: auto; display: block; margin-bottom: -6vw; }
     .wf-section { position: relative; }
     .wf-intro { padding: 5vw 8vw 2vw 12vw; }
     .wf-scroll-body { height: 400vh; position: relative; }
@@ -248,7 +261,7 @@
     }
     .wf-node-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.5vw; }
     .wf-node-lbl {
-      font-family: 'PT Mono', monospace; font-size: 0.45vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       letter-spacing: 0.1em; opacity: 0.25; text-transform: uppercase;
     }
     .wf-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(0,0,0,0.15); display: block; }
@@ -258,13 +271,13 @@
     }
     .wf-card { position: absolute; top: 0; left: 0; right: 0; opacity: 0; pointer-events: none; }
     .wf-bg-num {
-      font-family: 'Inter'; font-weight: 100; font-size: 13vw; line-height: 0.85;
+      font-family: 'Inter'; font-weight: 100; font-size: 9.5vw; line-height: 0.85;
       opacity: 0.05; letter-spacing: -0.05em;
       position: absolute; right: 0; top: -0.5vw;
       pointer-events: none; user-select: none;
     }
     .wf-title {
-      font-family: 'Inter'; font-weight: 100; font-size: 5vw;
+      font-family: 'Inter'; font-weight: 100; font-size: 6vw;
       text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.88;
       margin-bottom: 2.5vw;
     }
@@ -273,7 +286,7 @@
     .wf-ideation-text .wf-desc { max-width:100%; }
     .wf-ideation-imgs { display:grid; grid-template-columns:1fr 1fr; gap:1vw; }
     .wf-ideation-imgs img { width:100%; display:block; border-radius:0.2vw; object-fit:cover; aspect-ratio:4/3; }
-    .wf-desc-label { font-family: 'PT Mono', monospace; font-size: 0.55vw; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.45; display: block; margin-bottom: 0.4vw; }
+    .wf-desc-label { font-family: 'PT Mono', monospace; font-size: 0.8vw; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.45; display: block; margin-bottom: 0.4vw; }
     .wf-desc {
       font-family: 'Inter'; font-weight: 300; font-size: 1.1vw;
       line-height: 1.85; opacity: 0.75; max-width: 42vw;
@@ -288,7 +301,7 @@
     .limits-col:first-child { border-right: 1px solid rgba(0,0,0,0.1); }
     .limits-col-header {
       padding: 1.2vw 2vw; border-bottom: 1px solid rgba(0,0,0,0.1);
-      font-family: 'PT Mono', monospace; font-size: 0.52vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.32;
     }
     .limits-item {
@@ -301,7 +314,7 @@
       margin-bottom: 0.5vw;
     }
     .limits-example {
-      font-family: 'PT Mono', monospace; font-size: 0.62vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       opacity: 0.88; line-height: 1.75; text-transform: uppercase; letter-spacing: 0.02em;
     }
 
@@ -311,7 +324,7 @@
       border-top: 1px solid rgba(0,0,0,0.08);
     }
     .section-004-index {
-      font-family: 'PT Mono', monospace; font-size: 0.55vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.28;
       display: block; margin-bottom: 2.5vw;
     }
@@ -327,7 +340,7 @@
       border-top: 1px solid rgba(0,0,0,0.08);
     }
     .fails-section-index {
-      font-family: 'PT Mono', monospace; font-size: 0.55vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.28;
       display: block; margin-bottom: 2vw;
     }
@@ -344,7 +357,7 @@
       aspect-ratio: 16/9; background: rgba(0,0,0,0.025);
       border: 1px solid rgba(0,0,0,0.07); border-radius: 0.3vw;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'PT Mono', monospace; font-size: 0.5vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       color: rgba(0,0,0,0.22); text-transform: uppercase; letter-spacing: 0.1em;
       overflow: hidden;
     }
@@ -353,15 +366,15 @@
     }
     .fails-fail-title {
       font-family: 'Inter', sans-serif; font-weight: 100;
-      font-size: 1.8vw; text-transform: uppercase; letter-spacing: -0.02em;
+      font-size: 1.6vw; text-transform: uppercase; letter-spacing: -0.02em;
       line-height: 1.1; margin-bottom: 2vw;
     }
     .fails-dialogue {
       font-family: 'Inter', sans-serif; font-weight: 300;
-      font-size: 1.05vw; line-height: 1.85; opacity: 0.82;
+      font-size: 1.1vw; line-height: 1.85; opacity: 0.82;
     }
     .fails-result {
-      margin-top: 1.5vw; font-family: 'PT Mono', monospace; font-size: 0.58vw;
+      margin-top: 1.5vw; font-family: 'PT Mono', monospace; font-size: 0.8vw;
       opacity: 0.45; text-transform: uppercase; letter-spacing: 0.12em;
       padding-top: 1.2vw; border-top: 1px solid rgba(0,0,0,0.07);
     }
@@ -371,23 +384,31 @@
       min-height: 80vh; display: flex; align-items: center;
       padding: 10vw 8vw 10vw 12vw; border-top: 1px solid rgba(0,0,0,0.07);
     }
-    .reflection-inner { max-width: 58vw; }
-    .reflection-index {
-      font-family: 'PT Mono', monospace; font-size: 0.55vw;
-      letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.28;
-      display: block; margin-bottom: 5vw;
+    .reflection-inner { max-width: 100%; }
+    .reflection-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; align-items: start;
     }
     .reflection-headline {
       font-family: 'Inter', sans-serif; font-weight: 100;
       font-size: 6vw; line-height: 0.9; text-transform: uppercase;
-      letter-spacing: -0.03em; margin-bottom: 4vw;
+      letter-spacing: -0.03em; margin: 1.2vw 0 2vw;
     }
-    .reflection-text {
+    .reflection-intro {
       font-family: 'Inter', sans-serif; font-weight: 300;
-      font-size: 1.35vw; line-height: 1.8; opacity: 0.88;
+      font-size: 1.1vw; line-height: 1.7; opacity: 0.65; max-width: 28vw;
     }
-    .reflection-text p { margin-bottom: 1.8vw; }
-    .reflection-text p:last-child { margin-bottom: 0; }
+    .reflection-row {
+      border-top: 1px solid rgba(20,20,20,0.1); padding: 2vw 0;
+    }
+    .reflection-row-label {
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      opacity: 0.45; margin-bottom: 0.8vw;
+    }
+    .reflection-row-body {
+      font-family: 'Inter', sans-serif; font-weight: 300;
+      font-size: 1.1vw; line-height: 1.75; opacity: 0.82;
+    }
 
     /* ── PROCESS / ASSETS SECTION ── */
     .process-section {
@@ -396,7 +417,7 @@
     }
     .process-inner { max-width: 76vw; }
     .process-index {
-      font-family: 'PT Mono', monospace; font-size: 0.55vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.28;
       display: block; margin-bottom: 8vw;
     }
@@ -414,7 +435,7 @@
     .process-text p:last-child { margin-bottom: 0; }
     .process-block { margin-bottom: 6vw; }
     .process-block-label {
-      font-family: 'PT Mono', monospace; font-size: 0.62vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.4;
       margin-bottom: 2vw;
     }
@@ -434,13 +455,13 @@
     .process-placeholder {
       background: rgba(0,0,0,0.025); border: 1px solid rgba(0,0,0,0.07);
       border-radius: 0.3vw; display: flex; align-items: center; justify-content: center;
-      font-family: 'PT Mono', monospace; font-size: 0.5vw;
+      font-family: 'PT Mono', monospace; font-size: 0.8vw;
       color: rgba(0,0,0,0.22); text-transform: uppercase; letter-spacing: 0.1em;
     }
 
     /* ── MOBILE ── */
     @media (max-width: 768px) {
-      #lateral { font-size: 13vw; left: 0.5vw; }
+      #lateral { font-size: 9.5vw; left: 0.5vw; }
       #receipt { font-size: 2.3vw; bottom: 3vw; right: 3vw; }
       .rec-line .rec-ref-txt { font-size: 1.6vw; }
       .hero { padding: 5vw 5vw 6vw 16vw; }
@@ -450,37 +471,37 @@
       .hero-sub { font-size: 2.2vw; margin-top: 5vw; }
       .hero-scroll { font-size: 2vw; }
       .overview-section { padding: 12vw 5vw 12vw 16vw; }
-      .overview-headline { font-size: 13vw; margin-bottom: 8vw; }
+      .overview-headline { font-size: 9.5vw; margin-bottom: 8vw; }
       .overview-header { padding-top: 4vw; margin-bottom: 8vw; }
-      .overview-index, .overview-tag { font-size: 1.8vw; }
+      .overview-index, .overview-tag { font-size: 1.6vw; }
       .overview-body { font-size: 3.2vw; max-width: 100%; }
       .workflow-steps { grid-template-columns: repeat(2, 1fr); }
       .workflow-step { padding: 5vw 4vw; border-bottom: 1px solid rgba(0,0,0,0.1); }
       .workflow-step:nth-child(even) { border-right: none; }
-      .step-name { font-size: 5vw; }
-      .step-desc { font-size: 1.8vw; }
+      .step-name { font-size: 6vw; }
+      .step-desc { font-size: 1.6vw; }
       .step-num { font-size: 1.6vw; }
       .limits-grid { grid-template-columns: 1fr; }
       .limits-col:first-child { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); }
-      .limits-issue { font-size: 3vw; }
-      .limits-example { font-size: 1.8vw; }
+      .limits-issue { font-size: 1.6vw; }
+      .limits-example { font-size: 1.6vw; }
       .section { padding: 0 5vw 0 16vw; }
       .card-wrap { padding-right: 0; width: 100%; }
       .card { width: 100%; border-radius: 1.5vw; }
       .card-num { font-size: 14vw; padding: 3vw 4vw 1.5vw; }
-      .card-title { font-size: 5vw; padding: 2.5vw 4vw; }
+      .card-title { font-size: 6vw; padding: 2.5vw 4vw; }
       .card-body { height: 22vw; }
       .card-body.method-body { min-height: 28vw; }
       .method-desc { font-size: 2.8vw; padding: 3.5vw 4vw; }
       .side-label { font-size: 1.3vw; padding: 0 0.8vw; }
       .card-foot { padding: 2.5vw 4vw; gap: 3vw; }
       .method-label { font-size: 1.5vw; min-width: 16vw; }
-      .method-text { font-size: 1.8vw; }
+      .method-text { font-size: 1.6vw; }
       .section-bg-num { font-size: 72vw; left: 8vw; }
       .back-title { font-size: 8vw; }
       .back-label, .back-sub { font-size: 2vw; }
       .section-004-header { padding: 12vw 5vw 6vw 16vw; }
-      .section-004-title { font-size: 13vw; }
+      .section-004-title { font-size: 9.5vw; }
       .fails-section { padding: 10vw 5vw 10vw 16vw; }
       .fails-item { grid-template-columns: 1fr; gap: 4vw; }
       .fails-fail-title { font-size: 6vw; }
@@ -652,7 +673,7 @@
   <span class="div">————————————————</span><br>
   ** AI PRODUCTS **<br>
   <span class="div">————————————————</span><br>
-  <div id="rec-lines"><span class="rec-hint">ENTER TO DISCOVER</span></div>
+  <div id="rec-lines"></div>
 </div>
 
 <main>
@@ -710,19 +731,19 @@
     </div>
   </section>
 
-  <!-- ── 002 / MY WORKFLOW ── -->
-  <section class="wf-section" id="workflow">
+  <!-- ── 002 / MY WORKFLOW OVERVIEW ── -->
+  <section class="wf-flow-section" id="workflow">
+    <div class="wf-flow-inner">
+      <p class="aw-label">02 — My Workflow</p>
+      <h2 class="wf-flow-headline">How I Work</h2>
+      <img src="workflow-flow.png" class="wf-flow-img" alt="AI Workflow Process">
+    </div>
+  </section>
+
+  <!-- ── 002 / MY WORKFLOW DETAIL ── -->
+  <section class="wf-section" id="workflow-detail">
     <div class="wf-scroll-body">
       <div class="wf-sticky" id="wf-sticky">
-        <div class="wf-intro">
-          <div class="overview-header">
-            <p class="aw-label">02 — My Workflow</p>
-            
-          </div>
-          <h2 class="overview-headline">
-            <span class="iw"><span class="iw-inner">How I Work</span></span>
-          </h2>
-        </div>
         <div class="wf-track-row">
           <div class="wf-rail"><div class="wf-rail-fill" id="wf-rail-fill"></div></div>
           <div class="wf-nodes-row">
@@ -848,9 +869,8 @@
           <img src="card01.png" alt="Method 01: Create Reference" style="width:100%;display:block;">
         </div>
         <div class="card-back-face">
-          <div class="back-label">Method Applied</div>
-          <div class="back-title">Show Don't<br>Describe</div>
-          <div class="back-sub">When the background color needed to feel like paper, saying warm off-white got interpreted differently every time. Sending #f4f2ef ended the conversation.</div>
+          <div class="back-label">In Practice</div>
+          <div class="back-case">I described the hero background as "warm, soft, like paper." Claude returned a generic cream — nothing close to the Figma file. Replacing the description with the exact hex #f4f2ef produced a match on the first attempt.</div>
           <div class="back-bignum">#01</div>
         </div>
       </div>
@@ -866,9 +886,8 @@
           <img src="card02.png" alt="Method 02: Set The Boundary First" style="width:100%;display:block;">
         </div>
         <div class="card-back-face">
-          <div class="back-label">Method Applied</div>
-          <div class="back-title">Set The<br>Boundary First</div>
-          <div class="back-sub">camera.position.set(0, 5.0, 8.66) was adjusted over multiple sessions to reach the right value. The moment no one said it was locked, it was changed.</div>
+          <div class="back-label">In Practice</div>
+          <div class="back-case">I asked Claude to adjust the card layout. It also shifted camera.position from (0, 5.0, 8.66) without being asked — the cinematic angle was lost. Adding "do not change camera.position" to every subsequent prompt stopped the drift.</div>
           <div class="back-bignum">#02</div>
         </div>
       </div>
@@ -884,9 +903,8 @@
           <img src="card03.png" alt="Method 03: Commands Not Explanations" style="width:100%;display:block;">
         </div>
         <div class="card-back-face">
-          <div class="back-label">Method Applied</div>
-          <div class="back-title">Commands Not<br>Explanations</div>
-          <div class="back-sub">The background number position took six rounds when described in sentences. It took four words: down 2%, down 4%, down 5%.</div>
+          <div class="back-label">In Practice</div>
+          <div class="back-case">"Animate the 3D objects rotating slowly" produced chaotic spin on each axis. Rewriting as "Three knots orbit at 120° apart, one full revolution every 8 seconds" generated the hero animation directly on the first attempt.</div>
           <div class="back-bignum">#03</div>
         </div>
       </div>
@@ -1001,18 +1019,36 @@
   </section>
   <!-- ── 005 / REFLECTION ── -->
   <section class="reflection-section" id="reflection">
-    <div class="reflection-inner">
-      <p class="aw-label">08 — Reflection</p>
-      <div class="reflection-headline">Reflection</div>
-      <div class="reflection-text">
-        <p>This project changed how I think about designing with AI.</p>
-        <p>At the beginning, I assumed that if I could describe the experience clearly enough, AI would be able to generate something close to what I imagined. In practice, I quickly learned that AI could build and revise quickly, but it could not replace the design decisions that needed to happen before implementation.</p>
-        <p>AI was useful for testing layouts, motion ideas, and interaction behaviors. However, it often produced results that technically worked but did not feel visually or experientially right. It could follow an instruction, but it could not always understand the larger design intention, recognize when the visual hierarchy felt unbalanced, or determine whether a motion felt appropriate for the experience.</p>
-        <p>This became especially clear while designing the game interface. The quality of the final result depended heavily on the materials I prepared myself. The card designs, visual system, interaction states, icons, content structure, and supporting assets could not simply be invented through repeated prompting. I needed to design these elements intentionally and provide a clearer foundation before AI could help bring them into the website.</p>
-        <p>I also learned that a storyboard or interaction flow is necessary before building complex motion. Without a clear sequence of what appears, what moves, what responds to the user, and what remains fixed, the implementation can easily become disconnected or visually inconsistent. AI can execute individual requests, but it does not automatically understand the full experience unless that logic has already been defined.</p>
-        <p>My role was therefore not only to give instructions. I had to art direct the process: establish the visual direction, create the key assets, define the interaction logic, review each result, identify what was missing, and decide what should remain unchanged.</p>
-        <p>This project showed me that AI works best as a production and experimentation partner, not as a substitute for design thinking. It can accelerate implementation, generate alternatives, and help test ideas, but the quality of the outcome still depends on having a strong concept, clear visual assets, a structured storyboard, and consistent human judgment.</p>
-        <p>The most important skill was not writing every line of code myself. It was knowing what experience I wanted to create, preparing the right design foundation, recognizing when the result was not there yet, and continuing to shape it until the final product felt intentional.</p>
+    <div class="reflection-inner reflection-grid">
+      <div class="reflection-left">
+        <p class="aw-label">08 — Reflection</p>
+        <div class="reflection-headline">What I<br>Learned</div>
+        <p class="reflection-intro">Designing with AI changed what I thought the designer's job was.</p>
+      </div>
+      <div class="reflection-right">
+    <div class="reflection-inner reflection-grid">
+      <div class="reflection-left">
+        <p class="aw-label">08 — Reflection</p>
+        <div class="reflection-headline">What I<br>Learned</div>
+        <p class="reflection-intro">Designing with AI changed what I thought the designer's job was.</p>
+      </div>
+      <div class="reflection-right">
+        <div class="reflection-row">
+          <div class="reflection-row-label">What I expected</div>
+          <div class="reflection-row-body">AI would generate what I imagined if I described it clearly enough.</div>
+        </div>
+        <div class="reflection-row">
+          <div class="reflection-row-label">What changed</div>
+          <div class="reflection-row-body">The quality of the result depended on design foundations I prepared myself — the visual system, assets, and interaction logic had to be defined before AI could help.</div>
+        </div>
+        <div class="reflection-row">
+          <div class="reflection-row-label">What I learned</div>
+          <div class="reflection-row-body">The real skill was art direction: establishing visual direction, recognizing when results fell short, and knowing when to stop.</div>
+        </div>
+        <div class="reflection-row">
+          <div class="reflection-row-label">Going forward</div>
+          <div class="reflection-row-body">Define the full experience first. Prepare the assets. Then use AI to accelerate production.</div>
+        </div>
       </div>
     </div>
   </section>
@@ -1376,6 +1412,7 @@ const cfg=[
 ]
 
 const printedItems = new Set()
+const recLineEls = {}
 function printReceiptLine(i) {
   if (printedItems.has(i)) return
   printedItems.add(i)
@@ -1386,8 +1423,23 @@ function printReceiptLine(i) {
   line.className = 'rec-line'
   line.innerHTML = `${cfg[i].item}<br><span class="rec-ref-txt">${cfg[i].ref}</span>`
   recLinesEl.appendChild(line)
+  recLineEls[i] = line
   gsap.set(line, { opacity: 0, y: 5 })
   gsap.to(line, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out', delay: 0.08 })
+}
+function removeReceiptLine(i) {
+  if (!printedItems.has(i)) return
+  printedItems.delete(i)
+  const line = recLineEls[i]
+  if (line) {
+    gsap.to(line, { opacity: 0, y: -4, duration: 0.28, ease: 'power2.in', onComplete: () => {
+      line.remove()
+      delete recLineEls[i]
+      if (printedItems.size === 0) {
+        recLinesEl.innerHTML = ''
+      }
+    }})
+  }
 }
 
 // ── KNOT SHOW/HIDE ──
@@ -1461,7 +1513,7 @@ ScrollTrigger.create({
     onEnter:     ()=>enter(i),
     onEnterBack: ()=>enter(i),
     onLeave:     ()=>leave(i),
-    onLeaveBack: ()=>{leave(i);if(i===0){returnToHero();animateLateral('AI COWORK')}},
+    onLeaveBack: ()=>{removeReceiptLine(i);leave(i);if(i===0){returnToHero();animateLateral('AI COWORK')}},
   })
 })
 
@@ -1493,20 +1545,11 @@ document.querySelectorAll('.card-flip').forEach(card=>{
   let flipping=false
   card.addEventListener('click',()=>{
     if(flipping)return; flipping=true
-    const workUrl=card.dataset.work
-    const barEl=card.querySelector('.back-bar')
-
+    const ry=gsap.getProperty(card,'rotateY')||0
+    const target=ry>90?0:180
     gsap.to(card,{
-      rotateY:180, duration:0.75, ease:'power2.inOut',
-      onComplete:()=>{
-        if(workUrl){
-          gsap.to(barEl,{
-            width:'45%', duration:0.5, ease:'power2.out',
-            onComplete:()=>{ window.location.href=workUrl }
-          })
-        }
-        // No redirect: card stays flipped showing the example
-      }
+      rotateY:target, duration:0.75, ease:'power2.inOut',
+      onComplete:()=>{ flipping=false }
     })
   })
 })
