@@ -770,6 +770,7 @@ section {
 }
 
 /* â”€â”€ IA FLOW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+#s7 { min-height: auto; }
 .ia-node {
   display: flex;
   flex-direction: column;
@@ -777,11 +778,18 @@ section {
   flex: 1;
 }
 .ia-dot {
-  width: 14px; height: 14px;
+  width: 22px; height: 22px;
   border-radius: 50%;
   background: rgba(248,243,232,.2);
   border: 2px solid rgba(248,243,232,.3);
   margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(248,243,232,.7);
 }
 .ia-label {
   font-weight: 800;
@@ -980,6 +988,8 @@ section {
   position: relative;
   overflow: hidden;
   height: 100vh;
+  padding-top: 76px;
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: 320px 1fr;
   overflow: hidden;
@@ -1084,17 +1094,17 @@ section {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   gap: clamp(28px, 4vw, 60px);
-  padding: 207px clamp(42px, 6vw, 80px) 60px;
+  padding: 0 clamp(42px, 6vw, 80px);
   opacity: 0;
   pointer-events: none;
 }
 /* panel visibility controlled entirely by JS */
 .s8-panel-img {
   flex-shrink: 0;
-  width: clamp(360px, 48vw, 620px);
+  width: clamp(400px, 54vw, 760px);
   aspect-ratio: 16/10;
   border-radius: 18px;
   overflow: hidden;
@@ -1103,8 +1113,7 @@ section {
 }
 .s8-panel-img img { width: 100%; height: 100%; object-fit: contain; display: block; background: rgba(248,243,232,.035); }
 .s8-panel-text {
-  max-width: 320px;
-  align-self: flex-start;
+  max-width: 380px;
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -1119,7 +1128,7 @@ section {
 }
 .s8-panel-title {
   font-weight: 800;
-  font-size: clamp(24px, 2.6vw, 38px);
+  font-size: clamp(28px, 3vw, 44px);
   color: var(--cream);
   line-height: 1.1;
   letter-spacing: -.02em;
@@ -1127,7 +1136,7 @@ section {
 }
 .s8-panel-body {
   font-family: 'DM Sans', sans-serif;
-  font-size: clamp(13px, 1.05vw, 15px);
+  font-size: clamp(14px, 1.15vw, 17px);
   line-height: 1.85;
   color: rgba(248,243,232,.5);
 }
@@ -1361,13 +1370,13 @@ section {
   align-items: end !important;
 }
 .experience-grid {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, .65fr) !important;
-  gap: 22px !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
   align-items: start;
 }
 .experience-primary {
-  grid-row: span 2;
+  grid-column: 1 / -1;
 }
 .experience-grid .case-image,
 .experience-grid .case-placeholder {
@@ -1379,6 +1388,7 @@ section {
 }
 .experience-grid .case-image {
   object-fit: contain;
+  aspect-ratio: 16 / 9;
 }
 .experience-figure {
   display: grid;
@@ -1848,7 +1858,7 @@ body, button, input, textarea, select { font-family: "DM Sans", sans-serif !impo
         <div class="testing-body">Participants learned through Rumi's guidance, then applied the instruction through a physical sorting task. This flow kept the action, feedback, and retention task connected.</div>
       </div>
       <div class="testing-card s6d-el">
-        <video src="assets/case-study/web/external-interactive-video.web.mp4" controls muted playsinline preload="metadata" style="width:100%;aspect-ratio:16/9;object-fit:contain;border-radius:18px;border:1px solid rgba(248,243,232,.1);background:#000"></video>
+        <video src="assets/case-study/web/external-interactive-video.web.mp4" controls muted playsinline preload="metadata" style="width:100%;aspect-ratio:16/9;object-fit:contain;object-position:top;border-radius:18px;border:1px solid rgba(248,243,232,.1);background:#000"></video>
         <div class="testing-title" style="margin-top:22px">Interactive video station</div>
         <div class="testing-body">The video attracted attention, but when placed inside the active learning flow it created a break between guidance and sorting. It was repositioned as an idle attraction and group engagement tool.</div>
       </div>
@@ -1869,7 +1879,7 @@ body, button, input, textarea, select { font-family: "DM Sans", sans-serif !impo
       <span style="font-family:'DM Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(14,42,28,.07);color:var(--dark);padding:8px 18px;border-radius:100px;border:1px solid rgba(14,42,28,.12)">AI character guidance</span>
       <span style="font-family:'DM Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(14,42,28,.07);color:var(--dark);padding:8px 18px;border-radius:100px;border:1px solid rgba(14,42,28,.12)">Real-time classification</span>
       <span style="font-family:'DM Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(14,42,28,.07);color:var(--dark);padding:8px 18px;border-radius:100px;border:1px solid rgba(14,42,28,.12)">Physical sorting station</span>
-      <span style="font-family:'DM Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(203,253,133,.4);color:var(--dark);padding:8px 18px;border-radius:100px;border:1px solid rgba(14,42,28,.12)">Community pop-up</span>
+      <span style="font-family:'DM Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(14,42,28,.07);color:var(--dark);padding:8px 18px;border-radius:100px;border:1px solid rgba(14,42,28,.12)">Community pop-up</span>
     </div>
   </div>
 
@@ -1905,14 +1915,14 @@ body, button, input, textarea, select { font-family: "DM Sans", sans-serif !impo
 
 <section id="s6c" style="background:var(--cream);padding:90px 56px 110px">
   <div style="width:100%;max-width:none;margin:0">
-    <div class="experience-head" style="display:flex;justify-content:space-between;gap:48px;align-items:flex-end;margin-bottom:42px">
+    <div class="experience-head" style="display:grid;grid-template-columns:calc(50vw - 56px) 1fr;align-items:flex-end;margin-bottom:42px">
       <div>
         <span class="eyebrow s6c-el">06.1 — Experience Flow</span>
         <h2 class="s-heading s6c-el" style="color:var(--dark);margin-top:16px">From attraction<br/><em style="font-style:normal;color:var(--mid)">to action.</em></h2>
       </div>
       <p class="s6c-el" style="font-family:'DM Sans', sans-serif;font-size:clamp(14px,1.15vw,17px);line-height:1.8;color:rgba(14,42,28,.62);max-width:450px">The final concept works as a portable learning setup: it draws people in, classifies real objects, gives character feedback, and asks users to physically complete the sorting action.</p>
     </div>
-    <div class="experience-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">
+    <div class="experience-grid">
       <figure class="s6c-el experience-primary experience-figure"><img class="case-image light" src="assets/case-study/prototype-flow.png" alt="Prototype system flow"/><figcaption class="experience-caption">Prototype flow map</figcaption></figure>
       <figure class="s6c-el experience-figure"><img class="case-image light" src="assets/case-study/community-pop-up-installation.png" alt="Community pop-up installation setup"/><figcaption class="experience-caption">Community pop-up setup</figcaption></figure>
       <figure class="s6c-el experience-figure"><img class="case-image light" src="assets/case-study/rumi-character-feedback.png" alt="Rumi character feedback day and night mode"/><figcaption class="experience-caption">Rumi character feedback</figcaption></figure>
@@ -1921,7 +1931,7 @@ body, button, input, textarea, select { font-family: "DM Sans", sans-serif !impo
 </section>
 
 <!-- â•â• S7 IA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section id="s7" style="background:var(--dark);padding:80px 56px;display:flex;align-items:flex-start">
+<section id="s7" style="background:var(--dark);padding:80px 56px 0;display:flex;align-items:flex-start">
   <div style="width:100%">
     <div style="margin-bottom:64px">
       <span class="eyebrow s7-el" style="display:inline-block">07 — User Flow</span>
@@ -1929,32 +1939,19 @@ body, button, input, textarea, select { font-family: "DM Sans", sans-serif !impo
     </div>
     <!-- IA Flow SVG diagram -->
     <div id="ia-flow" style="position:relative;width:100%;overflow-x:auto">
-      <div style="display:flex;align-items:center;gap:0;min-width:700px;padding:40px 0">
+      <div style="display:flex;align-items:flex-start;gap:0;min-width:700px;padding:40px 0">
         <!-- Step nodes -->
-        <div class="ia-node" data-i="0"><div class="ia-dot"></div><div class="ia-label">Attract</div><div class="ia-desc">Looping video<br/>draws attention.</div></div>
+        <div class="ia-node" data-i="0"><div class="ia-dot">1</div><div class="ia-label">Attract</div><div class="ia-desc">Looping video<br/>draws attention.</div></div>
         <div class="ia-arrow">→</div>
-        <div class="ia-node" data-i="1"><div class="ia-dot"></div><div class="ia-label">Join</div><div class="ia-desc">User steps into<br/>the pop-up station.</div></div>
+        <div class="ia-node" data-i="1"><div class="ia-dot">2</div><div class="ia-label">Join</div><div class="ia-desc">User steps into<br/>the pop-up station.</div></div>
         <div class="ia-arrow">→</div>
-        <div class="ia-node" data-i="2"><div class="ia-dot" style="background:var(--lime);box-shadow:0 0 20px rgba(203,253,133,.4)"></div><div class="ia-label">Classify</div><div class="ia-desc">Computer vision reads<br/>the waste item.</div></div>
+        <div class="ia-node" data-i="2"><div class="ia-dot">3</div><div class="ia-label">Classify</div><div class="ia-desc">Computer vision reads<br/>the waste item.</div></div>
         <div class="ia-arrow">→</div>
-        <div class="ia-node" data-i="3"><div class="ia-dot"></div><div class="ia-label">Feedback</div><div class="ia-desc">Rumi explains<br/>the right bin.</div></div>
+        <div class="ia-node" data-i="3"><div class="ia-dot">4</div><div class="ia-label">Feedback</div><div class="ia-desc">Rumi explains<br/>the right bin.</div></div>
         <div class="ia-arrow">→</div>
-        <div class="ia-node" data-i="4"><div class="ia-dot"></div><div class="ia-label">Sort</div><div class="ia-desc">User completes<br/>the physical action.</div></div>
+        <div class="ia-node" data-i="4"><div class="ia-dot">5</div><div class="ia-label">Sort</div><div class="ia-desc">User completes<br/>the physical action.</div></div>
         <div class="ia-arrow">→</div>
-        <div class="ia-node" data-i="5"><div class="ia-dot"></div><div class="ia-label">Reflect</div><div class="ia-desc">The result becomes<br/>a shared learning moment.</div></div>
-      </div>
-    </div>
-    <!-- Secondary: two paths -->
-    <div style="margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:640px">
-      <div class="ia-path-card s7-el" >
-        <div style="font-family:'DM Sans', sans-serif;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--lime);opacity:.6;margin-bottom:10px">Correct bin</div>
-        <div style="font-weight:800;font-size:18px;color:var(--cream);margin-bottom:8px">✓ Reinforce</div>
-        <div style="font-family:'DM Sans', sans-serif;font-size:16px;color:rgba(248,243,232,.5);line-height:1.7">Rumi confirms the action and turns the correct sort into a small public success moment.</div>
-      </div>
-      <div class="ia-path-card s7-el" >
-        <div style="font-family:'DM Sans', sans-serif;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(248,243,232,.4);margin-bottom:10px">Wrong bin detected</div>
-        <div style="font-weight:800;font-size:18px;color:var(--cream);margin-bottom:8px">↩ Redirect</div>
-        <div style="font-family:'DM Sans', sans-serif;font-size:16px;color:rgba(248,243,232,.5);line-height:1.7">If the user hesitates or sorts incorrectly, Rumi responds with supportive correction instead of judgment.</div>
+        <div class="ia-node" data-i="5"><div class="ia-dot">6</div><div class="ia-label">Reflect</div><div class="ia-desc">The result becomes<br/>a shared learning moment.</div></div>
       </div>
     </div>
   </div>
@@ -2061,63 +2058,6 @@ body, button, input, textarea, select { font-family: "DM Sans", sans-serif !impo
   </div>
 </section>
 
-<section id="s9" style="background:var(--cream);min-height:100vh;padding:120px 56px">
-  <div style="margin-bottom:64px">
-    <span class="eyebrow s9-el" style="color:var(--mid)display:inline-block">08 — Visual System</span>
-    <h2 class="s-heading s9-el" style="color:var(--dark);margin-top:16px">Design<br/><em style="font-style:normal;color:var(--mid)">language.</em></h2>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
-    <!-- Colors -->
-    <div class="s9-card s9-el" >
-      <div style="font-family:'DM Sans', sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(14,42,28,.4);margin-bottom:28px">Colour</div>
-      <div style="display:flex;flex-direction:column;gap:16px">
-        <div style="display:flex;align-items:center;gap:18px"><div style="width:56px;height:56px;border-radius:12px;background:#0E2A1C;flex-shrink:0"></div><div><div style="font-weight:800;font-size:16px;color:var(--dark);margin-bottom:3px">#0E2A1C</div><div style="font-family:'DM Sans', sans-serif;font-size:13px;color:rgba(14,42,28,.45)">Dark Forest — Primary</div></div></div>
-        <div style="display:flex;align-items:center;gap:18px"><div style="width:56px;height:56px;border-radius:12px;background:#CBFD85;flex-shrink:0"></div><div><div style="font-weight:800;font-size:16px;color:var(--dark);margin-bottom:3px">#CBFD85</div><div style="font-family:'DM Sans', sans-serif;font-size:13px;color:rgba(14,42,28,.45)">Lime — Highlight</div></div></div>
-        <div style="display:flex;align-items:center;gap:18px"><div style="width:56px;height:56px;border-radius:12px;background:#7EAB55;flex-shrink:0"></div><div><div style="font-weight:800;font-size:16px;color:var(--dark);margin-bottom:3px">#7EAB55</div><div style="font-family:'DM Sans', sans-serif;font-size:13px;color:rgba(14,42,28,.45)">Mid Green — Support</div></div></div>
-        <div style="display:flex;align-items:center;gap:18px"><div style="width:56px;height:56px;border-radius:12px;background:#F8F3E8;border:1px solid rgba(14,42,28,.1);flex-shrink:0"></div><div><div style="font-weight:800;font-size:16px;color:var(--dark);margin-bottom:3px">#F8F3E8</div><div style="font-family:'DM Sans', sans-serif;font-size:13px;color:rgba(14,42,28,.45)">Cream — Background</div></div></div>
-      </div>
-    </div>
-    <!-- Typography -->
-    <div class="s9-card s9-el" >
-      <div style="font-family:'DM Sans', sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(14,42,28,.4);margin-bottom:28px">Typography</div>
-      <div style="margin-bottom:32px">
-        <div style="font-weight:800;font-size:clamp(36px,3.5vw,52px);color:var(--dark);line-height:1;letter-spacing:-.02em;margin-bottom:10px">PPTelegraf</div>
-        <div style="font-family:'DM Sans', sans-serif;font-size:14px;color:rgba(14,42,28,.4);margin-bottom:4px">UltraLight · Regular · UltraBold</div>
-        <div style="font-weight:800;font-size:12px;color:var(--mid);letter-spacing:.1em;text-transform:uppercase">Display — Headlines — UI Labels</div>
-      </div>
-      <div>
-        <div style="font-family:'DM Sans', sans-serif;font-size:clamp(18px,1.6vw,24px);color:var(--dark);margin-bottom:8px">Poppins</div>
-        <div style="font-family:'DM Sans', sans-serif;font-size:14px;color:rgba(14,42,28,.4);margin-bottom:4px">Light · Regular · Medium · SemiBold</div>
-        <div style="font-weight:800;font-size:12px;color:var(--mid);letter-spacing:.1em;text-transform:uppercase">Body — Captions — Data</div>
-      </div>
-    </div>
-    <!-- Icons / Components -->
-    <div class="s9-card s9-el" >
-      <div style="font-family:'DM Sans', sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(14,42,28,.4);margin-bottom:28px">Components</div>
-      <div style="display:flex;flex-direction:column;gap:24px">
-        <div style="display:flex;align-items:center;gap:16px"><span class="tag" style="font-size:12px;padding:6px 16px">Recycle</span><span style="font-family:'DM Sans', sans-serif;font-size:14px;color:rgba(14,42,28,.45)">Category tag</span></div>
-        <div style="display:flex;align-items:center;gap:16px">
-          <div style="background:var(--dark);border-radius:100px;padding:12px 24px;font-weight:800;font-size:13px;color:var(--lime);letter-spacing:.06em">SCAN NOW</div>
-          <span style="font-family:'DM Sans', sans-serif;font-size:14px;color:rgba(14,42,28,.45)">CTA button</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:16px">
-          <div style="width:110px;height:8px;border-radius:4px;background:rgba(14,42,28,.1);position:relative;overflow:hidden;flex-shrink:0"><div style="position:absolute;inset:0;width:73%;background:var(--mid);border-radius:4px"></div></div>
-          <span style="font-family:'DM Sans', sans-serif;font-size:14px;color:rgba(14,42,28,.45)">Confidence bar</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:16px">
-          <div style="width:44px;height:44px;position:relative;flex-shrink:0">
-            <div style="position:absolute;top:0;left:0;width:14px;height:14px;border-top:2.5px solid var(--dark);border-left:2.5px solid var(--dark)"></div>
-            <div style="position:absolute;top:0;right:0;width:14px;height:14px;border-top:2.5px solid var(--dark);border-right:2.5px solid var(--dark)"></div>
-            <div style="position:absolute;bottom:0;left:0;width:14px;height:14px;border-bottom:2.5px solid var(--dark);border-left:2.5px solid var(--dark)"></div>
-            <div style="position:absolute;bottom:0;right:0;width:14px;height:14px;border-bottom:2.5px solid var(--dark);border-right:2.5px solid var(--dark)"></div>
-          </div>
-          <span style="font-family:'DM Sans', sans-serif;font-size:14px;color:rgba(14,42,28,.45)">Scan frame</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 
 
 <!-- â•â• S11 AI DEMO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
@@ -2125,7 +2065,7 @@ body, button, input, textarea, select { font-family: "DM Sans", sans-serif !impo
 <section id="s14" style="background:var(--cream);min-height:100vh;padding:120px 56px;display:flex;align-items:center">
   <div style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
     <div>
-      <span class="eyebrow s14-el" style="color:var(--mid)display:inline-block">11 — In Context</span>
+      <span class="eyebrow s14-el" style="color:var(--mid)display:inline-block">08 — In Context</span>
       <h2 class="s-heading s14-el" style="color:var(--dark);margin-top:16px">Where it<br/><em style="font-style:normal;color:var(--mid)">lives.</em></h2>
       <p class="s14-el" style="font-family:'DM Sans', sans-serif;font-size:clamp(14px,1.2vw,17px);line-height:1.8;color:rgba(14,42,28,.6);max-width:420px;margin-top:24px">Trash Talk with Rumi is designed for high-traffic public spaces — shopping malls, university campuses, transit hubs. Anywhere waste decisions happen fast, and confusion is costly.</p>
       <div class="s14-el" style="margin-top:40px;display:flex;flex-direction:column;gap:16px">
@@ -2141,48 +2081,11 @@ body, button, input, textarea, select { font-family: "DM Sans", sans-serif !impo
   </div>
 </section>
 
-<!-- â•â• S15 PAYOFF â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section id="s15" style="background:var(--dark);min-height:100vh;padding:80px 56px;display:none;flex-direction:column;align-items:center;justify-content:center">
-  <div style="text-align:center;margin-bottom:48px">
-    <span class="eyebrow s15-el" style="display:inline-block">12 — Try It</span>
-    <h2 class="s-heading s15-el" style="color:var(--cream);margin-top:16px">Now you know<br/><em>where it goes.</em></h2>
-    <p class="s15-el" style="font-family:'DM Sans', sans-serif;font-size:14px;color:rgba(248,243,232,.4);margin-top:16px">Hold and throw each item into the right bin.</p>
-  </div>
-  <div id="s15-canvas-wrap" class="s15-el">
-    <canvas id="s15-canvas"></canvas>
-    <div id="s15-bins-overlay">
-      <div class="s15-bin-label" data-bin="recycle">
-        <div class="s15-bin-icon">♻️</div>
-        <span>Recycle</span>
-      </div>
-      <div class="s15-bin-label" data-bin="paper">
-        <div class="s15-bin-icon">📄</div>
-        <span>Paper</span>
-      </div>
-      <div class="s15-bin-label" data-bin="landfill">
-        <div class="s15-bin-icon">🗑️</div>
-        <span>Landfill</span>
-      </div>
-      <div class="s15-bin-label" data-bin="check">
-        <div class="s15-bin-icon">❓</div>
-        <span>Check Local</span>
-      </div>
-    </div>
-  </div>
-  <div id="s15-feedback" style="margin-top:32px;min-height:48px;text-align:centertransition:opacity .4s">
-    <p id="s15-rumi-say" style="font-family:'DM Sans', sans-serif;font-size:15px;color:var(--lime);font-weight:600"></p>
-  </div>
-  <div id="s15-complete" style="display:none;text-align:center;margin-top:32px">
-    <div style="font-weight:800;font-size:clamp(24px,2.5vw,38px);color:var(--cream)">4 / 4 sorted correctly.</div>
-    <p style="font-family:'DM Sans', sans-serif;font-size:14px;color:rgba(248,243,232,.4);margin-top:10px">Now you know where it goes.</p>
-  </div>
-</section>
-
 <!-- â•â• S16 REFLECTION â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <section id="s16" style="background:var(--dark);min-height:100vh;padding:120px 56px;display:flex;align-items:center">
   <div style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start">
     <div>
-      <span class="eyebrow s16-el" style="display:inline-block">13 — Reflection</span>
+      <span class="eyebrow s16-el" style="display:inline-block">09 — Reflection</span>
       <h2 class="s-heading s16-el" style="color:var(--cream);margin-top:16px">What I<br/><em>learned.</em></h2>
       <p class="s16-el" style="font-family:'DM Sans', sans-serif;font-size:clamp(14px,1.2vw,17px);line-height:1.8;color:rgba(248,243,232,.55);max-width:440px;margin-top:24px">This project taught us that behaviour change isn't about information — it's about reducing friction at the exact moment of decision.</p>
     </div>
