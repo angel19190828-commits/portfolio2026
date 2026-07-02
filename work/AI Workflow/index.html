@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -203,6 +203,7 @@
       min-height: 100vh; display: flex; align-items: center;
       padding: 10vw 8vw 10vw 12vw; position: relative; overflow: hidden;
     }
+    #about { padding-top: 4.5vw; min-height: auto; }
     .overview-inner { width: 100%; }
     .overview-header {
       display: flex; justify-content: space-between; align-items: baseline;
@@ -301,7 +302,7 @@
     .limits-col:first-child { border-right: 1px solid rgba(0,0,0,0.1); }
     .limits-col-header {
       padding: 1.2vw 2vw; border-bottom: 1px solid rgba(0,0,0,0.1);
-      font-family: 'PT Mono', monospace; font-size: 0.8vw;
+      font-family: 'PT Mono', monospace; font-size: 1.3vw;
       letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.32;
     }
     .limits-item {
@@ -409,6 +410,11 @@
       font-family: 'Inter', sans-serif; font-weight: 300;
       font-size: 1.1vw; line-height: 1.75; opacity: 0.82;
     }
+    .reflection-row-body p { margin: 0 0 1vw; }
+    .reflection-row-body p:last-child { margin-bottom: 0; }
+    .reflection-row-body ul,
+    .reflection-row-body ol { margin: 0.8vw 0 0 1.2vw; padding: 0; }
+    .reflection-row-body li { margin-bottom: 0.35vw; }
 
     /* ── PROCESS / ASSETS SECTION ── */
     .process-section {
@@ -612,10 +618,10 @@
 
     /* ── AW OVERVIEW (00) ── */
     .aw-label {
-      font-family:'PT Mono',monospace; font-size:0.62vw; letter-spacing:0.18em;
+      font-family:'PT Mono',monospace; font-size:0.8vw; letter-spacing:0.18em;
       text-transform:uppercase; color:rgba(20,20,20,0.45); margin-bottom:1.2rem; display:block;
     }
-    .aw-overview { padding:8vw 10vw; }
+    .aw-overview { padding:8vw 10vw 3.6vw 10vw; }
     .aw-overview-inner { display:grid; grid-template-columns:1fr 1fr; gap:6vw; align-items:start; }
     .aw-overview-title {
       font-family:'Inter',sans-serif; font-weight:100;
@@ -641,7 +647,7 @@
     .aw-tool-card { display:flex; flex-direction:column; gap:1vw; }
     .aw-tool-name { font-family:'Inter',sans-serif; font-weight:100; font-size:1.2vw; letter-spacing:-0.02em; }
     .aw-tool-icon { width:3.8vw; height:3.8vw; display:block; }
-    @media(max-width:760px){ .aw-tools-grid { grid-template-columns:repeat(2,1fr); } .aw-tool-name { font-size:5vw; } .aw-tool-icon { width:12vw; height:12vw; } }
+    @media(max-width:760px){ .aw-tools-grid { grid-template-columns:repeat(2,1fr); } .aw-tool-name { font-size:6vw; } .aw-tool-icon { width:12vw; height:12vw; } }
 
     /* ── PROBLEM (01) ── */
     .about-question {
@@ -815,38 +821,30 @@
           <div class="limits-col-header">AI</div>
           <div class="limits-item">
             <div class="limits-issue">Cannot See</div>
-            <div class="limits-example">Background numbers were clipped at the bottom. The CSS was changed. Neither of us knew until the browser was opened.</div>
           </div>
           <div class="limits-item">
             <div class="limits-issue">No Aesthetic Sense</div>
-            <div class="limits-example">The camera cinematic movement was tried twice. Both times it was reverted. The AI had no way to know which angle felt right.</div>
           </div>
           <div class="limits-item">
             <div class="limits-issue">Memory Resets</div>
-            <div class="limits-example">In a new session, the locked camera values had to be re-confirmed. Context from a previous conversation does not carry over.</div>
           </div>
           <div class="limits-item">
             <div class="limits-issue">Does Not Self-Audit</div>
-            <div class="limits-example">A function was called inside the draw loop at 60 frames per second. The code was delivered. The problem was found later.</div>
           </div>
         </div>
         <div class="limits-col">
           <div class="limits-col-header">HUMAN</div>
           <div class="limits-item">
             <div class="limits-issue">Needs To See It First</div>
-            <div class="limits-example">The cinematic camera movement was requested. After seeing it, it was reverted. The idea only became clear once it existed.</div>
           </div>
           <div class="limits-item">
             <div class="limits-issue">Describes With Feeling</div>
-            <div class="limits-example">The camera offset needed to increase by 2 percent. From which value. On which axis. The AI had to interpret.</div>
           </div>
           <div class="limits-item">
             <div class="limits-issue">Changes Direction Mid-Build</div>
-            <div class="limits-example">The background number target moved from minus 50 to minus 52, to minus 56, to minus 61, and settled at minus 51. Back where it started.</div>
           </div>
           <div class="limits-item">
             <div class="limits-issue">Does Not Always State The Boundary</div>
-            <div class="limits-example">The camera position was not declared off-limits. It was changed. That was how the boundary was discovered.</div>
           </div>
         </div>
       </div>
@@ -913,37 +911,6 @@
 
 
   <!-- ── 05 / FAILS ── -->
-  <section class="fails-section" id="fails">
-    <p class="aw-label">05 — Fails</p>
-    <div class="fails-section-title">What<br>Broke</div>
-
-    <div class="fails-item">
-      <div class="fails-placeholder">SCREEN CAPTURE</div>
-      <div>
-        <div class="fails-fail-title">Cinematic Camera</div>
-        <div class="fails-dialogue">The camera.position cinematic movement was requested and implemented. It was seen in the browser and immediately felt wrong. It was tried a second time with different values. Still wrong. The original position was restored.</div>
-        <div class="fails-result">Result — Original position locked. No further changes.</div>
-      </div>
-    </div>
-
-    <div class="fails-item">
-      <div class="fails-placeholder">SCREEN CAPTURE</div>
-      <div>
-        <div class="fails-fail-title">Hero Scroll Animation</div>
-        <div class="fails-dialogue">The hero headline scroll animation produced a visual glitch at a specific scroll speed. A fix was written. The fix created a second, worse glitch. The entire approach was discarded and rebuilt from scratch.</div>
-        <div class="fails-result">Result — Full rewrite. Original approach abandoned.</div>
-      </div>
-    </div>
-
-    <div class="fails-item">
-      <div class="fails-placeholder">SCREEN CAPTURE</div>
-      <div>
-        <div class="fails-fail-title">Workflow Layout</div>
-        <div class="fails-dialogue">The first version of the workflow section was built and reviewed on screen. The layout felt off. The pinning behavior broke under fast scroll. The entire section was scrapped and rebuilt with a different scroll structure.</div>
-        <div class="fails-result">Result — Complete rewrite. New pinning logic.</div>
-      </div>
-    </div>
-  </section>
   <!-- ── 006 / DESIGN ── -->
   <section class="process-section" id="design">
     <div class="process-inner">
@@ -973,7 +940,7 @@
       <div class="process-block">
         <div class="process-block-label">ORIGINAL AI DESIGN</div>
         <div class="process-img-single">
-          <img src="moodboard 3.png" alt="Original AI card designs" style="width:100%;display:block;border-radius:0.3vw;">
+          <img src="moodboard%203.png?v=3" alt="Original AI card designs" style="width:100%;display:block;border-radius:0.3vw;">
         </div>
       </div>
 
@@ -1026,28 +993,55 @@
         <p class="reflection-intro">Designing with AI changed what I thought the designer's job was.</p>
       </div>
       <div class="reflection-right">
-    <div class="reflection-inner reflection-grid">
-      <div class="reflection-left">
-        <p class="aw-label">08 — Reflection</p>
-        <div class="reflection-headline">What I<br>Learned</div>
-        <p class="reflection-intro">Designing with AI changed what I thought the designer's job was.</p>
-      </div>
-      <div class="reflection-right">
         <div class="reflection-row">
-          <div class="reflection-row-label">What I expected</div>
-          <div class="reflection-row-body">AI would generate what I imagined if I described it clearly enough.</div>
+          <div class="reflection-row-label">What I originally thought</div>
+          <div class="reflection-row-body">
+            <p>I assumed that if I wrote a detailed enough prompt, AI would be able to generate the website I had in mind.</p>
+          </div>
         </div>
         <div class="reflection-row">
           <div class="reflection-row-label">What changed</div>
-          <div class="reflection-row-body">The quality of the result depended on design foundations I prepared myself — the visual system, assets, and interaction logic had to be defined before AI could help.</div>
+          <div class="reflection-row-body">
+            <p>During production,</p>
+            <p>Before the results became accurate, I had to define the design foundation myself:</p>
+            <ul>
+              <li>typography weight, scale, and hierarchy</li>
+              <li>page spacing, card proportions, and information structure</li>
+              <li>3D materials, lighting, and environment reflections</li>
+              <li>the camera movement from far to near and back into position</li>
+              <li>scroll, hover, flip, and loading interactions</li>
+              <li>which elements were allowed to change and which had to remain fixed</li>
+              <li>the references, screenshots, colors, and assets used as visual evidence</li>
+            </ul>
+            <p>Only after these decisions were clear could Claude translate them into working HTML, CSS, JavaScript, Three.js, and GSAP.</p>
+          </div>
         </div>
         <div class="reflection-row">
           <div class="reflection-row-label">What I learned</div>
-          <div class="reflection-row-body">The real skill was art direction: establishing visual direction, recognizing when results fell short, and knowing when to stop.</div>
+          <div class="reflection-row-body">
+            <p>The main skill I developed was not simply prompting AI to write code. I had to specify:</p>
+            <ul>
+              <li>where the camera should begin</li>
+              <li>how close it should move</li>
+              <li>how long the movement should take</li>
+              <li>how subtle the rotation should be</li>
+              <li>which easing curve to use</li>
+              <li>where the camera should finally settle</li>
+            </ul>
+            <p>I also learned that generating more versions does not always improve the result. Knowing which parts are already working, what should remain untouched, and when to stop is also part of design judgment.</p>
+          </div>
         </div>
         <div class="reflection-row">
           <div class="reflection-row-label">Going forward</div>
-          <div class="reflection-row-body">Define the full experience first. Prepare the assets. Then use AI to accelerate production.</div>
+          <div class="reflection-row-body">
+            <p>For future AI-assisted projects, I would define the full experience before asking AI to build it:</p>
+            <ol>
+              <li>collect references and create a moodboard</li>
+              <li>establish the typography, color, material, and layout system</li>
+              <li>map the page structure and interaction flow</li>
+              <li>prepare the 3D models, images, and other assets</li>
+            </ol>
+          </div>
         </div>
       </div>
     </div>
@@ -1300,7 +1294,7 @@ function loadKnot(i, onReady) {
 }
 
 let loadedCount = 0
-for (let i=0; i<4; i++) {
+for (let i=0; i<3; i++) {
   loadKnot(i, (outer, inner) => {
     outer.scale.setScalar(0.001)
     outer.position.set(0,0,0)
@@ -1308,46 +1302,9 @@ for (let i=0; i<4; i++) {
     knotGroups.push(outer)
     knotMeshes.push(inner)
     loadedCount++
-    if (loadedCount===4) heroIntro()
+    if (loadedCount===3) heroIntro()
   })
 }
-
-// ── DECOMPOSED KNOT (Define Problem / #about) ──
-;(function(){
-  const N_SEGS=14, SEG_POINTS=18
-  const KR=0.72, KT=0.22, KP=2, KQ=3
-  function knotPt(t){
-    const phi=KP*t*Math.PI*2, psi=KQ*t*Math.PI*2
-    const r=KR*(2+Math.cos(psi))
-    return new THREE.Vector3(r*Math.cos(phi), r*Math.sin(phi), KR*Math.sin(psi))
-  }
-  window._segGroup=new THREE.Group()
-  window._segGroup.position.set(2.8,-0.4,0)
-  window._segGroup.scale.setScalar(0.78)
-  window._segGroup.visible=false
-  scene.add(window._segGroup)
-  window._segMeshes=[]
-  window._segOutDirs=[]
-  window._decompProg=0
-  for(let i=0;i<N_SEGS;i++){
-    const t0=i/N_SEGS, t1=(i+1)/N_SEGS
-    const pts=[]
-    for(let j=0;j<=SEG_POINTS;j++) pts.push(knotPt(t0+(t1-t0)*(j/SEG_POINTS)))
-    const curve=new THREE.CatmullRomCurve3(pts)
-    const geo=new THREE.TubeGeometry(curve,SEG_POINTS,KT,10,false)
-    const mat=metalMat.clone(); mat.transparent=true; mat.opacity=1; mat.side=THREE.DoubleSide
-    const mesh=new THREE.Mesh(geo,mat)
-    window._segGroup.add(mesh)
-    window._segMeshes.push(mesh)
-    const mid=knotPt(t0+(t1-t0)*0.5)
-    const dir=mid.clone().normalize()
-    dir.x+=(Math.random()-0.5)*0.4
-    dir.y+=(Math.random()-0.5)*0.4
-    dir.z+=(Math.random()-0.5)*0.4
-    dir.normalize()
-    window._segOutDirs.push(dir)
-  }
-})()
 
 // ── HERO INTRO ──
 function heroIntro() {
@@ -1487,25 +1444,6 @@ function returnToHero(){
   mode='hero'; current=-1
 }
 
-// ── DECOMPOSED KNOT SCROLL TRIGGER ──
-function showSegGroup(){
-  window._decompProg=0
-  window._segMeshes.forEach(m=>{ m.position.set(0,0,0); m.material.opacity=1 })
-  window._segGroup.visible=true
-  gsap.fromTo(window._segGroup.scale,{x:0.01,y:0.01,z:0.01},{x:0.78,y:0.78,z:0.78,duration:0.8,ease:'power3.out'})
-}
-function hideSegGroup(){
-  window._segGroup.visible=false
-  window._segGroup.scale.setScalar(0.01)
-}
-ScrollTrigger.create({
-  trigger:'#about', start:'top 20%', end:'bottom 20%', scrub:1.2,
-  onEnter:     showSegGroup,
-  onEnterBack: showSegGroup,
-  onLeave:     hideSegGroup,
-  onLeaveBack: hideSegGroup,
-  onUpdate:self=>{ window._decompProg=self.progress }
-})
 
 ;[1,2,3].forEach((n,i)=>{
   ScrollTrigger.create({
@@ -1594,20 +1532,6 @@ const clock = new THREE.Clock()
     })
   }
 
-  // Decomposed knot
-  if(window._segGroup && window._segGroup.visible){
-    window._segGroup.rotation.y+=0.003
-    window._segMeshes.forEach((mesh,i)=>{
-      const spread=window._decompProg*1.8
-      mesh.position.x=window._segOutDirs[i].x*spread
-      mesh.position.y=window._segOutDirs[i].y*spread
-      mesh.position.z=window._segOutDirs[i].z*spread
-      mesh.rotation.x+=0.002+i*0.0003
-      mesh.rotation.y+=0.003-i*0.0002
-      mesh.material.opacity=1-window._decompProg*0.35
-    })
-  }
-
   renderer.render(scene,camera)
 })()
 
@@ -1619,3 +1543,4 @@ window.addEventListener('resize',()=>{
 </script>
 </body>
 </html>
+

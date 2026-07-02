@@ -36,9 +36,10 @@
     const width = window.innerWidth;
     const height = window.innerHeight;
     const mobile = window.matchMedia("(max-width: 809px)").matches;
+    const tileFromH = (height - gsap.utils.clamp(106, 138, height * 0.125) - 2 * 32) / 3;
     const tile = mobile
       ? Math.min(width * 0.36, 164)
-      : gsap.utils.clamp(190, 380, Math.min(width * 0.178, height * 0.37));
+      : gsap.utils.clamp(190, 380, Math.min(width * 0.178, tileFromH));
     const gap = mobile ? Math.max(10, width * 0.016) : gsap.utils.clamp(16, 32, tile * 0.082);
     const gridWidth = tile * 4 + gap * 3;
     const gridHeight = tile * 3 + gap * 2;
