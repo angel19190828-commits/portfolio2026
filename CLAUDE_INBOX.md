@@ -1,6 +1,18 @@
 # CLAUDE_INBOX.md
 
-## Edit — 2026-07-02 (latest, 30th update)
+## Edit — 2026-07-02 (latest, 31st update)
+
+#### `work/Fableware Impact Engine/Fableware Laptop MockUp.png`, `work/index.html`, `work/AI Workflow/index.html`
+- **What:** Three independent fixes:
+  1. Overwrote `Fableware Laptop MockUp.png` in place with the new mockup image Angel provided (source: `C:\Users\angel\OneDrive\Desktop\CDM 2025\Project 3\Macbook Mockup.png`, ~1.8MB). Same filename/path, so the homepage's Fableware project-stack card (`index.html:94`) picks it up automatically — no HTML change needed there.
+  2. `work/index.html:31` — the work-listing page's Fableware row `data-img` (used by the JS-driven `.cursor-preview` hover, `script.js` ~line 354-380) previously pointed at an external Framer-hosted image unrelated to the local mockup. Changed to `./Fableware%20Impact%20Engine/Fableware%20Laptop%20MockUp.png` so the hover preview now shows the same local mockup as the homepage.
+  3. `work/AI Workflow/index.html` — `#lateral` (the vertical rotated sidebar text, e.g. "MY WORKFLOW") was sized purely with `font-size: 8vw` (line 21) / `9.5vw` in the mobile query (line 470). Since `vw` scales off viewport width but the text stacks vertically, wide/short desktop viewports (e.g. maximized/fullscreen browser) produced a font size whose total text-run height exceeded the viewport, clipping the top/bottom off-screen (it's `position:fixed`, so no visible `overflow:hidden` — the text just fell outside the viewport rectangle). Changed both to `min(8vw, 8.5vh)` / `min(9.5vw, 8.5vh)` so the font size self-limits by viewport height on wide screens instead of growing unbounded with width. Mobile portrait sizing is unaffected (vh isn't the binding constraint there).
+- **Why:** Angel reported (1) wanting the new mockup image used in both the homepage hero card and the work-listing hover, and (2) the "MY WORKFLOW" text getting cut off in full-screen/wide browser windows.
+- **Risk:** Low. Image swap is a same-path binary overwrite. `data-img` is a single attribute value change, JS hover logic untouched. The `min()` font-size change is a single-property CSS swap per rule, verified the mobile breakpoint (`max-width:768px`) and typical desktop widths still resolve to sensible sizes by hand-calculation; no browser automation available in this session to pixel-verify — please eyeball the AI Workflow page in a maximized window to confirm no clipping.
+
+---
+
+## Edit — 2026-07-02 (30th update)
 
 #### `work/Trash Talk with Rumi/index.html`
 - **What:** Deleted the entire `<section id="s15">` ("12 — Try It" — a hidden `display:none` canvas mini-game where users throw items into the correct bin), lines 2084-2120 (`sed -i '2084,2120d'`). `#s14` (08 — In Context) now flows directly into `#s16` (09 — Reflection).

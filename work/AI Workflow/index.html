@@ -18,7 +18,7 @@
       position: fixed; left: 1.2vw; top: 50%;
       transform: translateY(-50%) rotate(180deg);
       writing-mode: vertical-rl; font-family: 'Inter', sans-serif;
-      font-weight: 100; font-size: 8vw; line-height: 0.82;
+      font-weight: 100; font-size: min(8vw, 8.5vh); line-height: 0.82;
       text-transform: uppercase; z-index: 5; pointer-events: none;
       letter-spacing: -0.02em; white-space: nowrap;
     }
@@ -467,7 +467,7 @@
 
     /* ── MOBILE ── */
     @media (max-width: 768px) {
-      #lateral { font-size: 9.5vw; left: 0.5vw; }
+      #lateral { font-size: min(9.5vw, 8.5vh); left: 0.5vw; }
       #receipt { font-size: 2.3vw; bottom: 3vw; right: 3vw; }
       .rec-line .rec-ref-txt { font-size: 1.6vw; }
       .hero { padding: 5vw 5vw 6vw 16vw; }
