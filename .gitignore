@@ -1,0 +1,15 @@
+versions/
+
+# Local/source media archives. The live site uses optimized/web proxies.
+assets/art/*.mov
+assets/art/*.mp4
+assets/art/*.tiff
+assets/art/*.tif
+assets/trash-talk-demo.mp4
+assets/trash-talk-demo-trim.mp4
+assets/ai-workflow-demo.mp4
+art_reference.mp4
+section1-reference.mp4
+work/Baby Steps/assets/videos/*.mp4
+work/Trash Talk with Rumi/assets/case-study/external-guided-sorting.mp4
+work/Trash Talk with Rumi/assets/case-study/external-interactive-video.mp4
