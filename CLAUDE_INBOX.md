@@ -1,6 +1,37 @@
 # CLAUDE_INBOX.md
 
-## Edit — 2026-07-02 (latest, 31st update)
+## Edit — 2026-07-04 (latest, 34th update)
+
+#### `work/FlyLens/index.html`
+- **What:** Deleted the Problem section's KPI tile row entirely — the whole `<div class="kpi-row up d3">` block (was 3 tiles) plus the now-dead `.kpi-row` / `.kpi .n` / `.kpi .l` CSS rules. Problem section is now eyebrow + heading + two paragraphs + photo.
+- **Why:** After the 33rd update's rewrite, Angel decided the tiles should just be removed rather than reworded.
+- **Risk:** None. Self-contained removal; no other markup used `.kpi*` classes (grep-verified).
+
+---
+
+## Edit — 2026-07-04 (33rd update)
+
+#### `work/FlyLens/index.html`
+- **What:** Rewrote the 3 KPI tiles in the Problem section (lines 784-786). "8+ Sources analysed / 1 Unified clear view / AI Price prediction" → "Weeks / Re-checking the same routes", "5+ / Platforms compared by hand", "? / Book now or wait — never clear". Markup structure and `.kpi` CSS untouched.
+- **Why:** Angel flagged the old tiles as feeling AI-generated ("好ai"); chose (via AskUserQuestion) to keep the tile layout but swap in real pain-point framing matching the new Problem copy from the 32nd update.
+- **Risk:** None. Text-only change inside existing `.kpi` divs; "Weeks" at `.kpi .n`'s 34px display font fits comfortably in the flex-wrap row.
+
+---
+
+## Edit — 2026-07-04 (32nd update)
+
+#### `work/FlyLens/index.html`
+- **What:** Four changes requested by Angel:
+  1. **Hover removal** — deleted `.jt-sc img:hover` (journey screens) and `.gcard img:hover` (gallery cards) lift effects, plus their now-unused `transition: transform` lines. Also removed the dead `.ob-phone:hover` + transition (`.ob-phone` isn't used in markup at all — CSS-only leftover). iPhone mockups no longer react to hover anywhere.
+  2. **Reflection section rebuilt** — `#closing` changed from the full-bleed `hero-stair-phone.png` photo + gradient overlay + bottom-anchored copy into a Rumi-style two-column dark section (mimics `#s16` in Trash Talk with Rumi): solid `var(--ink)` background, `min-height:100vh`, `1fr 1fr` grid. Left column: "08 Reflection" eyebrow + "What I *learned.*" heading (em in `var(--lavender)`) + short intro. Right column: 4 `reflect-item` rows with hairline top dividers (last also bottom), each a small uppercase label + body — labels: "Where it started" / "Beyond search" / "AI with purpose" / "Who it's for", bodies are the original 4 reflection paragraphs (para 2 lightly merged into one sentence flow). Styles put in the CSS block (not inline like Rumi) to match FlyLens conventions; `.up`/`.d1-.d4` scroll-reveal classes kept so the existing IntersectionObserver still animates. Mobile media query: replaced `.closing-copy` override with `#closing { padding:80px 24px; min-height:auto }` + single-column grid. Note: `hero-stair-phone.png` is no longer referenced by this section (still on disk, still used by nothing else — check before deleting).
+  3. **Problem body text** — replaced the single "Flight search is broken…" paragraph with Angel's new two-paragraph copy (international students / price-sensitive travelers framing). Second `<p>` gets `style="margin-top:16px"`. Eyebrow, heading, KPI row untouched.
+  4. **Role pill** — hero pill "Lead UX/UI Designer" (`pill-blue`, cobalt bg) → "UX/UI Designer" using existing `.pill-ghost` (white bg + lavender border, same as sibling pills; plain white would be invisible on the white hero). Deleted the now-unused `.pill-blue` rule. Also updated the overview-strip Role value to "UX/UI Designer" for consistency.
+- **Why:** Direct request from Angel (unhoverable mockups, Rumi-style reflection layout, new problem copy, white UX/UI Designer pill).
+- **Risk:** Low-medium. The reflection rebuild is structural (markup + CSS + media query all replaced) but self-contained to `#closing`; no JS touched — the page's IntersectionObserver targets `.up` generically. `.btn`/`.btn:hover` CSS is unused dead code (pre-existing, left alone). No browser automation this session — please eyeball the reflection section on desktop + narrow width.
+
+---
+
+## Edit — 2026-07-02 (31st update)
 
 #### `work/Fableware Impact Engine/Fableware Laptop MockUp.png`, `work/index.html`, `work/AI Workflow/index.html`
 - **What:** Three independent fixes:

@@ -179,7 +179,6 @@
       padding: 7px 16px; border-radius: 100px;
       font-size: 12px; font-weight: 500;
     }
-    .pill-blue { background: var(--cobalt); color: white; }
     .pill-ghost { border: 1px solid var(--lavender); background: white; color: var(--ink-soft); }
 
     .hero-r {
@@ -256,12 +255,6 @@
       color: var(--ink); margin: 16px 0 20px;
     }
     .body { font-size: 15px; line-height: 1.82; color: var(--ink-dim); max-width: 440px; }
-    .kpi-row { display: flex; gap: 36px; flex-wrap: wrap; margin-top: 44px; }
-    .kpi .n {
-      font-family: var(--fd); font-size: 34px; font-weight: 800;
-      color: var(--cobalt); line-height: 1;
-    }
-    .kpi .l { font-size: 13px; color: var(--ink-dim); margin-top: 5px; }
 
     .problem-r { position: relative; }
     .problem-r img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; display: block; }
@@ -386,9 +379,7 @@
     .jt-sc img {
       height: 480px; width: auto; border-radius: 28px;
       filter: drop-shadow(0 20px 48px rgba(56,59,203,.16));
-      transition: transform .4s var(--ease);
     }
-    .jt-sc img:hover { transform: translateY(-12px) scale(1.02); }
     .jt-sc-label {
       font-size: 12px; font-weight: 500; color: var(--ink-dim);
       letter-spacing: .04em; text-align: center;
@@ -423,9 +414,7 @@
     .ob-phone {
       width: 100%; display: block;
       filter: drop-shadow(0 28px 60px rgba(0,0,0,.32));
-      transition: transform .45s var(--ease);
     }
-    .ob-phone:hover { transform: translateY(-14px); }
     .ob-cap .cn {
       font-size: 10px; font-weight: 600; letter-spacing: .13em;
       text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 7px;
@@ -545,9 +534,7 @@
     .gcard img {
       width: 100%; border-radius: 20px;
       filter: drop-shadow(0 12px 32px rgba(56,59,203,.13));
-      transition: transform .4s var(--ease);
     }
-    .gcard img:hover { transform: translateY(-12px); }
     .gcap {
       font-size: 11px; font-weight: 500; color: var(--ink-dim);
       text-align: center; margin-top: 10px;
@@ -588,22 +575,33 @@
     .typespec em { color: var(--cobalt); font-style: normal; }
 
     /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CLOSING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    #closing { position: relative; overflow: hidden; }
-    .closing-img { width: 100%; height: 90vh; object-fit: cover; display: block; object-position: center 30%; }
-    .closing-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(13,15,26,.92) 0%, rgba(13,15,26,.18) 55%, transparent 100%);
+    #closing {
+      background: var(--ink); min-height: 100vh;
+      padding: 120px 56px; display: flex; align-items: center;
     }
-    .closing-copy { position: absolute; bottom: 0; left: 0; right: 0; padding: 96px 56px; }
-    .closing-copy h2 {
+    .closing-grid {
+      width: 100%; display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .closing-left h2 {
       font-family: var(--fd); font-size: clamp(2.4rem,5vw,4.4rem);
       font-weight: 800; letter-spacing: -.035em; color: white;
-      line-height: 1.08; max-width: 580px; margin: 14px 0 28px;
+      line-height: 1.08; margin-top: 16px;
     }
-    .closing-copy p {
-      font-size: 16px; line-height: 1.85; color: rgba(255,255,255,1);
-      max-width: 760px; margin-bottom: 28px;
+    .closing-left h2 em { color: var(--lavender); font-style: normal; }
+    .closing-intro {
+      font-size: 16px; line-height: 1.8; color: rgba(255,255,255,.55);
+      max-width: 440px; margin-top: 24px;
     }
+    .closing-items { display: flex; flex-direction: column; }
+    .reflect-item { border-top: 1px solid rgba(255,255,255,.08); padding: 28px 0; }
+    .reflect-item:last-child { border-bottom: 1px solid rgba(255,255,255,.08); }
+    .reflect-item .rl {
+      font-size: 10px; font-weight: 600; letter-spacing: .16em;
+      text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 10px;
+    }
+    .reflect-item:first-child .rl { color: var(--lavender); }
+    .reflect-item .rb { font-size: 17px; line-height: 1.75; color: rgba(255,255,255,.65); }
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 14px 28px; background: white; color: var(--cobalt);
@@ -698,7 +696,8 @@
       .id-type { padding: 48px 24px; }
       .typespec { font-size: clamp(2rem,9vw,3.5rem); white-space: normal; }
 
-      .closing-copy { padding: 48px 24px; }
+      #closing { padding: 80px 24px; min-height: auto; }
+      .closing-grid { grid-template-columns: 1fr; gap: 48px; }
       .flylens-detail .portfolio-footer { flex-direction: column; gap: 12px; padding: 28px 24px; text-align: center; }
       .flylens-detail .project-more-work-cta { padding: 42px 20px 56px; }
     }
@@ -739,7 +738,7 @@
       An AI-driven flight search app that turns scattered flight prices into clear booking decisions, compare fares, and watch routes before prices change.
     </p>
     <div class="hero-pills up d3">
-      <span class="pill pill-blue">Lead UX/UI Designer</span>
+      <span class="pill pill-ghost">UX/UI Designer</span>
       <span class="pill pill-ghost">iOS Mobile</span>
       <span class="pill pill-ghost">Figma &middot; Photoshop &middot; Illustrator</span>
     </div>
@@ -756,7 +755,7 @@
 <!-- â”€â”€ OVERVIEW STRIP â”€â”€ -->
 <section id="strip">
   <div class="strip-inner">
-    <div class="strip-cell up"><div class="strip-label">Role</div><div class="strip-val">Lead UX/UI Designer</div></div>
+    <div class="strip-cell up"><div class="strip-label">Role</div><div class="strip-val">UX/UI Designer</div></div>
     <div class="strip-cell up d1"><div class="strip-label">Platform</div><div class="strip-val">iOS Mobile App</div></div>
     <div class="strip-cell up d3"><div class="strip-label">Tools</div><div class="strip-icons"><img src="Assets/figma-icon.png" alt="Figma"><img src="Assets/ps-icon.png" alt="Photoshop"><img src="Assets/ai-icon.png" alt="Illustrator"></div></div>
   </div>
@@ -770,13 +769,11 @@
       <div class="eyebrow up">01 The Problem</div>
       <h2 class="problem-h up d1">Travellers were<br>checking 8 tabs.<br>For one flight.</h2>
       <p class="body up d2">
-        Flight search is broken. Prices scatter across Trip.com, Expedia, Skyscanner, Kiwi, and more with no single source of truth. FlyLens was designed to consolidate live pricing data, surface the lowest fare, and give travellers the confidence to act.
+        International students and price-sensitive travelers often spend days or even weeks checking the same routes across multiple booking platforms. The problem is not a lack of flight options, but the difficulty of understanding which fare is actually reasonable and when to book.
       </p>
-      <div class="kpi-row up d3">
-        <div class="kpi"><div class="n">8+</div><div class="l">Sources analysed</div></div>
-        <div class="kpi"><div class="n">1</div><div class="l">Unified clear view</div></div>
-        <div class="kpi"><div class="n">AI</div><div class="l">Price prediction</div></div>
-      </div>
+      <p class="body up d2" style="margin-top:16px">
+        Because prices change quickly and each platform presents different information, users are left to compare fares manually, second-guess their decisions, and worry about either booking too early or waiting too long. This creates unnecessary stress and makes finding a suitable flight feel more complicated than it should be.
+      </p>
     </div>
   </div>
   <div class="problem-r up d1">
@@ -1007,15 +1004,30 @@
 
 <!-- â”€â”€ CLOSING â”€â”€ -->
 <section id="closing">
-  <img class="closing-img" src="Assets/hero-stair-phone.png" alt="FlyLens final shot">
-  <div class="closing-overlay"></div>
-  <div class="closing-copy">
-    <div class="eyebrow light up">08 Reflection</div>
-    <h2 class="up d1">Reflection</h2>
-    <p class="up d2">FlyLens began with my own experience as an international student. I often need to travel between school and home, and booking flights has always been a stressful process. Prices change quickly, information is scattered across different platforms, and even when I find a fare that looks reasonable, it is still difficult to know whether I should book it immediately or wait.</p>
-    <p class="up d2" style="margin-top:20px">That is why I wanted to design FlyLens as more than another flight search tool. I see it as an AI-assisted travel product that helps users compare fares, understand price changes, and make more confident booking decisions. Instead of forcing users to repeatedly check different websites, FlyLens brings the information together and provides clearer guidance on whether a fare is worth booking, watching, or reconsidering.</p>
-    <p class="up d2" style="margin-top:20px">Throughout the project, I focused on how AI could support users in a practical way rather than simply being added as a trendy feature. For FlyLens, the value of AI is in reducing search friction, organizing complex fare information, and helping users feel less anxious about missing the right ticket.</p>
-    <p class="up d2" style="margin-top:20px">I hope FlyLens can support people with similar experiences, especially international students and frequent travelers, by making it easier to find suitable flights and feel more confident about when to book.</p>
+  <div class="closing-grid">
+    <div class="closing-left">
+      <div class="eyebrow light up">08 Reflection</div>
+      <h2 class="up d1">What I<br><em>learned.</em></h2>
+      <p class="closing-intro up d2">FlyLens began with my own experience as an international student, where booking flights home always felt more stressful than it should be.</p>
+    </div>
+    <div class="closing-items">
+      <div class="reflect-item up d1">
+        <div class="rl">Where it started</div>
+        <div class="rb">I often need to travel between school and home, and booking flights has always been a stressful process. Prices change quickly, information is scattered across different platforms, and even when I find a fare that looks reasonable, it is still difficult to know whether I should book it immediately or wait.</div>
+      </div>
+      <div class="reflect-item up d2">
+        <div class="rl">Beyond search</div>
+        <div class="rb">I wanted FlyLens to be more than another flight search tool — an AI-assisted travel product that helps users compare fares, understand price changes, and make more confident booking decisions. Instead of forcing users to repeatedly check different websites, FlyLens brings the information together and provides clearer guidance on whether a fare is worth booking, watching, or reconsidering.</div>
+      </div>
+      <div class="reflect-item up d3">
+        <div class="rl">AI with purpose</div>
+        <div class="rb">Throughout the project, I focused on how AI could support users in a practical way rather than simply being added as a trendy feature. For FlyLens, the value of AI is in reducing search friction, organizing complex fare information, and helping users feel less anxious about missing the right ticket.</div>
+      </div>
+      <div class="reflect-item up d4">
+        <div class="rl">Who it's for</div>
+        <div class="rb">I hope FlyLens can support people with similar experiences, especially international students and frequent travelers, by making it easier to find suitable flights and feel more confident about when to book.</div>
+      </div>
+    </div>
   </div>
 </section>
 
