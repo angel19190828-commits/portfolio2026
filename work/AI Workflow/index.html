@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Workflow - Angel Yu</title>
+  <link rel="icon" type="image/png" href="../../assets/stickers/angel.png">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400&family=PT+Mono&display=block" rel="stylesheet">
   <style>
@@ -659,6 +660,16 @@
       font-family: 'Inter', sans-serif; font-weight: 300;
       font-size: 1.1vw; line-height: 1.85; opacity: 0.65; max-width: 52vw;
     }
+    /* --- Mobile hamburger menu --- */
+    .menu-button { display: none; width: 34px; height: 34px; border: 0; padding: 0; background: transparent; cursor: pointer; pointer-events: auto; }
+    .menu-button span { display: block; width: 18px; height: 2px; margin: 4px auto; border-radius: 2px; background: var(--ink); }
+    .mobile-menu { position: fixed; inset: 0 0 auto 0; z-index: 90; display: none; padding: 92px 24px 26px; background: rgba(244, 242, 239, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transform: translateY(-110%); transition: transform .45s cubic-bezier(.22, 1, .36, 1); }
+    .mobile-menu a { display: block; padding: 18px 0; border-bottom: 1px solid rgba(20, 20, 20, 0.15); font-size: 28px; color: var(--ink); text-decoration: none; }
+    .mobile-menu[aria-hidden="false"] { transform: translateY(0); }
+    @media (max-width: 809px) {
+      .site-header .nav-links { display: none; }
+      .menu-button, .mobile-menu { display: block; }
+    }
   </style>
 </head>
 <body>
@@ -670,7 +681,25 @@
     <a class="active" href="../../work/?v=portfolio-clean-trash-v1"><i></i>work</a>
     <a href="../../art/?v=portfolio-clean-trash-v1"><i></i>art</a>
   </nav>
+  <button class="menu-button" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
 </header>
+<aside class="mobile-menu" aria-hidden="true">
+  <a href="../../">home</a>
+  <a href="../../work/?v=portfolio-clean-trash-v1">work</a>
+  <a href="../../art/?v=portfolio-clean-trash-v1">art</a>
+</aside>
+<script>
+(function () {
+  var btn = document.querySelector(".menu-button");
+  var menu = document.querySelector(".mobile-menu");
+  if (!btn || !menu) return;
+  btn.addEventListener("click", function () {
+    var open = menu.getAttribute("aria-hidden") === "false";
+    menu.setAttribute("aria-hidden", open ? "true" : "false");
+    btn.setAttribute("aria-label", open ? "Open menu" : "Close menu");
+  });
+})();
+</script>
 
 <div id="canvas-wrap"></div>
 <div id="lateral"></div>

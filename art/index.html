@@ -4,22 +4,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Art - Angel Yu</title>
-  <link rel="stylesheet" href="../styles.css?v=art-wheel-media-v2">
+  <link rel="icon" type="image/png" href="../assets/stickers/angel.png">
+  <script>(function(){try{if(localStorage.getItem("site-lang")==="zh")document.documentElement.lang="zh-Hans";}catch(e){}})();</script>
+  <link rel="stylesheet" href="../styles.css?v=lang-toggle-v3">
 </head>
-<body class="art-page">
+<body class="art-page" data-i18n-title="titleArt">
   <header class="site-header">
     <a class="brand magnetic" href="../" aria-label="Angel Yu home"><img class="brand__image" src="../assets/angel-yu.png" alt="Angel Yu"></a>
     <nav class="nav-links" aria-label="Primary navigation">
-      <a class="magnetic" href="../"><i></i>home</a>
-      <a class="magnetic" href="../work/?v=portfolio-clean-trash-v1"><i></i>work</a>
-      <a class="active magnetic" href="../art/?v=portfolio-clean-trash-v1"><i></i>art</a>
+      <a class="magnetic" href="../" data-i18n="navHome"><i></i>home</a>
+      <a class="magnetic" href="../work/?v=portfolio-clean-trash-v1" data-i18n="navWork"><i></i>work</a>
+      <a class="active magnetic" href="../art/?v=portfolio-clean-trash-v1" data-i18n="navArt"><i></i>art</a>
+      <button class="lang-toggle magnetic" type="button" aria-label="切换到中文">EN/中</button>
     </nav>
     <button class="menu-button" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
   </header>
-  <aside class="mobile-menu" aria-hidden="true"><a href="../">home</a><a href="../work/?v=portfolio-clean-trash-v1">work</a><a href="../art/?v=portfolio-clean-trash-v1">art</a><a href="#top">top</a></aside>
+  <aside class="mobile-menu" aria-hidden="true"><a href="../" data-i18n="navHome">home</a><a href="../work/?v=portfolio-clean-trash-v1" data-i18n="navWork">work</a><a href="../art/?v=portfolio-clean-trash-v1" data-i18n="navArt">art</a><button class="lang-toggle mobile-lang-toggle" type="button" aria-label="切换到中文">EN/中</button></aside>
   <main class="art-scroll-section" id="top">
     <section class="art-stage" aria-label="Artwork image wall">
-      <div class="art-title-layer reveal"><h1>"Artwork"</h1><h6>WORK IN PROGRESS</h6></div>
+      <div class="art-title-layer reveal"><h1 data-i18n="artTitle">"Artwork"</h1><h6 data-i18n="artWip">WORK IN PROGRESS</h6></div>
       <div class="art-wall-viewport" aria-hidden="true">
         <div class="art-wall">
           <div class="art-column">
@@ -56,6 +59,7 @@
   <script src="../vendor/gsap/ScrollTrigger.min.js"></script>
   <script src="../script.js?v=portfolio-clean-trash-v1"></script>
   <script src="../scripts/art-page.js?v=art-title-fixed-v1"></script>
+  <script src="../scripts/i18n.js?v=6"></script>
 </body>
 </html>
 

@@ -7,6 +7,8 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>BabySteps - Case Study</title>
+  <link rel="icon" type="image/png" href="../../assets/stickers/angel.png">
+  <script>(function(){try{if(localStorage.getItem("site-lang")==="zh")document.documentElement.lang="zh-Hans";}catch(e){}})();</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -429,7 +431,6 @@
       margin-top: 16px;
     }
     .cs-testing-num span { color: rgba(140,197,252,0.9); }
-    .cs-testing-note { margin-top: 48px; font-size: 0.88rem; line-height: 1.7; color: rgba(255,255,255,0.55); max-width: 72ch; }
     @media (max-width: 720px) { .cs-testing-grid { grid-template-columns: 1fr; } }
 
 
@@ -915,17 +916,6 @@
       border-radius: 16px;
       background: rgba(180,210,255,.03);
     }
-    .cs-concept-tag {
-      display: inline-block;
-      font-size: 10px; font-weight: 700; letter-spacing: .16em;
-      text-transform: uppercase;
-      color: rgba(180,210,255,.6);
-      background: none;
-      border: none;
-      border-radius: 999px;
-      padding: 5px 12px;
-      margin-bottom: 16px;
-    }
     .cs-concept-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 20px; line-height: 1.1; }
     .cs-concept-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
     .cs-concept-list li {
@@ -948,7 +938,7 @@
     }
     .cs-moodboard-grid img { width:100%; height:100%; object-fit:cover; border-radius:6px; }
     .cs-moodboard-grid img:first-child { grid-row: span 2; }
-    .cs-caption { font-size:12px; color:rgba(180,210,255,.4); margin-top:12px; }
+    .cs-caption { font-size:13px; color:rgba(210,228,255,.78); margin-top:12px; }
 
     /* ── Visual Style ───────────────────────────────── */
     .cs-visual-img { width:100%; border-radius:12px; margin-top:40px; display:block; }
@@ -1016,9 +1006,214 @@
       object-fit:cover;
     }
     @media(max-width:640px){ .cs-artpipe-frames{ grid-template-columns:1fr; } .cs-artpipe-steps{ flex-direction:column; align-items:flex-start; } }
+
+    /* ======================================
+       NEW SECTIONS: PROBLEM / RESEARCH / PRODUCTION / USER TEST / BARS
+    ====================================== */
+    .cs-problem-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; margin-top: 48px;
+    }
+    .cs-problem-card {
+      padding: 28px; border-radius: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .cs-problem-card-title {
+      font-family: "Arial Black","Helvetica Neue",sans-serif;
+      font-size: 1rem; letter-spacing: -0.02em; color: #f5c842;
+      margin-bottom: 10px;
+    }
+    .cs-problem-card-body { font-size: 0.88rem; line-height: 1.7; color: rgba(255,255,255,0.65); }
+    @media (max-width: 900px) { .cs-problem-grid { grid-template-columns: 1fr; } }
+
+    .cs-research-duo {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start; margin-top: 48px;
+    }
+    .cs-research-quote { position: relative; padding-top: 48px; }
+    .cs-research-quote::before {
+      content: "\201C";
+      position: absolute; top: -8px; left: -6px;
+      font-family: Georgia, serif;
+      font-size: 5rem; line-height: 1; color: #f5c842;
+    }
+    .rq-text {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+      line-height: 1.5; font-weight: 500;
+      color: rgba(255,255,255,0.85);
+    }
+    .rq-attr {
+      margin-top: 24px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(180,210,255,0.6);
+    }
+    @media (max-width: 900px) { .cs-research-duo { grid-template-columns: 1fr; gap: 48px; } }
+    .cs-phases-head {
+      margin-top: 56px; margin-bottom: 20px;
+      font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(180,210,255,0.6);
+    }
+    .cs-phases {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    }
+    .cs-phase-tile {
+      padding: 4px 0 4px 20px;
+      border-left: 1px solid rgba(255,255,255,0.12);
+      text-align: left;
+    }
+    .cs-phase-num {
+      font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(180,210,255,0.55); margin-bottom: 8px;
+    }
+    .cs-phase-name {
+      font-family: "Arial Black","Helvetica Neue",sans-serif;
+      font-size: 0.86rem; letter-spacing: -0.01em; color: #fff;
+      margin-bottom: 6px;
+    }
+    .cs-phase-hint { font-size: 0.72rem; color: rgba(255,255,255,0.45); }
+    @media (max-width: 900px) { .cs-phases { grid-template-columns: repeat(2, 1fr); row-gap: 28px; } }
+    @media (max-width: 600px) { .cs-phases { grid-template-columns: 1fr; } }
+
+    .cs-prod-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; margin-top: 48px; align-items: stretch;
+    }
+    .cs-prod-col {
+      display: flex; flex-direction: column;
+      padding: 24px; border-radius: 20px;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .cs-prod-media {
+      display: block; width: 100%; aspect-ratio: 16 / 10; margin-bottom: 24px; flex: none;
+      border-radius: 16px; background: rgba(0,0,0,0.35);
+    }
+    img.cs-prod-media { object-fit: cover; }
+    video.cs-prod-media { object-fit: contain; }
+    .cs-prod-col-title {
+      font-family: "Arial Black","Helvetica Neue",sans-serif;
+      font-size: 1.05rem; letter-spacing: -0.02em; color: #fff;
+      margin-bottom: 10px;
+    }
+    .cs-prod-col-body { font-size: 0.9rem; line-height: 1.75; color: rgba(255,255,255,0.65); }
+    @media (max-width: 900px) { .cs-prod-grid { grid-template-columns: 1fr; } }
+
+    .cs-usertest-round {
+      margin-top: 40px; padding: 36px 32px; border-radius: 24px;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .cs-usertest-head { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 24px; }
+    .cs-usertest-title {
+      font-family: "Arial Black","Helvetica Neue",sans-serif;
+      font-size: 1.2rem; letter-spacing: -0.02em; color: #fff;
+    }
+    .cs-usertest-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .cs-usertest-chip {
+      padding: 4px 12px; border-radius: 999px;
+      background: rgba(140,197,252,0.12);
+      border: 1px solid rgba(140,197,252,0.2);
+      font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(140,197,252,0.8); white-space: nowrap;
+    }
+    .cs-usertest-photo {
+      display: block; width: 100%; aspect-ratio: 21 / 9; margin-bottom: 28px;
+      object-fit: cover; border-radius: 16px;
+    }
+    .cs-usertest-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .cs-usertest-colhead {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+      color: #f5c842; margin-bottom: 14px;
+    }
+    .cs-usertest-list { list-style: none; padding: 0; margin: 0; }
+    .cs-usertest-list li {
+      position: relative; padding: 10px 0 10px 22px;
+      font-size: 0.88rem; line-height: 1.65; color: rgba(255,255,255,0.65);
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .cs-usertest-list li::before {
+      content: "✦"; position: absolute; left: 0; top: 11px;
+      font-size: 0.7rem; color: rgba(180,210,255,0.5);
+    }
+    @media (max-width: 900px) {
+      .cs-usertest-cols { grid-template-columns: 1fr; gap: 20px; }
+      .cs-usertest-photo { aspect-ratio: 16 / 10; }
+    }
+
+    /* ======================================
+       REFLECTION
+    ====================================== */
+    .reflection-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .reflection-grid .section-title .accent { color: #f5c842; }
+    .reflection-intro {
+      font-size: clamp(0.9rem, 1.3vw, 1.05rem); line-height: 1.8;
+      color: rgba(255,255,255,0.7); max-width: 44ch; margin-top: 1.5rem;
+    }
+    .reflect-item { border-top: 1px solid rgba(255,255,255,0.12); padding: 28px 0; }
+    .reflect-item:last-child { border-bottom: 1px solid rgba(255,255,255,0.12); }
+    .reflect-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(180,210,255,0.6); margin-bottom: 10px;
+    }
+    .reflect-body {
+      font-size: clamp(0.9rem, 1.25vw, 1.02rem); line-height: 1.75;
+      color: rgba(255,255,255,0.7);
+    }
+    @media (max-width: 900px) { .reflection-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+    /* --- Mobile hamburger menu --- */
+    .menu-button { display: none; width: 34px; height: 34px; border: 0; padding: 0; background: transparent; cursor: pointer; }
+    .menu-button span { display: block; width: 18px; height: 2px; margin: 4px auto; border-radius: 2px; background: var(--portfolio-header-ink-active); }
+    .mobile-menu { position: fixed; inset: 0 0 auto 0; z-index: 310; display: none; padding: 92px 24px 26px; background: rgba(8, 16, 42, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transform: translateY(-110%); transition: transform .45s cubic-bezier(.22, 1, .36, 1); }
+    .mobile-menu a { display: block; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.12); font-size: 28px; color: #fff; text-decoration: none; }
+    .mobile-menu[aria-hidden="false"] { transform: translateY(0); }
+    @media (max-width: 809px) {
+      #nav.site-header .nav-links { display: none; }
+      .menu-button, .mobile-menu { display: block; }
+    }
+
+    /* --- EN/中 language toggle --- */
+    .lang-toggle {
+      border: 0; background: none; padding: 0;
+      color: var(--portfolio-header-ink);
+      font-size: 14px; line-height: 1;
+      cursor: pointer; opacity: .92;
+      transition: opacity .25s ease, color .25s ease;
+    }
+    .lang-toggle:hover { opacity: 1; color: var(--portfolio-header-ink-active); }
+    .mobile-menu .lang-toggle {
+      display: block; width: 100%; text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding: 18px 0; font-size: 28px; line-height: normal;
+      color: #fff; opacity: 1;
+    }
+    html[lang="zh-Hans"] body,
+    html[lang="zh-Hans"] button,
+    html[lang="zh-Hans"] input,
+    html[lang="zh-Hans"] textarea,
+    html[lang="zh-Hans"] select {
+      font-family: "DM Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif !important;
+    }
+    html[lang="zh-Hans"] .section-title,
+    html[lang="zh-Hans"] .project-title,
+    html[lang="zh-Hans"] .cs-hero-sub,
+    html[lang="zh-Hans"] .cs-phase-name,
+    html[lang="zh-Hans"] .cs-usertest-title,
+    html[lang="zh-Hans"] .cs-prod-col-title,
+    html[lang="zh-Hans"] .cs-problem-card-title,
+    html[lang="zh-Hans"] .cs-role-card-title,
+    html[lang="zh-Hans"] .feature-col-title,
+    html[lang="zh-Hans"] .cs-timeline-name {
+      font-weight: 900;
+    }
   </style>
 </head>
-<body>
+<body data-i18n-title="titleBabySteps">
 
 <div class="stars-bg"></div>
 
@@ -1028,11 +1223,31 @@
 <header id="nav" class="site-header">
   <a class="brand magnetic" href="../../" aria-label="Angel Yu home"><img class="brand__image" src="../../assets/angel-yu.png" alt="Angel Yu"></a>
   <nav class="nav-links" aria-label="Primary navigation">
-    <a class="magnetic" href="../../"><i></i>home</a>
-    <a class="active magnetic" href="../../work/"><i></i>work</a>
-    <a class="magnetic" href="../../art/"><i></i>art</a>
+    <a class="magnetic" href="../../" data-i18n="navHome"><i></i>home</a>
+    <a class="active magnetic" href="../../work/" data-i18n="navWork"><i></i>work</a>
+    <a class="magnetic" href="../../art/" data-i18n="navArt"><i></i>art</a>
+    <button class="lang-toggle magnetic" type="button" aria-label="切换到中文">EN/中</button>
   </nav>
+  <button class="menu-button" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
 </header>
+<aside class="mobile-menu" aria-hidden="true">
+  <a href="../../" data-i18n="navHome">home</a>
+  <a href="../../work/" data-i18n="navWork">work</a>
+  <a href="../../art/" data-i18n="navArt">art</a>
+  <button class="lang-toggle mobile-lang-toggle" type="button" aria-label="切换到中文">EN/中</button>
+</aside>
+<script>
+(function () {
+  var btn = document.querySelector(".menu-button");
+  var menu = document.querySelector(".mobile-menu");
+  if (!btn || !menu) return;
+  btn.addEventListener("click", function () {
+    var open = menu.getAttribute("aria-hidden") === "false";
+    menu.setAttribute("aria-hidden", open ? "true" : "false");
+    btn.setAttribute("aria-label", open ? "Open menu" : "Close menu");
+  });
+})();
+</script>
 
 
 <!-- ======================================
@@ -1103,9 +1318,9 @@
     <div class="context-right">
       <div class="meta-item"><div class="meta-label">Client</div><div class="meta-value">Tandem</div></div>
       <div class="meta-item"><div class="meta-label">Team</div><div class="meta-value">Panoruk</div></div>
-      <div class="meta-item"><div class="meta-label">Timeline</div><div class="meta-value">10 weeks<br/>2025</div></div>
+      <div class="meta-item"><div class="meta-label">Timeline</div><div class="meta-value">12 weeks<br/>2026</div></div>
       <div class="meta-item"><div class="meta-label">My Role</div><div class="meta-value">Visual Designer</div></div>
-      <div class="meta-item"><div class="meta-label">Tools</div><div class="meta-value">Figma, AR Kit<br/>Spline</div></div>
+      <div class="meta-item"><div class="meta-label">Tools</div><div class="meta-value">Figma, ARKit<br/>Procreate, Illustrator</div></div>
       <div class="meta-item"><div class="meta-label">Deliverables</div><div class="meta-value">AR App<br/>Brand System</div></div>
     </div>
 
@@ -1116,11 +1331,38 @@
 <div class="star-divider"></div>
 
 <!-- ======================================
+     PROBLEM
+====================================== -->
+<div class="shell">
+  <div class="cs-problem section">
+    <p class="section-label">01 — Problem</p>
+    <h2 class="section-title">The Bonding Gap</h2>
+    <p class="section-body">Expectant parents — especially in the first and second trimesters — lack experiences that make the invisible reality of their developing baby feel present. Existing prenatal tools focus on information delivery: weekly statistics, checklists, clinical diagrams. Partners feel peripheral to a journey they cannot physically experience, and that engagement gap is rarely acknowledged. Prenatal bonding is not automatic — it is cultivated through repeated, intentional engagement. BabySteps responds with three design stances:</p>
+    <div class="cs-problem-grid">
+      <div class="cs-problem-card">
+        <p class="cs-problem-card-title">Emotional accompaniment</p>
+        <p class="cs-problem-card-body">over information delivery. Parents witness growth as a living visual world, not a fact card.</p>
+      </div>
+      <div class="cs-problem-card">
+        <p class="cs-problem-card-title">Ritual</p>
+        <p class="cs-problem-card-body">over task completion. No streaks, no metrics, no guilt for missing a day.</p>
+      </div>
+      <div class="cs-problem-card">
+        <p class="cs-problem-card-title">Shared participation</p>
+        <p class="cs-problem-card-body">over solitary use. Every feature includes the partner, from the very first week.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="star-divider"></div>
+
+<!-- ======================================
      MY ROLE
 ====================================== -->
 <div class="shell">
   <div class="cs-role section">
-    <p class="section-label">01 — My Role</p>
+    <p class="section-label">02 — My Role</p>
     <div class="cs-role-grid">
       <div>
         <h2 class="section-title" style="margin-bottom:24px">My Role</h2>
@@ -1153,28 +1395,79 @@
 <div class="star-divider"></div>
 
 <!-- ======================================
-     FEATURES 01 / 02 / 03
+     RESEARCH
 ====================================== -->
+<div class="shell">
+  <div class="cs-research section">
+    <p class="section-label">03 — Research</p>
+    <h2 class="section-title">Research</h2>
+    <div class="cs-research-duo">
+      <div class="cs-research-quote">
+        <blockquote class="rq-text">I wanted to help — I just didn't know what to do, or when. It felt like standing on the sidelines.</blockquote>
+        <p class="rq-attr">Interview — First-time father, 30</p>
+      </div>
+      <div class="cs-research-list">
+        <div class="reflect-item">
+          <p class="reflect-label">Mixed emotions</p>
+          <p class="reflect-body">Joy, worry, strength, and anxiety coexist through pregnancy — often in the same week.</p>
+        </div>
+        <div class="reflect-item">
+          <p class="reflect-label">Fathers feel sidelined</p>
+          <p class="reflect-body">Excluded and unsure of their role; their only support today is informal — friends, online content, AI.</p>
+        </div>
+        <div class="reflect-item">
+          <p class="reflect-label">Context shapes the bond</p>
+          <p class="reflect-body">Planned vs. unplanned, finances, and access to care all shape attachment and confidence.</p>
+        </div>
+        <div class="reflect-item">
+          <p class="reflect-label">Connection is sensory</p>
+          <p class="reflect-body">Heartbeat, movement, touch, and voice build the bond — for the whole family, not just the mother.</p>
+        </div>
+      </div>
+    </div>
+    <p class="cs-phases-head">Development milestones that anchor stage-based interaction:</p>
+    <div class="cs-phases">
+      <div class="cs-phase-tile">
+        <p class="cs-phase-num">15–18 Weeks</p>
+        <p class="cs-phase-name">Hearing begins</p>
+        <p class="cs-phase-hint">Talk to the baby, play music</p>
+      </div>
+      <div class="cs-phase-tile">
+        <p class="cs-phase-num">20–24 Weeks</p>
+        <p class="cs-phase-name">Responds to touch &amp; voice</p>
+        <p class="cs-phase-hint">Belly touch, read stories</p>
+      </div>
+      <div class="cs-phase-tile">
+        <p class="cs-phase-num">25+ Weeks</p>
+        <p class="cs-phase-name">Hearing fully functional</p>
+        <p class="cs-phase-hint">Music, voice recordings</p>
+      </div>
+      <div class="cs-phase-tile">
+        <p class="cs-phase-num">Third Trimester</p>
+        <p class="cs-phase-name">Senses light &amp; taste</p>
+        <p class="cs-phase-hint">Light play, food moments</p>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div class="star-divider"></div>
 
 <!-- ======================================
      IDEATION — 3 CONCEPTS
 ====================================== -->
 <div class="shell">
   <div class="section">
-    <p class="section-label">02 — Ideation</p>
+    <p class="section-label">04 — Ideation</p>
     <h2 class="section-title">3 Concepts</h2>
     <div class="cs-concepts-row">
       <div class="cs-concept-visual">
-        <span class="cs-concept-tag">Concept 1</span>
         <img class="cs-concept-slide" src="assets/images/9.png" alt="Concept 1 Scrapbook">
       </div>
       <div class="cs-concept-visual">
-        <span class="cs-concept-tag">Concept 2</span>
         <img class="cs-concept-slide" src="assets/images/11.png" alt="Concept 2 Bookcase">
       </div>
       <div class="cs-concept-visual">
-        <span class="cs-concept-tag">Concept 3</span>
         <img class="cs-concept-slide" src="assets/images/12.png" alt="Concept 3 Constellations">
       </div>
     </div>
@@ -1188,7 +1481,7 @@
 ====================================== -->
 <div class="shell">
   <div class="section">
-    <p class="section-label">03 — Pivot</p>
+    <p class="section-label">05 — Pivot</p>
     <h2 class="section-title">Pivot</h2>
     <div class="cs-pivot-compare">
       <div class="cs-pivot-col cs-pivot-col--no">
@@ -1225,7 +1518,7 @@
 ====================================== -->
 <div class="shell">
   <div class="section">
-    <p class="section-label">04 — Moodboard</p>
+    <p class="section-label">06 — Moodboard</p>
     <h2 class="section-title">Moodboard</h2>
     <p class="section-body">The visual direction is inspired by a storybook aesthetic, where textures and brush strokes remain visible, creating a sense of warmth, tactility, and hand-crafted intimacy. Motion is suggested through painterly strokes and elongated shapes, particularly in the depiction of comets and falling stars.</p>
     <div class="cs-moodboard-grid">
@@ -1248,7 +1541,7 @@
 ====================================== -->
 <div class="shell">
   <div class="section">
-    <p class="section-label">05 — Visual Style</p>
+    <p class="section-label">07 — Visual Style</p>
     <h2 class="section-title">Visual Style</h2>
     <p class="section-body">The night sky is treated as an emotional space. Deep blues, soft purples, and muted blacks form the base, while glowing yellow and whites introduce moments of warmth and focus. Light is used as a central storytelling element — bright glowing forms guide attention and evoke wonder.</p>
     <img class="cs-visual-img" src="assets/images/cs-visual-style.png" alt="Visual Style — Night Sky">
@@ -1263,7 +1556,7 @@
 ====================================== -->
 <div class="shell">
   <div class="section">
-    <p class="section-label">06 — Story Making</p>
+    <p class="section-label">08 — Story Making</p>
     <h2 class="section-title">Story Making</h2>
     <p class="section-body">With the constellation concept behind us, we built a layered AR narrative — the night sky becomes a living storybook that grows alongside the pregnancy. Each AR scene is composed of three depth layers that stack to form a complete environment.</p>
     <img class="cs-visual-img" src="assets/images/cs-artprocess-layers.png" alt="AR Depth Layers">
@@ -1278,7 +1571,7 @@
 ====================================== -->
 <div class="shell">
   <div class="section">
-    <p class="section-label">07 — Art Assets</p>
+    <p class="section-label">09 — Art Assets</p>
     <h2 class="section-title">Production Pipeline</h2>
     <p class="section-body">All 2D assets were created from scratch using a three-stage pipeline — from hand-drawn illustration to Unity-ready PNG sequences.</p>
     <div class="cs-artpipe">
@@ -1319,6 +1612,29 @@
 <div class="star-divider"></div>
 
 
+<!-- ======================================
+     LEADING PRODUCTION
+====================================== -->
+<div class="shell">
+  <div class="cs-prod section">
+    <p class="section-label">10 — Leading Production</p>
+    <h2 class="section-title">Leading Production</h2>
+    <p class="section-body">With 30+ assets moving through the pipeline, production needed a system — and the team needed to be able to produce without me becoming a bottleneck. I ran the asset tracker and onboarded teammates into the animation workflow directly.</p>
+    <div class="cs-prod-grid">
+      <div class="cs-prod-col">
+        <img class="cs-prod-media" src="assets/images/production-tracker.png" alt="Asset tracker spreadsheet — 30+ assets by format, assignee, status, and phase">
+        <p class="cs-prod-col-title">One source of truth for 30+ assets</p>
+        <p class="cs-prod-col-body">Every asset was tracked by format (flat / motion), where it appears (storytelling / night sky), assignee (me, another member, or client-provided), status, and the narrative phase it belongs to (S1–S6). At any point, anyone on the team could see what was done, what was in progress, and what was blocking Unity integration.</p>
+      </div>
+      <div class="cs-prod-col">
+        <video class="cs-prod-media" autoplay muted loop playsinline controls preload="auto" src="assets/videos/web/teaching-kim.web.mp4?v=1"></video>
+        <p class="cs-prod-col-title">Teaching the workflow, not just handing off files</p>
+        <p class="cs-prod-col-body">When another member joined asset production, I recorded a walkthrough video breaking my animation process into clear, repeatable steps — from frame-by-frame drawing in Procreate to export settings Unity expects. The member went on to deliver assets like the Bone, Planet Earth, and Nebula Mist independently, in a style consistent with mine.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="star-divider"></div>
 
 <!-- ============================================
@@ -1327,7 +1643,7 @@
 <section class="as-page" data-as-initialized="true">
   <div class="as-shell">
     <div style="max-width:min(1200px,calc(100vw - 48px)); margin: 0 auto 48px;">
-      <p class="section-label">08 — Showcase</p>
+      <p class="section-label">11 — Showcase</p>
       <h2 class="section-title">Animation Showcase</h2>
       <p class="section-body">A compact asset gallery with category switching, uniform frames, and a dedicated ordered stage progression.</p>
     </div>
@@ -1420,7 +1736,7 @@
 ====================================== -->
 <div class="shell" id="process">
   <div class="cs-decisions section">
-    <p class="section-label">09 — Team Decisions</p>
+    <p class="section-label">12 — Team Decisions</p>
     <h2 class="section-title">Team Decisions &amp;<br>Client Communication</h2>
     <div class="cs-decisions-grid">
       <div class="cs-decision-card">
@@ -1452,11 +1768,125 @@
 
 
 <!-- ======================================
+     USER TEST
+====================================== -->
+<div class="shell">
+  <div class="cs-usertest section">
+    <p class="section-label">13 — User Test</p>
+    <h2 class="section-title">Two Rounds of Testing</h2>
+
+    <div class="cs-usertest-round">
+      <div class="cs-usertest-head">
+        <p class="cs-usertest-title">Round 1 — Internal User Test</p>
+        <div class="cs-usertest-chips">
+          <span class="cs-usertest-chip">Week 6 · Feb 9, 2026</span>
+          <span class="cs-usertest-chip">42 participants</span>
+        </div>
+      </div>
+      <img class="cs-usertest-photo" src="assets/images/usertest-round1.jpg" alt="Round 1 internal user test session">
+      <div class="cs-usertest-cols">
+        <div>
+          <p class="cs-usertest-colhead">What we found</p>
+          <ul class="cs-usertest-list">
+            <li>59.6% found onboarding clear — abstract phrasing like &ldquo;journey under the stars&rdquo; confused the rest</li>
+            <li>28.6% struggled to locate the Journal, and dead-end buttons created false friction</li>
+            <li>The AR dome earned a real wow-factor, but content sat too high — arms above shoulder height</li>
+            <li>Users instinctively reached out to touch the sky, moon, and baby elements</li>
+          </ul>
+        </div>
+        <div>
+          <p class="cs-usertest-colhead">How we responded</p>
+          <ul class="cs-usertest-list">
+            <li>Rewrote onboarding copy to name the app&rsquo;s purpose earlier in the flow</li>
+            <li>Gave the Journal a clear visual entry point and made every button state interactive</li>
+            <li>Lowered the dome so key elements are reachable without raised arms</li>
+            <li>Added an interaction layer — sky, moon, and baby became tappable</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-usertest-round">
+      <div class="cs-usertest-head">
+        <p class="cs-usertest-title">Round 2 — External User Test</p>
+        <div class="cs-usertest-chips">
+          <span class="cs-usertest-chip">Week 9 · Mar 10, 2026</span>
+          <span class="cs-usertest-chip">65 participants</span>
+        </div>
+      </div>
+      <img class="cs-usertest-photo" src="assets/images/usertest-round2.jpg" alt="Round 2 external user test at DigiBC Signals Studio" style="object-position: center 22%">
+      <div class="cs-usertest-cols">
+        <div>
+          <p class="cs-usertest-colhead">What we found</p>
+          <ul class="cs-usertest-list">
+            <li>The storytelling animation rated 3.6/5 emotionally engaging — curious, calm, and peaceful led the responses</li>
+            <li>Holding the phone upward was tiring, and potentially inaccessible for heavily pregnant users</li>
+            <li>The 3D baby read as &ldquo;too medical&rdquo; — transparency and visible organs unsettled many participants</li>
+            <li>The link between the night sky and fetal development was unclear on first encounter</li>
+          </ul>
+        </div>
+        <div>
+          <p class="cs-usertest-colhead">How we responded</p>
+          <ul class="cs-usertest-list">
+            <li>Repositioned visual elements lower and constrained interaction to a comfortable ~180&deg; range</li>
+            <li>Hid internal organs by default and committed to a warm, soft rendering direction</li>
+            <li>Added animated cues to start each story sequence, plus pinch-to-zoom on the baby model</li>
+            <li>Rebuilt onboarding to name the Night Sky concept and its link to fetal development up front</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="star-divider"></div>
+
+
+<!-- ======================================
+     TESTING RESULTS
+====================================== -->
+<div class="shell" id="results">
+  <div class="cs-testing section">
+    <p class="section-label">14 — Testing Results</p>
+    <h2 class="section-title">Testing Results</h2>
+    <div class="cs-testing-grid">
+      <div class="cs-testing-card">
+        <p class="cs-testing-title">Emotional Connection</p>
+        <div class="cs-testing-num">90<span>%</span></div>
+      </div>
+      <div class="cs-testing-card">
+        <p class="cs-testing-title">Daily Engagement</p>
+        <div class="cs-testing-num">50.8<span>%</span></div>
+      </div>
+      <div class="cs-testing-card">
+        <p class="cs-testing-title">Anxiety Reduction</p>
+        <div class="cs-testing-num">49.2<span>%</span></div>
+      </div>
+      <div class="cs-testing-card">
+        <p class="cs-testing-title">Task Completion</p>
+        <div class="cs-testing-num">88.1<span>%</span></div>
+      </div>
+      <div class="cs-testing-card">
+        <p class="cs-testing-title">Usability Score</p>
+        <div class="cs-testing-num">3.6<span>/5</span></div>
+      </div>
+      <div class="cs-testing-card">
+        <p class="cs-testing-title">Design Iterations</p>
+        <div class="cs-testing-num">8</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="star-divider"></div>
+
+
+<!-- ======================================
      DEVELOPMENT TIMELINE
 ====================================== -->
 <div class="shell">
   <div class="cs-timeline section">
-    <p class="section-label">10 — Timeline</p>
+    <p class="section-label">15 — Timeline</p>
     <h2 class="section-title">Development Timeline</h2>
     <div class="cs-timeline-meta">
       <div class="cs-timeline-meta-item">
@@ -1530,7 +1960,7 @@
 ====================================== -->
 <div class="shell">
   <div class="cs-tools section">
-    <p class="section-label">11 — Tools</p>
+    <p class="section-label">16 — Tools</p>
     <h2 class="section-title">Tools Used</h2>
     <div class="cs-tools-grid">
       <div class="cs-tool-card">
@@ -1565,52 +1995,12 @@
 
 
 <!-- ======================================
-     TESTING RESULTS
-====================================== -->
-<div class="shell" id="results">
-  <div class="cs-testing section">
-    <p class="section-label">12 — Testing</p>
-    <h2 class="section-title">Testing Results</h2>
-    <div class="cs-testing-grid">
-      <div class="cs-testing-card">
-        <p class="cs-testing-title">Emotional Connection</p>
-        <div class="cs-testing-num">90<span>%</span></div>
-      </div>
-      <div class="cs-testing-card">
-        <p class="cs-testing-title">Daily Engagement</p>
-        <div class="cs-testing-num">50.8<span>%</span></div>
-      </div>
-      <div class="cs-testing-card">
-        <p class="cs-testing-title">Anxiety Reduction</p>
-        <div class="cs-testing-num">49.2<span>%</span></div>
-      </div>
-      <div class="cs-testing-card">
-        <p class="cs-testing-title">Task Completion</p>
-        <div class="cs-testing-num">88.1<span>%</span></div>
-      </div>
-      <div class="cs-testing-card">
-        <p class="cs-testing-title">Usability Score</p>
-        <div class="cs-testing-num">3.6<span>/5</span></div>
-      </div>
-      <div class="cs-testing-card">
-        <p class="cs-testing-title">Design Iterations</p>
-        <div class="cs-testing-num">8</div>
-      </div>
-    </div>
-    <p class="cs-testing-note">Testing was conducted with 107 users across two cohorts (expectant mothers and partners) over a 3-week beta period. All sessions were moderated remotely with think-aloud protocol.</p>
-  </div>
-</div>
-
-<div class="star-divider"></div>
-
-
-<!-- ======================================
      EVERYTHING HANDED OFF
 ====================================== -->
 <div class="shell">
   <div class="cs-handoff section">
     <div class="cs-handoff-inner">
-      <p class="section-label">13 — Handoff</p>
+      <p class="section-label">17 — Handoff</p>
       <h2 class="section-title" style="text-align:center">Everything Handed Off</h2>
       <p class="section-body" style="margin:0 auto;text-align:center">A complete handoff package was delivered to the Tandem engineering team — ready for production.</p>
       <div class="cs-handoff-deliverables">
@@ -1653,7 +2043,7 @@
 <section id="features-grid">
   <div class="shell">
     <div class="section" style="padding-bottom:0">
-      <p class="section-label">14 — Features</p>
+      <p class="section-label">18 — Features</p>
       <h2 class="section-title">Core Features</h2>
     </div>
     <div class="features-grid-layout">
@@ -1730,7 +2120,7 @@
         </div>
       </div>
       <div class="ims-copy" data-ims-copy="">
-        <p class="section-label" style="font-size:0.72rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(180,210,255,0.6);margin-bottom:1rem;">15 — Demo</p>
+        <p class="section-label" style="font-size:0.72rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(180,210,255,0.6);margin-bottom:1rem;">19 — Demo</p>
         <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;letter-spacing:-0.04em;color:#fff;margin-bottom:1.5rem;font-family:'Arial Black','Helvetica Neue',sans-serif;">iPhone Mockup Showcase</h2>
         <p class="section-body">The Stage 1 AR story within a realistic mobile device frame — as it appears in-hand.</p>
         <div class="ims-copy-card">
@@ -1753,14 +2143,30 @@
 ====================================== -->
 <div class="shell">
   <div class="section">
-    <p class="section-label">16 — Reflection</p>
-    <h2 class="section-title">Reflection</h2>
-    <div style="max-width:72ch; margin-top:2rem; display:flex; flex-direction:column; gap:1.4rem;">
-      <p class="section-body" style="max-width:none">Looking back over the past twelve weeks, this project taught me much more than how to design an AR experience. It showed me what it feels like to build a product as part of a multidisciplinary team, where every decision, asset, and iteration contributes to a much larger system.</p>
-      <p class="section-body" style="max-width:none">As the project progressed, I gradually became responsible for most of the visual production — the storybook illustrations, night sky assets, animations, and documentation. I learned that creating assets is only one part of the process. Equally important is organizing them, communicating with developers, and ensuring they can be integrated smoothly into the final experience. This shifted my perspective from thinking only as a designer to thinking more like a product creator.</p>
-      <p class="section-body" style="max-width:none">Throughout the project, we constantly iterated based on client feedback and user testing. Many ideas evolved over time, and some had to be completely reworked. Rather than seeing feedback as criticism, I learned to treat it as part of the design process. Every iteration brought us closer to a clearer and more meaningful experience.</p>
-      <p class="section-body" style="max-width:none">What I appreciate most is the team itself. Despite tight deadlines and occasional setbacks, we maintained open communication and supported one another throughout. Small moments outside of work — sharing meals, going bowling, or simply talking during breaks — helped build trust and made collaboration much more enjoyable. Those experiences reminded me that successful projects are built not only through good design, but through strong relationships.</p>
-      <p class="section-body" style="max-width:none">This project has strengthened my confidence in visual storytelling, production planning, and cross-disciplinary collaboration. More importantly, it has changed the way I approach design. I now think beyond individual screens or assets, and instead focus on designing complete experiences that connect storytelling, interaction, and emotion.</p>
+    <p class="section-label">20 — Reflection</p>
+    <div class="reflection-grid">
+      <div>
+        <h2 class="section-title">What I<br><span class="accent">learned.</span></h2>
+        <p class="reflection-intro">Looking back over the past twelve weeks, this project taught me much more than how to design an AR experience. It showed me what it feels like to build a product as part of a multidisciplinary team, where every decision, asset, and iteration contributes to a much larger system.</p>
+      </div>
+      <div>
+        <div class="reflect-item">
+          <p class="reflect-label">From designer to product creator</p>
+          <p class="reflect-body">As the project progressed, I gradually became responsible for most of the visual production — the storybook illustrations, night sky assets, animations, and documentation. Creating assets is only one part of the process; equally important is organizing them, communicating with developers, and ensuring they can be integrated smoothly into the final experience.</p>
+        </div>
+        <div class="reflect-item">
+          <p class="reflect-label">Iterating with feedback</p>
+          <p class="reflect-body">We constantly iterated based on client feedback and user testing. Many ideas evolved over time, and some had to be completely reworked. Rather than seeing feedback as criticism, I learned to treat it as part of the design process — every iteration brought us closer to a clearer and more meaningful experience.</p>
+        </div>
+        <div class="reflect-item">
+          <p class="reflect-label">The team behind it</p>
+          <p class="reflect-body">Despite tight deadlines and occasional setbacks, we maintained open communication and supported one another throughout. Small moments outside of work — sharing meals, going bowling, or simply talking during breaks — helped build trust and made collaboration much more enjoyable. Successful projects are built not only through good design, but through strong relationships.</p>
+        </div>
+        <div class="reflect-item">
+          <p class="reflect-label">Going forward</p>
+          <p class="reflect-body">This project has strengthened my confidence in visual storytelling, production planning, and cross-disciplinary collaboration. More importantly, it has changed the way I approach design — I now think beyond individual screens or assets, and instead focus on designing complete experiences that connect storytelling, interaction, and emotion.</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1769,7 +2175,7 @@
 
 <div class="shell" id="team">
   <div class="section">
-    <p class="section-label">17 — Team</p>
+    <p class="section-label">21 — Team</p>
     <h2 class="section-title">Team Panoruk</h2>
     <div style="margin-top:48px; border-radius:32px; overflow:hidden;">
       <img src="assets/images/cs-team-photo.png" alt="Team Panoruk" style="width:100%; display:block; object-fit:cover;">
@@ -1797,7 +2203,9 @@
   const fadeEls = document.querySelectorAll(
     '.section-label, .section-title, .section-body, ' +
     '.cs-stat, .cs-decision-card, .cs-role-card, .cs-tool-card, ' +
-    '.cs-testing-card, .cs-timeline-phase, .cs-nightsky-imgs img, .cs-3d-imgs img'
+    '.cs-testing-card, .cs-timeline-phase, .cs-nightsky-imgs img, .cs-3d-imgs img, ' +
+    '.reflection-intro, .reflect-item, ' +
+    '.cs-problem-card, .cs-phase-tile, .cs-prod-col, .cs-usertest-round, .cs-research-quote'
   );
   fadeEls.forEach(el => {
     el.style.opacity = '0';
@@ -1886,6 +2294,8 @@
   window.addEventListener('scroll', sync, { passive: true });
 })();
 </script>
+<script src="./i18n-babysteps.js?v=2"></script>
+<script src="../../scripts/i18n.js?v=6"></script>
 </body>
 </html>
 

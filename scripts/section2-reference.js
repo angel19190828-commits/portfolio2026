@@ -16,6 +16,19 @@
   let resizeTimer = null;
   let mediaRefreshQueued = false;
 
+  function snapItemsToFinal() {
+    items.forEach((item) => {
+      gsap.set(item, {
+        x: Number(item.dataset.finalX),
+        y: Number(item.dataset.finalY),
+        rotation: Number(item.dataset.finalR) * 0.78,
+        scale: 1 + Math.max(0, Number(item.dataset.layer)) * 0.012,
+        autoAlpha: 1,
+        filter: "blur(0px) saturate(1) contrast(.99)"
+      });
+    });
+  }
+
   const collage = [
     { col: 0, row: 0, r: -1.1, startR: -3.4, dy: 176, s: 0.90, o: 0.04, z: 4, depth: -1 },
     { col: 1, row: 0, r: 0.5, startR: 2.6, dy: 138, s: 0.93, o: 0.08, z: 5, depth: 0 },
@@ -119,12 +132,15 @@
         scrub: 0.92,
         anticipatePin: 1,
         refreshPriority: 10,
-        invalidateOnRefresh: true,
         onEnter: () => {
           section.classList.add("is-section2-active");
         },
+        onLeave: () => {
+          snapItemsToFinal();
+        },
         onEnterBack: () => {
           section.classList.add("is-section2-active");
+          snapItemsToFinal();
         },
         onLeaveBack: () => {
           section.classList.remove("is-section2-active");

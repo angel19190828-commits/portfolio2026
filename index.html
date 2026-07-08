@@ -5,15 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Angel Yu Portfolio</title>
   <link rel="icon" type="image/png" href="./assets/stickers/angel.png">
+  <script>(function(){try{if(localStorage.getItem("site-lang")==="zh")document.documentElement.lang="zh-Hans";}catch(e){}})();</script>
   <meta name="description" content="High-fidelity local replica of qiaooli.com homepage motion, layout, and interactions.">
   <link rel="preconnect" href="https://framerusercontent.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap">
-  <link rel="stylesheet" href="./styles.css?v=portfolio-clean-trash-v1">
+  <link rel="stylesheet" href="./styles.css?v=lang-toggle-v3">
   <link rel="stylesheet" href="./plugins/hero-role-loop/hero-role-loop.css?v=portfolio-clean-trash-v1">
 </head>
-<body>
+<body data-i18n-title="title">
   <div class="opening" aria-hidden="true">
     <div class="opening__glow"></div>
     <div class="opening__line"></div>
@@ -22,19 +23,20 @@
   <header class="site-header" data-animate="drop">
     <a class="brand magnetic" href="./" aria-label="Angel Yu home"></a>
     <nav class="nav-links" aria-label="Primary navigation">
-      <a class="active magnetic" href="./"><i></i>home</a>
-      <a class="magnetic" href="./work/?v=portfolio-clean-trash-v1"><i></i>work</a>
-      <a class="magnetic" href="./art/?v=portfolio-clean-trash-v1"><i></i>art</a>
+      <a class="active magnetic" href="./" data-i18n="navHome"><i></i>home</a>
+      <a class="magnetic" href="./work/?v=portfolio-clean-trash-v1" data-i18n="navWork"><i></i>work</a>
+      <a class="magnetic" href="./art/?v=portfolio-clean-trash-v1" data-i18n="navArt"><i></i>art</a>
+      <button class="lang-toggle magnetic" type="button" aria-label="切换到中文">EN/中</button>
     </nav>
     <button class="menu-button" type="button" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
   </header>
   <aside class="mobile-menu" aria-hidden="true">
-    <a href="./">home</a>
-    <a href="./work/?v=portfolio-clean-trash-v1">work</a>
-    <a href="./art/?v=portfolio-clean-trash-v1">art</a>
-    <a href="#top">top</a>
+    <a href="./" data-i18n="navHome">home</a>
+    <a href="./work/?v=portfolio-clean-trash-v1" data-i18n="navWork">work</a>
+    <a href="./art/?v=portfolio-clean-trash-v1" data-i18n="navArt">art</a>
+    <button class="lang-toggle mobile-lang-toggle" type="button" aria-label="切换到中文">EN/中</button>
   </aside>
   <main id="top">
     <section class="hero" id="hero">
@@ -50,22 +52,22 @@
           data-interval="2600"
         ></div>
       </div>
-      <p class="hero-statement" data-animate="fade">I see design as a space where time, form, and interaction unfold. I create digital experiences that feel alive, layered.</p>
+      <p class="hero-statement" data-animate="fade" data-i18n="heroStatement">I see design as a space where time, form, and interaction unfold. I create digital experiences that feel alive, layered.</p>
       <ul class="skill-strip" data-animate="fade">
-        <li>Art Direction</li><li>Prototyping</li><li>Frontend</li><li>Creative Coding</li><li>Motion</li><li>UIUX</li>
+        <li data-i18n="skill1">Art Direction</li><li data-i18n="skill2">Prototyping</li><li data-i18n="skill3">Frontend</li><li data-i18n="skill4">Creative Coding</li><li data-i18n="skill5">Motion</li><li data-i18n="skill6">UIUX</li>
       </ul>
       <div class="geo-panel">
-        <a href="file:///C:/Users/angel/OneDrive/Desktop/AI%20Works/CV/Angel%20Yu%20Resume_JUN%202026.pdf" target="_blank" rel="noreferrer">Resume</a>
+        <a href="file:///C:/Users/angel/OneDrive/Desktop/AI%20Works/CV/Angel%20Yu%20Resume_JUN%202026.pdf" target="_blank" rel="noreferrer" data-i18n="resume">Resume</a>
       </div>
       <div class="school-panel">
         <span>MDM</span>
         <span>UBC 26"</span>
       </div>
       <div class="based-panel">
-        <span>BASED IN VANCOUVER</span>
-        <strong>VANCOUVER</strong>
+        <span data-i18n="basedLabel">BASED IN VANCOUVER</span>
+        <strong data-i18n="basedCity">VANCOUVER</strong>
       </div>
-      <div class="scroll-hint">SCROLL</div>
+      <div class="scroll-hint" data-i18n="scrollHint">SCROLL</div>
     </section>
     <section class="work-section" id="work">
       <div class="featured-work">
@@ -93,37 +95,37 @@
           <a class="stack-card" href="./work/Fableware%20Impact%20Engine/" data-orbit="5">
             <img src="./work/Fableware%20Impact%20Engine/Fableware%20Laptop%20MockUp.png" alt="Fableware Impact Engine">
             <div class="stack-title"><h2>Fableware Impact Engine</h2><span>→</span></div>
-            <div class="stack-tags"><span>AI</span><span>UIUX</span><span>Product Design</span><span>Prototyping</span><span>Gotdot</span></div>
-            <div class="stack-meta"><span>May 2026 - Ongoing</span><span>Design Engineer</span></div>
+            <div class="stack-tags"><span>AI</span><span data-i18n="tagUIUX">UIUX</span><span data-i18n="tagProductDesign">Product Design</span><span data-i18n="tagPrototyping">Prototyping</span><span>Gotdot</span></div>
+            <div class="stack-meta"><span data-i18n="dateFableware">May 2026 - Ongoing</span><span data-i18n="roleDesignEngineer">Design Engineer</span></div>
           </a>
           <a class="stack-card" href="./work/AI%20Workflow/" data-orbit="6">
             <video src="./assets/ai-workflow-demo.web.mp4" poster="./assets/ai-workflow-hover.jpg" autoplay muted loop playsinline preload="auto"></video>
             <div class="stack-title"><h2>AI Workflow</h2><span>&rarr;</span></div>
-            <div class="stack-tags"><span>AI implementation</span><span>Product Design</span><span>Design System</span><span>Web Design</span><span>Motion</span></div>
-            <div class="stack-meta"><span>Jan 2026 - Ongoing</span><span>Frontend Designer</span></div>
+            <div class="stack-tags"><span data-i18n="tagAIImplementation">AI implementation</span><span data-i18n="tagProductDesign">Product Design</span><span data-i18n="tagDesignSystem">Design System</span><span data-i18n="tagWebDesign">Web Design</span><span data-i18n="tagMotion">Motion</span></div>
+            <div class="stack-meta"><span data-i18n="dateAIWorkflow">Jan 2026 - Ongoing</span><span data-i18n="roleFrontendDesigner">Frontend Designer</span></div>
           </a>
           <a class="stack-card" href="./work/Baby%20Steps/" data-orbit="7">
             <img src="./assets/baby-steps-card.png" alt="">
             <div class="stack-title"><h2>Baby Steps</h2><span>&rarr;</span></div>
-            <div class="stack-tags"><span>AR</span><span>Branding</span><span>2D animations</span><span>Prototyping</span></div>
-            <div class="stack-meta"><span>Jan 2026 - April 2026</span><span>Visual Designer</span></div>
+            <div class="stack-tags"><span>AR</span><span data-i18n="tagBranding">Branding</span><span data-i18n="tag2DAnimations">2D animations</span><span data-i18n="tagPrototyping">Prototyping</span></div>
+            <div class="stack-meta"><span data-i18n="dateBabySteps">Jan 2026 - April 2026</span><span data-i18n="roleVisualDesigner">Visual Designer</span></div>
           </a>
           <a class="stack-card" href="./work/Trash%20Talk%20with%20Rumi/" data-orbit="8">
             <video src="./assets/trash-talk-demo-trim.web.mp4" poster="./assets/trash-talk-hover.jpg" autoplay muted loop playsinline preload="auto"></video>
             <div class="stack-title"><h2>Trash Talk with Rumi</h2><span>&rarr;</span></div>
-            <div class="stack-tags"><span>Prototyping</span><span>Web UIUX</span><span>User Research</span></div>
-            <div class="stack-meta"><span>Nov 2025 - Dec 2025</span><span>Design Engineer</span></div>
+            <div class="stack-tags"><span data-i18n="tagPrototyping">Prototyping</span><span data-i18n="tagWebUIUX">Web UIUX</span><span data-i18n="tagUserResearch">User Research</span></div>
+            <div class="stack-meta"><span data-i18n="dateRumi">Nov 2025 - Dec 2025</span><span data-i18n="roleDesignEngineer">Design Engineer</span></div>
           </a>
           <a class="stack-card" href="./work/FlyLens/" data-orbit="9">
             <img src="./assets/flylens-card.png" alt="">
             <div class="stack-title"><h2>FlyLens</h2><span>&rarr;</span></div>
-            <div class="stack-tags"><span>AI</span><span>UIUX</span><span>User Research</span><span>Case Studies</span><span>Mock Up</span></div>
-            <div class="stack-meta"><span>June 2026</span><span>UI-UX Designer</span></div>
+            <div class="stack-tags"><span>AI</span><span data-i18n="tagUIUX">UIUX</span><span data-i18n="tagUserResearch">User Research</span><span data-i18n="tagCaseStudies">Case Studies</span><span data-i18n="tagMockUp">Mock Up</span></div>
+            <div class="stack-meta"><span data-i18n="dateFlyLens">June 2026</span><span data-i18n="roleUIUXDesigner">UI-UX Designer</span></div>
           </a>
         </div>
         <a class="work-complete magnetic" href="./work/?v=portfolio-clean-trash-v1" aria-label="View all work">
           <span>↗</span>
-          <strong>View All Work</strong>
+          <strong data-i18n="viewAllWork">View All Work</strong>
           <span>↗</span>
         </a>
         </div>
@@ -131,7 +133,7 @@
     </section>
     <section class="art-section section2-collage" id="art" data-section2-collage>
       <div class="glimpse-copy">
-        <h2>Artwork</h2>
+        <h2 data-i18n="artworkTitle">Artwork</h2>
       </div>
       <div class="art-grid">
         <img src="./assets/art/optimized/section2-0023.webp" alt="Artwork asset 0023" loading="eager" decoding="async" fetchpriority="high">
@@ -147,18 +149,18 @@
         <img src="./assets/art/optimized/section2-untitled-3.webp" alt="Untitled artwork 3" loading="eager" decoding="async">
         <img src="./assets/art/optimized/section2-ufo.webp" alt="UFO artwork" loading="eager" decoding="async">
       </div>
-      <a class="view-all magnetic reveal" href="./art/?v=portfolio-clean-trash-v1">View All Artwork <span>↗</span></a>
+      <a class="view-all magnetic reveal" href="./art/?v=portfolio-clean-trash-v1" data-i18n="viewAllArt">View All Artwork <span>↗</span></a>
     </section>
   </main>
   <footer class="footer">
     <a class="back-top magnetic" href="#top" aria-label="Back to top">
       <span>↑</span>
-      <strong>BACK TO TOP</strong>
+      <strong data-i18n="backTop">BACK TO TOP</strong>
     </a>
     <div class="footer-line">
       <span>&copy; 2026 Angel Yu</span>
       <a href="mailto:angel19190828@gmail.com">angel19190828@gmail.com</a>
-      <span>BASED IN VANCOUVER</span>
+      <span data-i18n="basedLabel">BASED IN VANCOUVER</span>
     </div>
   </footer>
   <script src="./vendor/gsap/gsap.min.js"></script>
@@ -168,7 +170,8 @@
   <script src="./scripts/hero-physics.js?v=opening-tail-drop-v2"></script>
   <script src="./script.js?v=section1-clean-cards-v1"></script>
   <script src="./scripts/section1-reference.js?v=section1-sensitivity-restore-v1"></script>
-  <script src="./scripts/section2-reference.js?v=section2-entry-visible-v1"></script>
+  <script src="./scripts/section2-reference.js?v=section2-snap-final-v2"></script>
+  <script src="./scripts/i18n.js?v=6"></script>
 </body>
 </html>
 
