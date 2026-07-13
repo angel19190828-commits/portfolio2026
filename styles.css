@@ -905,7 +905,7 @@ img { display: block; max-width: 100%; }
 }
 .index-row {
   display: grid;
-  grid-template-columns: 138px 74px minmax(360px, 1fr) 210px;
+  grid-template-columns: 176px 74px minmax(360px, 1fr) 210px;
   align-items: center;
   min-height: 120px;
   margin-left: 43px;
