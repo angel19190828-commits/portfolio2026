@@ -1579,6 +1579,7 @@ body, button, input, textarea, select { font-family: "DM Sans", sans-serif !impo
   .project-more-work-cta { padding: 42px 20px 56px; }
 }
 /* --- Mobile hamburger menu --- */
+.mobile-actions { display: none; align-items: center; gap: 14px; }
 .menu-button { display: none; width: 34px; height: 34px; border: 0; padding: 0; background: transparent; cursor: pointer; }
 .menu-button span { display: block; width: 18px; height: 2px; margin: 4px auto; border-radius: 2px; background: var(--portfolio-header-ink-active); }
 .mobile-menu { position: fixed; inset: 0 0 auto 0; z-index: 310; display: none; padding: 92px 24px 26px; background: rgba(8, 12, 9, 0.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transform: translateY(-110%); transition: transform .45s cubic-bezier(.22, 1, .36, 1); }
@@ -1586,7 +1587,9 @@ body, button, input, textarea, select { font-family: "DM Sans", sans-serif !impo
 .mobile-menu[aria-hidden="false"] { transform: translateY(0); }
 @media (max-width: 809px) {
   #nav.site-header .nav-links { display: none; }
+  .mobile-actions { display: flex; }
   .menu-button, .mobile-menu { display: block; }
+  .header-lang-toggle { display: inline-block; }
 }
 
 /* --- EN/中 language toggle --- */
@@ -1597,12 +1600,6 @@ body, button, input, textarea, select { font-family: "DM Sans", sans-serif !impo
   transition: opacity .25s ease, color .25s ease;
 }
 .lang-toggle:hover { opacity: 1; color: var(--portfolio-header-ink-active); }
-.mobile-menu .lang-toggle {
-  display: block; width: 100%; text-align: left;
-  border-bottom: 1px solid rgba(248, 243, 232, 0.18);
-  padding: 18px 0; font-size: 28px; line-height: normal;
-  color: rgba(248, 243, 232, 0.95); opacity: 1;
-}
 html[lang="zh-Hans"] body,
 html[lang="zh-Hans"] button,
 html[lang="zh-Hans"] input {
@@ -1647,13 +1644,15 @@ html[lang="zh-Hans"] input {
     <a class="magnetic" href="../../art/?v=portfolio-clean-trash-v1" data-i18n="navArt"><i></i>art</a>
     <button class="lang-toggle magnetic" type="button" aria-label="切换到中文">EN/中</button>
   </nav>
-  <button class="menu-button" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="mobile-actions">
+    <button class="lang-toggle header-lang-toggle" type="button" aria-label="切换到中文">EN/中</button>
+    <button class="menu-button" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
 </header>
 <aside class="mobile-menu" aria-hidden="true">
   <a href="../../" data-i18n="navHome">home</a>
   <a href="../../work/?v=portfolio-clean-trash-v1" data-i18n="navWork">work</a>
   <a href="../../art/?v=portfolio-clean-trash-v1" data-i18n="navArt">art</a>
-  <button class="lang-toggle mobile-lang-toggle" type="button" aria-label="切换到中文">EN/中</button>
 </aside>
 <script>
 (function () {

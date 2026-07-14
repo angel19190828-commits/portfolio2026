@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap">
-  <link rel="stylesheet" href="./styles.css?v=lang-toggle-v4">
+  <link rel="stylesheet" href="./styles.css?v=lang-toggle-v7">
   <link rel="stylesheet" href="./plugins/hero-role-loop/hero-role-loop.css?v=portfolio-clean-trash-v1">
 </head>
 <body data-i18n-title="title">
@@ -28,15 +28,17 @@
       <a class="magnetic" href="./art/?v=portfolio-clean-trash-v1" data-i18n="navArt"><i></i>art</a>
       <button class="lang-toggle magnetic" type="button" aria-label="切换到中文">EN/中</button>
     </nav>
-    <button class="menu-button" type="button" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="mobile-actions">
+      <button class="lang-toggle header-lang-toggle" type="button" aria-label="切换到中文">EN/中</button>
+      <button class="menu-button" type="button" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </header>
   <aside class="mobile-menu" aria-hidden="true">
     <a href="./" data-i18n="navHome">home</a>
     <a href="./work/?v=portfolio-clean-trash-v1" data-i18n="navWork">work</a>
     <a href="./art/?v=portfolio-clean-trash-v1" data-i18n="navArt">art</a>
-    <button class="lang-toggle mobile-lang-toggle" type="button" aria-label="切换到中文">EN/中</button>
   </aside>
   <main id="top">
     <section class="hero" id="hero">
