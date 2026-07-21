@@ -10,7 +10,8 @@
     if (!root || root.dataset.heroRoleMounted === "true") return null;
 
     const roles = options?.roles || parseRoles(root.dataset.roles);
-    const interval = Number(options?.interval || root.dataset.interval || 2600);
+    const mobile = window.matchMedia("(max-width: 809px)").matches;
+    const interval = mobile ? 1300 : Number(options?.interval || root.dataset.interval || 2600);
     const label = options?.label || root.dataset.label || "I AM A(N)";
     const fixed = options?.fixed || root.dataset.fixed || "Designer";
     const reduceMotion = root.dataset.respectReducedMotion === "true"

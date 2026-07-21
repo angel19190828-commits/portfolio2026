@@ -1208,9 +1208,485 @@
     html[lang="zh-Hans"] .cs-timeline-name {
       font-weight: 900;
     }
+
+    /* --- Page loading curtain --- */
+    .page-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      background: #f3f3f4;
+      transition: opacity .4s ease;
+    }
+    .page-loader.is-ready {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .page-loader__mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 3px solid rgba(46, 47, 49, .15);
+      border-top-color: #2e2f31;
+      border-left-color: #2e2f31;
+      animation: page-loader-spin .8s linear infinite;
+    }
+    @keyframes page-loader-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* =========================================================
+       MOBILE CASE STUDY — isolated from the desktop experience
+    ========================================================= */
+    @media (max-width: 809px) {
+      :root {
+        --mobile-gutter: clamp(18px, 5.2vw, 24px);
+        --mobile-section-space: clamp(68px, 17vw, 96px);
+      }
+
+      html, body { width: 100%; max-width: 100%; overflow-x: clip; }
+      /* The blocky/pixelated look reported on mobile was never the
+         .stars-bg dots — it was this: html/body's base rule (line ~21)
+         sets background-image: url('assets/images/bg.png') with
+         background-size:cover. That image is a wide desktop-proportioned
+         nebula texture; cover-cropping it into a narrow tall mobile
+         viewport zooms into a thin slice of it, which is what read as
+         "blocky/pixelated" in the screenshot. Earlier rounds only touched
+         .stars-bg (a separate decorative overlay) and never overrode
+         background-image, so bg.png kept rendering underneath the whole
+         time. Per Angel: mobile background should be plain solid dark
+         color, no image, no texture, no pattern. background-image:none
+         here removes bg.png entirely on mobile; only the solid
+         background-color remains. Desktop's rule at line ~21 is untouched. */
+      body {
+        background-image: none;
+        background-color: #08102a;
+        background-attachment: scroll;
+        overscroll-behavior-x: none;
+      }
+      .stars-bg { background: none; }
+      #nav.site-header { height: 68px; padding: 10px var(--mobile-gutter); }
+      .brand { min-width: 0; }
+      .brand__image { width: 78px; }
+      .shell, .as-shell, .ims-shell {
+        width: calc(100% - (var(--mobile-gutter) * 2)) !important;
+        max-width: none !important;
+        margin-inline: auto !important;
+      }
+      .section { padding: var(--mobile-section-space) 0 !important; }
+      .section-label { font-size: 10px; letter-spacing: .15em; margin-bottom: 14px; }
+      .section-title, .project-title {
+        max-width: 100%;
+        font-size: clamp(38px, 11.5vw, 62px) !important;
+        line-height: .98 !important;
+        letter-spacing: -.045em !important;
+        text-wrap: balance;
+      }
+      .section-body, .cs-hero-desc, .cs-role-card-body, .cs-decision-body,
+      .cs-prod-col-body, .cs-usertest-list li, .reflect-body,
+      .feature-col-body, .cs-timeline-desc {
+        max-width: 64ch;
+        font-size: 16px !important;
+        line-height: 1.7 !important;
+      }
+      img, video { max-width: 100%; }
+      video[controls]::-webkit-media-controls,
+      video[controls]::-webkit-media-controls-enclosure { display: flex !important; }
+
+      /* Hero is a real mobile composition, not a scaled desktop canvas. */
+      .cs-hero {
+        min-height: 100svh;
+        min-height: 100dvh;
+        padding: 92px var(--mobile-gutter) 46px;
+        align-items: start;
+        overflow: clip;
+      }
+      .cs-hero-inner { width: 100%; }
+      .cs-hero-logo { width: min(220px, 58vw); margin-bottom: 22px; }
+      .cs-hero-sub { font-size: clamp(28px, 8.6vw, 44px); line-height: 1.03; text-wrap: balance; }
+      .cs-hero-desc { margin-bottom: 28px; color: rgba(255,255,255,.72); }
+      .cs-hero-status { margin: 0 auto 30px; line-height: 1.55; }
+      .cs-hero-collab {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        width: 100%;
+        margin-bottom: 30px;
+      }
+      .cs-hero-collab-label { grid-column: 1 / -1; }
+      .cs-hero-collab img, .cs-hero-collab img[alt="Panoruk"] {
+        width: 100%;
+        height: 42px;
+        object-fit: contain;
+      }
+      .cs-hero-phones {
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+        opacity: 0;
+        transform: translate3d(0, 28px, 0) scale(.96);
+        transition: opacity .72s ease, transform .8s cubic-bezier(.22,1,.36,1);
+        will-change: transform, opacity;
+      }
+      .cs-hero-phones.has-entered { opacity: 1; transform: translate3d(0,0,0) scale(1); }
+      .cs-hero-phones img { height: auto !important; object-fit: contain !important; }
+      .cs-hero-phones.has-entered.is-visible img { animation: babysteps-mobile-hero-float 5.4s ease-in-out infinite; }
+
+      .cs-stats { padding: 30px var(--mobile-gutter); }
+      .cs-stats-inner { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
+      .cs-stat { padding: 0 8px; border-right: 1px solid rgba(255,255,255,.1); }
+      .cs-stat:last-child { border-right: 0; }
+      .cs-stat-num { font-size: clamp(25px, 8vw, 38px); }
+      .cs-stat-label { font-size: 9px; letter-spacing: .12em; }
+
+      /* All narrative grids collapse into a calm reading column. */
+      .context-grid, .cs-problem-grid, .cs-role-grid, .cs-research-duo,
+      .cs-pivot-compare, .cs-prod-grid, .cs-decisions-grid,
+      .cs-usertest-cols, .reflection-grid {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 22px !important;
+        width: 100%;
+      }
+      .context-grid { gap: 44px !important; }
+      .context-right { min-width: 0; }
+      .meta-item { padding: 18px 0; }
+      .cs-problem-grid, .cs-prod-grid, .cs-decisions-grid { margin-top: 34px; }
+      .cs-role-grid, .cs-research-duo { gap: 38px !important; }
+      .cs-problem-card, .cs-decision-card,
+      .cs-prod-col, .cs-usertest-round { padding: 22px !important; border-radius: 18px; }
+      /* My Role: pills centered, cards de-boxed to plain stacked text. */
+      .cs-role-tags { justify-content: center !important; }
+      .cs-role-card {
+        padding: 0 0 22px !important;
+        border-radius: 0;
+        background: transparent;
+        border: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+      .cs-role-card:last-child { border-bottom: 0; padding-bottom: 0 !important; }
+      /* Research quote mark: pulled inside the clipped column instead of at left:-6px. */
+      .cs-research-quote { padding-left: 6px; }
+      .cs-research-quote::before { left: 0; top: -2px; font-size: 3.6rem; }
+      .rq-text { font-size: clamp(24px, 7vw, 34px); line-height: 1.42; }
+      .cs-phases { grid-template-columns: 1fr !important; gap: 20px; }
+      .cs-phase-tile { padding-left: 16px; }
+      .cs-pivot-ref-img { max-height: 360px; object-fit: contain; }
+      .cs-visual-img { width: 100%; height: auto; margin-top: 30px; }
+      .cs-artpipe { padding: 22px; }
+      .cs-artpipe-steps { align-items: flex-start; flex-direction: column; }
+      .cs-artpipe-arrow { transform: rotate(90deg); margin-left: 16px; }
+      .cs-artpipe-frames { grid-template-columns: 1fr !important; }
+      .cs-prod-media { margin-bottom: 20px; }
+      .cs-usertest-round { margin-top: 28px; }
+      .cs-usertest-photo { aspect-ratio: 4 / 3; margin-bottom: 22px; }
+      .cs-testing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px; margin-top: 34px; }
+      .cs-testing-card { min-height: 132px; padding: 20px 16px; }
+      .cs-timeline-meta { gap: 14px 22px; margin-bottom: 38px; }
+      .cs-timeline-track { padding-block: 16px; }
+      .cs-timeline-items { padding-left: 46px; }
+      .cs-timeline-dot { left: -34px; }
+      .cs-timeline-line { left: 16px; }
+      .cs-handoff-inner { padding: 34px 20px; border-radius: 24px; }
+      .cs-handoff-cta { width: 100%; justify-content: center; padding-inline: 18px; }
+      /* Handed-off deliverables: compact 2-col grid instead of 6 stacked full-width cards. */
+      .cs-handoff-deliverables {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 14px !important;
+        width: 100%;
+      }
+      .cs-handoff-item { padding: 18px 14px; }
+
+      /* Moodboard: one image at a time, horizontal swipe. */
+      .cs-moodboard-grid {
+        display: grid !important;
+        grid-auto-flow: column;
+        grid-auto-columns: min(84vw, 360px);
+        grid-template-columns: none !important;
+        grid-auto-rows: unset !important;
+        gap: 12px !important;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: var(--mobile-gutter);
+        padding: 4px max(var(--mobile-gutter), calc((100vw - min(84vw, 360px)) / 2)) 20px !important;
+        margin-inline: calc(var(--mobile-gutter) * -1);
+        scrollbar-width: none;
+      }
+      .cs-moodboard-grid::-webkit-scrollbar { display: none; }
+      .cs-moodboard-grid img {
+        min-width: 0;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+        aspect-ratio: 4 / 5;
+        grid-row: auto !important;
+      }
+
+      /* Native snap rows keep dense visual evidence complete but compact. */
+      .features-grid-layout {
+        display: grid !important;
+        grid-auto-flow: column;
+        grid-auto-columns: min(84vw, 360px);
+        grid-template-columns: none !important;
+        gap: 14px !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: var(--mobile-gutter);
+        padding: 4px max(var(--mobile-gutter), calc((100vw - min(84vw, 360px)) / 2)) 20px !important;
+        margin-inline: calc(var(--mobile-gutter) * -1);
+        scrollbar-width: none;
+        overscroll-behavior-inline: contain;
+      }
+      .features-grid-layout::-webkit-scrollbar { display: none; }
+      .feature-col { min-width: 0; scroll-snap-align: center; scroll-snap-stop: always; }
+      /* Tools Used: everything fits in one compact grid, no horizontal scroll. */
+      .cs-tools-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+      }
+      .cs-tool-card { padding: 10px; gap: 6px; }
+      .cs-tool-card img { width: 40px !important; height: 40px !important; }
+      .cs-tool-name { font-size: 0.62rem; }
+
+      #features-grid { overflow: clip; }
+      #features-grid .section { padding-bottom: 34px !important; }
+      .features-grid-layout { padding-bottom: var(--mobile-section-space) !important; }
+      .feature-col { grid-template-columns: 1fr; gap: 22px; padding: 20px; }
+      .feature-col-phone { max-width: 210px; margin-inline: auto; }
+
+      /* Showcase keeps its tabs and stages, while each active set swipes natively. */
+      .as-page {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: var(--mobile-section-space) 0;
+        overflow: clip;
+      }
+      .as-page > .as-shell > div:first-child { max-width: none !important; margin: 0 0 34px !important; }
+      .as-tabs { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 8px; }
+      .as-tab { flex: 0 0 auto; min-height: 44px; }
+      .as-stage-layout { display: flex !important; flex-direction: column; gap: 22px; }
+      .as-stage-nav {
+        order: -1;
+        display: flex !important;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        scrollbar-width: none;
+      }
+      .as-stage-nav::-webkit-scrollbar { display: none; }
+      .as-stage-nav-item { flex: 0 0 142px; min-height: 88px; padding: 14px; }
+      .as-frame { border-radius: 18px; }
+      .as-stage-panel { transform: none; }
+
+      /* Demo enters only when reached and never reserves a desktop viewport. */
+      .ims-page {
+        width: 100%; max-width: 100%; min-height: 0;
+        margin: 0;
+        padding: var(--mobile-section-space) 0;
+      }
+      .ims-stage { min-height: 0; grid-template-columns: 1fr !important; gap: 42px; }
+      .ims-phone-wrap { min-height: 0; padding: 10px 0 20px; }
+      .ims-phone { width: min(74vw, 310px); will-change: transform, opacity; }
+      .ims-page[data-ims-animate="true"] .ims-copy {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .ims-copy { text-align: left; }
+      .ims-copy-card { padding: 22px; border-radius: 22px; }
+      /* Flatten the 3D phone frame — the preserve-3d side faces + perspective
+         that make it look great on desktop is what was distorting it at
+         narrow widths, so mobile gets a plain flat frame instead. */
+      .ims-phone-wrap { perspective: none; }
+      .ims-phone { transform-style: flat; }
+      .ims-phone-side { display: none; }
+
+      .portfolio-bridge-footer { padding: 30px var(--mobile-gutter); }
+      .star-divider { width: calc(100% - (var(--mobile-gutter) * 2)); margin-inline: auto; }
+
+      /* Team Decisions title: "Communication" is one unbreakable word that
+         overflows the balanced heading size — a dedicated, smaller clamp for
+         this one heading keeps it on a normal line instead of getting clipped. */
+      .cs-decisions .section-title {
+        font-size: clamp(28px, 8.5vw, 44px) !important;
+        line-height: 1.08 !important;
+      }
+
+      /* ---- Shared accordion primitives (My Role, Research/Reflection,
+             Ideation, Pivot-adjacent lists, Leading Production, Showcase,
+             Team Decisions, User Testing) ---- */
+      .bs-acc-toggle {
+        appearance: none;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 20px;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        padding: 18px 2px;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        text-align: left;
+        cursor: pointer;
+        font: inherit;
+      }
+      .bs-acc-toggle:focus-visible { outline: 2px solid rgba(140,197,252,0.8); outline-offset: -2px; }
+      .bs-acc-icon { position: relative; display: block; width: 18px; height: 18px; justify-self: end; flex-shrink: 0; }
+      .bs-acc-icon::before, .bs-acc-icon::after {
+        content: '';
+        position: absolute; top: 50%; left: 50%;
+        width: 14px; height: 1px;
+        background: currentColor;
+        transform: translate(-50%, -50%);
+        transition: transform .26s ease, opacity .26s ease;
+      }
+      .bs-acc-icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+      .bs-acc-host.is-open .bs-acc-icon::after { opacity: 0; transform: translate(-50%, -50%) rotate(0deg); }
+      .bs-acc-shell {
+        display: grid;
+        grid-template-rows: 0fr;
+        opacity: 0;
+        transition: grid-template-rows .34s cubic-bezier(.22,1,.36,1), opacity .24s ease;
+      }
+      .bs-acc-host.is-open .bs-acc-shell { grid-template-rows: 1fr; opacity: 1; }
+      .bs-acc-inner { min-height: 0; overflow: hidden; }
+
+      /* 3 Concepts — always-visible stacked images with a permanent caption. */
+      .cs-concepts-row { display: flex; flex-direction: column; gap: 28px; margin-top: 24px; }
+      .cs-concept-visual .cs-concept-slide { width: 100%; height: auto; border-radius: 12px; }
+      .cs-concept-caption {
+        margin: 0;
+        font-family: "Arial Black","Helvetica Neue",sans-serif;
+        font-size: 1rem; letter-spacing: -0.01em; color: #fff;
+      }
+
+      /* Leading Production accordion — media + title stay visible, body collapses. */
+      .cs-prod-col .cs-prod-col-title { margin: 0; }
+      .cs-prod-col .bs-acc-inner { padding-top: 6px; }
+
+      /* Team Decisions accordion. */
+      .cs-decision-card .cs-decision-icon { margin-bottom: 0; }
+      .cs-decision-card .bs-acc-toggle { grid-template-columns: 44px minmax(0,1fr) 20px; gap: 12px; padding: 4px 2px; }
+      .cs-decision-card .cs-decision-title { margin: 0; }
+      .cs-decision-card .bs-acc-inner { padding-top: 12px; }
+
+      /* User Testing: the two "What we found / How we responded" lists become accordions. */
+      .cs-usertest-cols > div.bs-acc-host { border-top: 1px solid rgba(255,255,255,0.1); }
+      .cs-usertest-cols > div.bs-acc-host:last-child { border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .cs-usertest-cols .bs-acc-toggle .cs-usertest-colhead { margin: 0; }
+      .cs-usertest-cols .bs-acc-inner { padding-bottom: 16px; }
+
+      /* Pivot flip card — both faces occupy the same grid cell so the
+         container's height is simply "whichever face is taller", instead of
+         a fixed min-height that made the taller face scroll internally. */
+      .cs-pivot-compare { display: block !important; margin-top: 24px; perspective: 1400px; }
+      .cs-pivot-flip {
+        display: grid;
+        transform-style: preserve-3d;
+        transition: transform .6s cubic-bezier(.22,1,.36,1);
+        cursor: pointer;
+      }
+      .cs-pivot-flip.is-flipped { transform: rotateY(180deg); }
+      .cs-pivot-flip.is-hint { animation: bs-pivot-wiggle 1.8s ease-in-out .6s 2; }
+      .cs-pivot-col {
+        grid-area: 1 / 1;
+        backface-visibility: hidden;
+      }
+      .cs-pivot-col--yes { transform: rotateY(180deg); }
+      .cs-pivot-tap-hint {
+        display: block;
+        margin-top: 14px;
+        text-align: center;
+        font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+        color: rgba(255,255,255,0.4);
+      }
+      @keyframes bs-pivot-wiggle {
+        0%, 100% { transform: rotate(0deg); }
+        20% { transform: rotate(-3deg); }
+        40% { transform: rotate(3deg); }
+        60% { transform: rotate(-2deg); }
+        80% { transform: rotate(2deg); }
+      }
+
+      /* Animation Showcase: kept the desktop tab/stage-nav interaction as-is
+         (that JS was never removed, just reflowed here) — no accordion, no
+         horizontal scrolling, everything fits by going to equal-width grids
+         instead of a scrolling row. */
+      .as-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        overflow-x: visible;
+        padding-bottom: 0;
+      }
+      .as-tab { flex: none; padding: 0.7rem 0.4rem; text-align: center; min-height: 44px; font-size: 0.8rem; }
+      .as-stage-layout { display: block; }
+      .as-stage-nav {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        overflow-x: visible;
+        margin-bottom: 22px;
+        padding-bottom: 0;
+      }
+      .as-stage-nav-item { min-height: 64px; padding: 10px; text-align: center; }
+      .as-stage-nav-label { font-size: 0.78rem; }
+      .as-stage-nav-sub { font-size: 0.64rem; }
+      .as-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px; }
+      .as-frame { border-radius: 16px; }
+    }
+
+    @keyframes babysteps-mobile-hero-float {
+      0%, 100% { transform: translate3d(0,0,0); }
+      50% { transform: translate3d(0,-8px,0); }
+    }
+
+    @media (max-width: 809px) and (prefers-reduced-motion: reduce) {
+      .cs-hero-phones { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .cs-hero-phones img { animation: none !important; }
+      .cs-moodboard-grid, .cs-tools-grid, .features-grid-layout, .as-grid { scroll-behavior: auto; }
+      .ims-phone, .ims-copy { animation: none !important; transform: none !important; opacity: 1 !important; }
+      .bs-acc-icon::before, .bs-acc-icon::after, .bs-acc-shell { transition: none !important; }
+      .cs-pivot-flip { transition: none !important; animation: none !important; }
+    }
   </style>
 </head>
 <body data-i18n-title="titleBabySteps">
+<div class="page-loader" id="page-loader" aria-hidden="true"><span class="page-loader__mark"></span></div>
+<script>
+(function () {
+  var loader = document.getElementById("page-loader");
+  if (!loader) return;
+  var hide = function () {
+    loader.classList.add("is-ready");
+    setTimeout(function () { loader.remove(); }, 450);
+  };
+  var minTime = new Promise(function (r) { setTimeout(r, 500); });
+  var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+  var heroImagesReady = new Promise(function (resolve) {
+    document.addEventListener("DOMContentLoaded", function () {
+      var imgs = Array.prototype.slice.call(document.querySelectorAll(".cs-hero img"));
+      if (!imgs.length) return resolve();
+      var remaining = imgs.length;
+      var done = function () { remaining--; if (remaining <= 0) resolve(); };
+      imgs.forEach(function (img) {
+        if (img.complete) return done();
+        img.addEventListener("load", done);
+        img.addEventListener("error", done);
+      });
+    });
+  });
+  var safetyTimeout = new Promise(function (r) { setTimeout(r, 3000); });
+  Promise.race([
+    Promise.all([minTime, fontsReady, heroImagesReady]),
+    safetyTimeout
+  ]).then(hide);
+})();
+</script>
 
 <div class="stars-bg"></div>
 
@@ -1626,7 +2102,7 @@
         <p class="cs-prod-col-body">Every asset was tracked by format (flat / motion), where it appears (storytelling / night sky), assignee (me, another member, or client-provided), status, and the narrative phase it belongs to (S1–S6). At any point, anyone on the team could see what was done, what was in progress, and what was blocking Unity integration.</p>
       </div>
       <div class="cs-prod-col">
-        <video class="cs-prod-media" autoplay muted loop playsinline controls preload="auto" src="assets/videos/web/teaching-kim.web.mp4?v=1"></video>
+        <video class="cs-prod-media" muted loop playsinline controls preload="none" src="assets/videos/web/teaching-kim.web.mp4?v=1"></video>
         <p class="cs-prod-col-title">Teaching the workflow, not just handing off files</p>
         <p class="cs-prod-col-body">When another member joined asset production, I recorded a walkthrough video breaking my animation process into clear, repeatable steps — from frame-by-frame drawing in Procreate to export settings Unity expects. The member went on to deliver assets like the Bone, Planet Earth, and Nebula Mist independently, in a style consistent with mine.</p>
       </div>
@@ -1655,11 +2131,11 @@
       <!-- CHARACTER -->
       <section class="as-panel" data-as-panel="character">
         <div class="as-grid">
-          <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/circle-idle.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Character 01</span><span class="as-desc">Idle Loop</span></div></article>
-          <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/outline-star-to-shooting-star-trans.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Character 02</span><span class="as-desc">Shooting Star</span></div></article>
-          <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/untitled-artwork-2.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Character 03</span><span class="as-desc">Star 2</span></div></article>
-          <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/untitled-artwork-3.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Character 04</span><span class="as-desc">Star 3</span></div></article>
-          <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/untitled-artwork-4.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Character 05</span><span class="as-desc">Star 4</span></div></article>
+          <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/circle-idle.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Character 01</span><span class="as-desc">Idle Loop</span></div></article>
+          <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/outline-star-to-shooting-star-trans.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Character 02</span><span class="as-desc">Shooting Star</span></div></article>
+          <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/untitled-artwork-2.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Character 03</span><span class="as-desc">Star 2</span></div></article>
+          <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/untitled-artwork-3.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Character 04</span><span class="as-desc">Star 3</span></div></article>
+          <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/untitled-artwork-4.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Character 05</span><span class="as-desc">Star 4</span></div></article>
         </div>
       </section>
       <!-- ENVIRONMENT -->
@@ -1668,8 +2144,8 @@
           <article class="as-item"><div class="as-frame"><img class="as-media-img" src="assets/images/Cloud.png" alt="Cloud Layer"></div><div class="as-meta"><span class="as-name">Environment 01</span><span class="as-desc">Cloud Layer</span></div></article>
           <article class="as-item"><div class="as-frame"><img class="as-media-img" src="assets/images/StartoSun_14.png" alt="Sun"></div><div class="as-meta"><span class="as-name">Environment 05</span><span class="as-desc">Sun</span></div></article>
           <article class="as-item"><div class="as-frame"><img class="as-media-img" src="assets/images/Untitled_Artwork-5.png" alt="Moon"></div><div class="as-meta"><span class="as-name">Environment 02</span><span class="as-desc">Moon</span></div></article>
-          <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/meteor-shower.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Effect 01</span><span class="as-desc">Meteor Shower</span></div></article>
-          <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/sparkle.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Effect 02</span><span class="as-desc">Sparkle</span></div></article>
+          <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/meteor-shower.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Effect 01</span><span class="as-desc">Meteor Shower</span></div></article>
+          <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/sparkle.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Effect 02</span><span class="as-desc">Sparkle</span></div></article>
         </div>
       </section>
       <!-- STAGES -->
@@ -1678,41 +2154,41 @@
           <div class="as-stage-main">
             <div class="as-stage-assets">
               <div class="as-stage-panel is-active" data-stage-panel="1"><div class="as-grid">
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/first-star-idle.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 1 — 01</span><span class="as-desc">Star1_Beginning</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/heart-beat.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 1 — 02</span><span class="as-desc">Heart Beat</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/outline-star-to-shooting-star-trans.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 1 — 03</span><span class="as-desc">Shooting Star</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/star-to-outline.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 1 — 04</span><span class="as-desc">Outline Star</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/organization.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 1 — 05</span><span class="as-desc">Organization Star</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/untitled-artwork.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 1 — 06</span><span class="as-desc">Universe</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/first-star-idle.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 1 — 01</span><span class="as-desc">Star1_Beginning</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/heart-beat.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 1 — 02</span><span class="as-desc">Heart Beat</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/outline-star-to-shooting-star-trans.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 1 — 03</span><span class="as-desc">Shooting Star</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/star-to-outline.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 1 — 04</span><span class="as-desc">Outline Star</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/organization.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 1 — 05</span><span class="as-desc">Organization Star</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/untitled-artwork.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 1 — 06</span><span class="as-desc">Universe</span></div></article>
               </div></div>
               <div class="as-stage-panel" data-stage-panel="2"><div class="as-grid">
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/fireworks.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 2 — 01</span><span class="as-desc">FireWorks</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/star-open.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 2 — 02</span><span class="as-desc">Star to Outline</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/fireworks.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 2 — 01</span><span class="as-desc">FireWorks</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/star-open.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 2 — 02</span><span class="as-desc">Star to Outline</span></div></article>
               </div></div>
               <div class="as-stage-panel" data-stage-panel="3"><div class="as-grid">
                 <article class="as-item"><div class="as-frame"><img class="as-media-img" src="assets/images/Untitled_Artwork-3.png" alt="Star 3"></div><div class="as-meta"><span class="as-name">Stage 3 — 01</span><span class="as-desc">Star 3</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/star-to-outline.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 3 — 02</span><span class="as-desc">Star To Outline</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/untitled-artwork-6.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 3 — 03</span><span class="as-desc">Ear + Volume</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/star-to-outline.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 3 — 02</span><span class="as-desc">Star To Outline</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/untitled-artwork-6.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 3 — 03</span><span class="as-desc">Ear + Volume</span></div></article>
               </div></div>
               <div class="as-stage-panel" data-stage-panel="4"><div class="as-grid">
                 <article class="as-item"><div class="as-frame"><img class="as-media-img" src="assets/images/Untitled_Artwork-5.png" alt="Star 4"></div><div class="as-meta"><span class="as-name">Stage 4 — 01</span><span class="as-desc">Star 4</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/star-open-2.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 4 — 02</span><span class="as-desc">Star Opens A Little</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/star-fill-in-circle.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 4 — 03</span><span class="as-desc">Filling Circle with Star</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/heart-with-house.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 4 — 04</span><span class="as-desc">Heart House</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/aurora.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 4 — 05</span><span class="as-desc">Aurora</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/star-open-2.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 4 — 02</span><span class="as-desc">Star Opens A Little</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/star-fill-in-circle.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 4 — 03</span><span class="as-desc">Filling Circle with Star</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/heart-with-house.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 4 — 04</span><span class="as-desc">Heart House</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/aurora.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 4 — 05</span><span class="as-desc">Aurora</span></div></article>
               </div></div>
               <div class="as-stage-panel" data-stage-panel="5"><div class="as-grid">
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/dream-3.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 5 — 01</span><span class="as-desc">Moon Slides Star</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/img-9115.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 5 — 02</span><span class="as-desc">Clock</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/star-to-earth.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 5 — 03</span><span class="as-desc">Star to Earth</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/dream-3.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 5 — 01</span><span class="as-desc">Moon Slides Star</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/img-9115.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 5 — 02</span><span class="as-desc">Clock</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/star-to-earth.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 5 — 03</span><span class="as-desc">Star to Earth</span></div></article>
               </div></div>
               <div class="as-stage-panel" data-stage-panel="6"><div class="as-grid">
                 <article class="as-item"><div class="as-frame"><img class="as-media-img" src="assets/images/StartoSun_14.png" alt="Star to Sun"></div><div class="as-meta"><span class="as-name">Stage 6 — 01</span><span class="as-desc">Star to Sun</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/star-open.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 6 — 02</span><span class="as-desc">Star Opens</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/star-open.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 6 — 02</span><span class="as-desc">Star Opens</span></div></article>
                 <article class="as-item"><div class="as-frame"><img class="as-media-img" src="assets/images/Untitled_Artwork.png" alt="Hand Held Star"></div><div class="as-meta"><span class="as-name">Stage 6 — 03</span><span class="as-desc">Hand Held Star</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/bird-fly.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 6 — 04</span><span class="as-desc">Bird Flying</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/bird-fly-to-idle.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 6 — 05</span><span class="as-desc">Flying Fullloop</span></div></article>
-                <article class="as-item"><div class="as-frame"><video class="as-media" autoplay loop muted playsinline><source src="assets/videos/web/kite-1.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 6 — 06</span><span class="as-desc">Kite</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/bird-fly.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 6 — 04</span><span class="as-desc">Bird Flying</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/bird-fly-to-idle.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 6 — 05</span><span class="as-desc">Flying Fullloop</span></div></article>
+                <article class="as-item"><div class="as-frame"><video class="as-media" loop muted playsinline preload="none"><source src="assets/videos/web/kite-1.web.mp4" type="video/mp4"></video></div><div class="as-meta"><span class="as-name">Stage 6 — 06</span><span class="as-desc">Kite</span></div></article>
               </div></div>
             </div>
           </div>
@@ -2108,7 +2584,7 @@
             <div class="ims-screen-bezel">
               <div class="ims-dynamic-island"></div>
               <div class="ims-screen">
-                <video autoplay class="ims-video" loop muted playsinline preload="auto">
+                <video class="ims-video" loop muted playsinline preload="none">
                   <source src="assets/videos/web/iphone-demo.web.mp4" type="video/mp4">
                 </video>
                 <div class="ims-screen-overlay"></div>
@@ -2209,14 +2685,16 @@
   fadeEls.forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(28px)';
-    el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+    el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
   });
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
         const el = entry.target;
         const siblings = Array.from(el.parentElement.children).filter(c => fadeEls.length && c.style.opacity === '0');
-        const delay = siblings.indexOf(el) * 0.07;
+        // Cap the stagger at 3 steps so long card/list groups (6-9 items) don't
+        // cascade in one-by-one for half a second — short sections still stagger fully.
+        const delay = Math.min(siblings.indexOf(el), 3) * 0.07;
         setTimeout(() => {
           el.style.opacity = '1';
           el.style.transform = 'translateY(0)';
@@ -2224,22 +2702,36 @@
         io.unobserve(el);
       }
     });
-  }, { threshold: 0.15 });
+  // Fire while the element is still ~150px below the viewport so the whole
+  // reveal (transition + stagger) finishes before a fast scroll carries it away.
+  }, { threshold: 0.01, rootMargin: '0px 0px 150px 0px' });
   fadeEls.forEach(el => io.observe(el));
 
   /* - Animation Showcase - */
   const asPage = document.querySelector('.as-page');
   if (asPage) {
+    const isMobileShowcase = window.matchMedia('(max-width: 809px)').matches;
     const tabs = asPage.querySelectorAll('[data-as-filter]');
     const panels = asPage.querySelectorAll('[data-as-panel]');
     const stageNavItems = asPage.querySelectorAll('[data-stage-target]');
     const stagePanels = asPage.querySelectorAll('[data-stage-panel]');
+
+    const pauseInactiveShowcaseVideos = () => {
+      if (!isMobileShowcase) return;
+      asPage.querySelectorAll('video').forEach(video => {
+        const category = video.closest('[data-as-panel]');
+        const stage = video.closest('[data-stage-panel]');
+        if ((category && !category.classList.contains('is-active')) ||
+            (stage && !stage.classList.contains('is-active'))) video.pause();
+      });
+    };
 
     tabs.forEach(tab => {
       tab.onclick = () => {
         const filter = tab.dataset.asFilter;
         tabs.forEach(t => t.classList.toggle('is-active', t === tab));
         panels.forEach(p => p.classList.toggle('is-active', p.dataset.asPanel === filter));
+        pauseInactiveShowcaseVideos();
       };
     });
 
@@ -2251,6 +2743,7 @@
       stagePanels.forEach(panel => {
         panel.classList.toggle('is-active', panel.dataset.stagePanel === target);
       });
+      pauseInactiveShowcaseVideos();
     };
 
     stageNavItems.forEach(item => {
@@ -2268,10 +2761,25 @@
     const phone = imsPage.querySelector('[data-ims-phone]');
     const copy = imsPage.querySelector('[data-ims-copy]');
     const video = imsPage.querySelector('.ims-video');
+    const mobileDemo = window.matchMedia('(max-width: 809px)').matches;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (video) { video.muted = true; video.defaultMuted = true; video.volume = 0; }
 
-    if (phone) {
+    if (phone && mobileDemo && !reduceMotion && 'IntersectionObserver' in window) {
+      phone.style.opacity = '0';
+      phone.style.transform = 'translate3d(0, 54px, 0) scale(.96)';
+      const demoObserver = new IntersectionObserver((entries, observer) => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        phone.animate([
+          { opacity: 0, transform: 'translate3d(0, 54px, 0) scale(.96)' },
+          { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' }
+        ], { duration: 760, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' });
+        if (copy) copy.classList.add('is-visible');
+        observer.disconnect();
+      }, { threshold: 0.16, rootMargin: '80px 0px' });
+      demoObserver.observe(imsPage);
+    } else if (phone && !mobileDemo) {
       phone.animate([
         { transform: 'translate3d(-140px, 120px, 0) rotateY(-55deg) rotateX(10deg) rotateZ(-12deg) scale(0.92)' },
         { offset: 0.68, transform: 'translate3d(12px, -10px, 0) rotateY(10deg) rotateX(-3deg) rotateZ(2deg) scale(1.01)' },
@@ -2280,7 +2788,8 @@
       setTimeout(() => { phone.style.animation = 'imsFloat 6.2s ease-in-out infinite'; }, 1600);
     }
 
-    if (copy) setTimeout(() => copy.classList.add('is-visible'), 1400);
+    if (copy && !mobileDemo) setTimeout(() => copy.classList.add('is-visible'), 1400);
+    if (copy && mobileDemo && reduceMotion) copy.classList.add('is-visible');
   }
 })();
 </script>
@@ -2291,11 +2800,253 @@
   const sync = () => nav.classList.toggle('scrolled', window.scrollY > 24);
   sync();
   window.addEventListener('scroll', sync, { passive: true });
+
+  if (!window.matchMedia('(max-width: 809px)').matches) return;
+  const hero = document.querySelector('.cs-hero');
+  const phones = document.querySelector('.cs-hero-phones');
+  if (!hero || !phones) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    phones.classList.add('has-entered');
+    return;
+  }
+  const heroObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        phones.classList.add('has-entered', 'is-visible');
+      } else {
+        phones.classList.remove('is-visible');
+      }
+    });
+  }, { threshold: 0.18 });
+  heroObserver.observe(hero);
+})();
+</script>
+<script>
+(function () {
+  var videos = Array.prototype.slice.call(document.querySelectorAll("video"));
+  if (!videos.length) return;
+  var mobile = window.matchMedia("(max-width: 809px)").matches;
+  if (!("IntersectionObserver" in window)) {
+    if (!mobile) videos.forEach(function (v) { v.preload = "auto"; v.play().catch(function () {}); });
+    return;
+  }
+
+  if (mobile) {
+    var activeVideo = null;
+    function belongsToActivePanel(video) {
+      var category = video.closest("[data-as-panel]");
+      var stage = video.closest("[data-stage-panel]");
+      return (!category || category.classList.contains("is-active")) &&
+             (!stage || stage.classList.contains("is-active"));
+    }
+    function makeActive(video) {
+      if (!belongsToActivePanel(video)) {
+        video.pause();
+        return;
+      }
+      if (activeVideo && activeVideo !== video) activeVideo.pause();
+      activeVideo = video;
+      video.play().catch(function () {});
+    }
+
+    var mobileObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var video = entry.target;
+        if (entry.isIntersecting) {
+          if (video.preload !== "auto") video.preload = "auto";
+          if (entry.intersectionRatio >= 0.58) makeActive(video);
+        } else {
+          video.pause();
+          if (activeVideo === video) activeVideo = null;
+        }
+      });
+    }, { threshold: [0, 0.2, 0.58, 0.85], rootMargin: "120px 0px" });
+
+    videos.forEach(function (video) {
+      video.preload = "none";
+      video.addEventListener("play", function () {
+        if (activeVideo && activeVideo !== video) activeVideo.pause();
+        activeVideo = video;
+      });
+      mobileObserver.observe(video);
+    });
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) return;
+      videos.forEach(function (video) { video.pause(); });
+      activeVideo = null;
+    });
+    return;
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var v = entry.target;
+      if (entry.isIntersecting) {
+        if (v.preload !== "auto") v.preload = "auto";
+        v.play().catch(function () {});
+      } else {
+        v.pause();
+      }
+    });
+  }, { rootMargin: "200px 0px" });
+  videos.forEach(function (v) { io.observe(v); });
+})();
+</script>
+<script>
+/* Mobile-only: convert several dense sections into single-open accordions
+   and rebuild the Pivot section as a flip card. Desktop markup is untouched —
+   this whole block bails out immediately above the 809px breakpoint. */
+(function () {
+  var mq = window.matchMedia('(max-width: 809px)');
+  if (!mq.matches) return;
+  mq.addEventListener('change', function () { window.location.reload(); }, { once: true });
+
+  var accCounter = 0;
+  function makeAccordion(host, toggleNodes, shellNodes) {
+    accCounter++;
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'bs-acc-toggle';
+    var label = document.createElement('span');
+    label.className = 'bs-acc-toggle-label';
+    toggleNodes.forEach(function (n) { label.appendChild(n); });
+    var icon = document.createElement('span');
+    icon.className = 'bs-acc-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    toggle.appendChild(label);
+    toggle.appendChild(icon);
+
+    var shell = document.createElement('div');
+    shell.className = 'bs-acc-shell';
+    var inner = document.createElement('div');
+    inner.className = 'bs-acc-inner';
+    shellNodes.forEach(function (n) { inner.appendChild(n); });
+    shell.appendChild(inner);
+
+    var baseId = 'bs-acc-' + accCounter;
+    toggle.id = baseId + '-t';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', baseId);
+    shell.id = baseId;
+    shell.setAttribute('role', 'region');
+    shell.setAttribute('aria-labelledby', baseId + '-t');
+    shell.setAttribute('aria-hidden', 'true');
+
+    host.appendChild(toggle);
+    host.appendChild(shell);
+    host.classList.add('bs-acc-host');
+    return { host: host, toggle: toggle, shell: shell };
+  }
+
+  function wireExclusive(entries) {
+    entries.forEach(function (entry) {
+      entry.toggle.addEventListener('click', function () {
+        var shouldOpen = !entry.host.classList.contains('is-open');
+        entries.forEach(function (e) {
+          e.host.classList.remove('is-open');
+          e.toggle.setAttribute('aria-expanded', 'false');
+          e.shell.setAttribute('aria-hidden', 'true');
+        });
+        if (shouldOpen) {
+          entry.host.classList.add('is-open');
+          entry.toggle.setAttribute('aria-expanded', 'true');
+          entry.shell.setAttribute('aria-hidden', 'false');
+        }
+      });
+    });
+  }
+
+  /* My Role, Research findings, and closing Reflection all went back to
+     always-visible (no accordion) after Angel found 6 identical accordions
+     across the page monotonous — those three are short enough not to need
+     collapsing in the first place. */
+
+  /* 3 Concepts — always-visible stacked images with a permanent caption
+     (there was no visible title anywhere before, only in each image's alt
+     text — now surfaced as real on-page captions instead of hidden text). */
+  (function () {
+    var names = ['Scrapbook', 'Bookcase', 'Constellations'];
+    Array.prototype.slice.call(document.querySelectorAll('.cs-concept-visual')).forEach(function (visual, i) {
+      var caption = document.createElement('p');
+      caption.className = 'cs-concept-caption';
+      caption.textContent = names[i] || ('Concept ' + (i + 1));
+      visual.appendChild(caption);
+    });
+  })();
+
+  /* 4) Leading Production — media + title stay visible, body collapses */
+  (function () {
+    var entries = Array.prototype.slice.call(document.querySelectorAll('.cs-prod-col')).map(function (col) {
+      var title = col.querySelector('.cs-prod-col-title');
+      var body = col.querySelector('.cs-prod-col-body');
+      if (!title || !body) return null;
+      return makeAccordion(col, [title], [body]);
+    }).filter(Boolean);
+    wireExclusive(entries);
+  })();
+
+  /* 5) Team Decisions — icon + title toggle, body collapses */
+  (function () {
+    var entries = Array.prototype.slice.call(document.querySelectorAll('.cs-decision-card')).map(function (card) {
+      var icon = card.querySelector('.cs-decision-icon');
+      var title = card.querySelector('.cs-decision-title');
+      var body = card.querySelector('.cs-decision-body');
+      if (!icon || !title || !body) return null;
+      return makeAccordion(card, [icon, title], [body]);
+    }).filter(Boolean);
+    wireExclusive(entries);
+  })();
+
+  /* 6) User Testing — "What we found" / "How we responded" become accordion rows per round */
+  Array.prototype.slice.call(document.querySelectorAll('.cs-usertest-cols')).forEach(function (cols) {
+    var entries = Array.prototype.slice.call(cols.children).map(function (group) {
+      var head = group.querySelector('.cs-usertest-colhead');
+      var list = group.querySelector('.cs-usertest-list');
+      if (!head || !list) return null;
+      return makeAccordion(group, [head], [list]);
+    }).filter(Boolean);
+    wireExclusive(entries);
+  });
+
+  /* 7) Pivot — rebuilt as a tap-to-flip card, front = Original, back = Pivoted To */
+  (function () {
+    var compare = document.querySelector('.cs-pivot-compare');
+    var no = compare && compare.querySelector('.cs-pivot-col--no');
+    var yes = compare && compare.querySelector('.cs-pivot-col--yes');
+    if (!compare || !no || !yes) return;
+
+    var flip = document.createElement('div');
+    flip.className = 'cs-pivot-flip is-hint';
+    flip.setAttribute('role', 'button');
+    flip.tabIndex = 0;
+    flip.setAttribute('aria-label', 'Tap to flip between the original direction and what it was pivoted to');
+    compare.insertBefore(flip, no);
+    flip.appendChild(no);
+    flip.appendChild(yes);
+
+    var hint = document.createElement('span');
+    hint.className = 'cs-pivot-tap-hint';
+    hint.setAttribute('aria-hidden', 'true');
+    hint.textContent = 'Tap the card to flip';
+    compare.insertBefore(hint, flip.nextSibling);
+
+    function toggleFlip() {
+      flip.classList.remove('is-hint');
+      flip.classList.toggle('is-flipped');
+    }
+    flip.addEventListener('click', toggleFlip);
+    flip.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFlip(); }
+    });
+  })();
+
+  /* Animation Showcase: went back to the original desktop tab/stage-nav
+     interaction (that JS lives elsewhere in this file and was never removed,
+     just CSS-hidden) instead of an accordion — see the mobile CSS for the
+     non-scrolling grid layout applied to .as-tabs/.as-stage-nav. */
 })();
 </script>
 <script src="./i18n-babysteps.js?v=2"></script>
 <script src="../../scripts/i18n.js?v=7"></script>
 </body>
 </html>
-
-
