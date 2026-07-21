@@ -119,13 +119,13 @@
     /* â”€ REVEAL â”€ */
     .up {
       opacity: 0; transform: translateY(40px);
-      transition: opacity .9s var(--ease), transform .9s var(--ease);
+      transition: opacity .5s var(--ease), transform .5s var(--ease);
     }
     .up.show { opacity: 1; transform: none; }
-    .d1 { transition-delay: .10s; }
-    .d2 { transition-delay: .22s; }
-    .d3 { transition-delay: .36s; }
-    .d4 { transition-delay: .50s; }
+    .d1 { transition-delay: .06s; }
+    .d2 { transition-delay: .12s; }
+    .d3 { transition-delay: .18s; }
+    .d4 { transition-delay: .24s; }
 
     /* â”€ SHARED â”€ */
     .w  { max-width: 1280px; margin: 0 auto; padding: 0 56px; }
@@ -1093,7 +1093,7 @@
   // Scroll reveal
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
-  }, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
+  }, { threshold: 0.01, rootMargin: '0px 0px 150px 0px' });
   document.querySelectorAll('.up').forEach(el => io.observe(el));
 
   // Drag-to-scroll gallery with momentum

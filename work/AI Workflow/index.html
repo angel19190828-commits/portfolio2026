@@ -693,6 +693,248 @@
     html[lang="zh-Hans"] .overview-headline .iw:has(.iw-inner:empty) {
       display: none;
     }
+
+    /* ── CASE STUDY: PHONE-ONLY READING MODE ── */
+    @media (max-width: 809px) {
+      html,
+      body {
+        width: 100%;
+        overflow-x: clip;
+      }
+
+      #canvas-wrap,
+      #lateral,
+      #receipt {
+        display: none !important;
+      }
+
+      main { z-index: 2; }
+
+      .hero {
+        height: auto;
+        min-height: 100dvh;
+        padding: max(92px, env(safe-area-inset-top)) 18px 34px;
+        justify-content: center;
+        gap: 40px;
+      }
+      .hero-center { flex: 0 0 auto; }
+      .hero-headline {
+        width: 100%;
+        max-width: none;
+        font-size: clamp(3.25rem, 14vw, 4.75rem);
+        line-height: .88;
+        letter-spacing: -.045em;
+        text-wrap: balance;
+      }
+      .hero-headline .word-wrap { line-height: .94; }
+      .hero-sub {
+        max-width: 34rem;
+        margin-top: 28px;
+        font-size: 12px;
+        line-height: 1.65;
+        letter-spacing: .08em;
+      }
+      .hero-scroll {
+        padding: 0;
+        font-size: 10px;
+        line-height: 1.4;
+        letter-spacing: .2em;
+      }
+
+      .aw-overview,
+      .overview-section,
+      .wf-flow-section,
+      .section-004-header,
+      .process-section,
+      .aw-tools,
+      .reflection-section {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+      .aw-overview { padding-top: 72px; padding-bottom: 68px; }
+      .aw-overview-inner,
+      .reflection-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 46px;
+      }
+      .aw-label,
+      .overview-index,
+      .overview-tag,
+      .aw-meta-label,
+      .process-block-label,
+      .reflection-row-label {
+        font-size: 10px;
+        line-height: 1.5;
+        letter-spacing: .14em;
+      }
+      .aw-overview-title {
+        margin-bottom: 24px;
+        font-size: clamp(2.9rem, 13vw, 4.25rem);
+      }
+      .aw-overview-tags { gap: 7px; margin-top: 0; }
+      .aw-tag {
+        padding: 7px 10px;
+        font-size: 9px;
+        line-height: 1;
+      }
+      .aw-meta-item { padding: 14px 0; }
+      .aw-meta-value { font-size: 15px; }
+
+      .overview-section {
+        min-height: 0;
+        display: block;
+        padding-top: 76px;
+        padding-bottom: 80px;
+        overflow: visible;
+      }
+      #about { min-height: 0; padding-top: 76px; }
+      .overview-header {
+        margin-bottom: 34px;
+        padding-top: 16px;
+      }
+      .overview-headline,
+      .wf-flow-headline,
+      .section-004-title,
+      .process-headline,
+      .fails-section-title,
+      .reflection-headline {
+        font-size: clamp(2.9rem, 13vw, 4.35rem);
+        line-height: .91;
+        letter-spacing: -.04em;
+      }
+      .overview-headline { margin-bottom: 34px; }
+      .overview-body,
+      .about-body-sm,
+      .process-text,
+      .reflection-intro,
+      .reflection-row-body {
+        max-width: 40rem;
+        font-size: 15.5px;
+        line-height: 1.72;
+      }
+      .overview-body p,
+      .process-text p,
+      .reflection-row-body p { margin-bottom: 18px; }
+      .about-question { max-width: none; margin: 28px 0 22px; font-size: 34px; }
+
+      .wf-flow-section { padding-top: 72px; padding-bottom: 36px; }
+      .wf-flow-headline { margin: 10px 0 30px; }
+      .wf-flow-img { margin: 0; }
+      .wf-scroll-body,
+      .wf-sticky {
+        height: auto;
+        min-height: 0;
+        position: static;
+      }
+      .wf-track-row { display: none; }
+      .wf-stage {
+        position: static;
+        height: auto;
+        display: grid;
+        gap: 14px;
+        padding: 8px 18px 80px;
+        overflow: visible;
+      }
+      .wf-card {
+        position: relative;
+        inset: auto;
+        min-height: 0;
+        padding: 28px 18px 30px;
+        border-top: 1px solid rgba(20, 20, 20, .16);
+        opacity: 1 !important;
+        pointer-events: auto;
+        transform: none !important;
+      }
+      .wf-bg-num {
+        top: 22px;
+        right: 18px;
+        font-size: 74px;
+      }
+      .wf-title {
+        position: relative;
+        margin-bottom: 28px;
+        padding-right: 74px;
+        font-size: clamp(2.5rem, 11vw, 3.4rem);
+      }
+      .wf-desc { max-width: 36rem; font-size: 15px; line-height: 1.7; }
+      .wf-desc-label { margin-bottom: 7px; font-size: 9px; }
+
+      .limits-grid {
+        grid-template-columns: minmax(0, 1fr);
+        margin-top: 34px;
+        border-radius: 4px;
+      }
+      .limits-col:first-child {
+        border-right: 0;
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+      }
+      .limits-col-header { padding: 16px; font-size: 11px; }
+      .limits-item { padding: 18px 16px; }
+      .limits-issue { margin: 0; font-size: 16px; line-height: 1.35; }
+
+      .section-004-header { padding-top: 76px; padding-bottom: 34px; }
+      .section {
+        min-height: 0;
+        display: block;
+        padding: 10px 18px 18px;
+        overflow: visible;
+      }
+      .section-bg-num { display: none; }
+      .card-wrap { width: 100%; padding: 0; }
+      .card-flip {
+        width: 100%;
+        opacity: 1 !important;
+        cursor: pointer;
+        touch-action: manipulation;
+        transition: transform .72s cubic-bezier(.22, 1, .36, 1);
+      }
+      .card-flip.is-flipped { transform: rotateY(180deg) !important; }
+      .card-front-face { width: 100% !important; }
+      .card-front-face img { border-radius: 5px; }
+      .card-back-face {
+        border-radius: 5px;
+        padding: 24px 20px;
+      }
+      .back-label { margin-bottom: 14px; font-size: 9px; }
+      .back-case { max-width: none; margin: 0; font-size: 14px; line-height: 1.65; }
+      .back-bignum { right: 16px; bottom: 12px; font-size: 52px; }
+
+      .process-section { padding-top: 76px; padding-bottom: 84px; }
+      .process-inner { max-width: none; }
+      .process-headline { margin-bottom: 34px; }
+      .process-text { margin-bottom: 54px; }
+      .process-block { margin-bottom: 48px; }
+      .process-block-label { margin-bottom: 14px; }
+      .process-img-single img,
+      .process-img-grid img { border-radius: 4px !important; }
+      .process-img-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+
+      .aw-tools { padding-top: 72px; padding-bottom: 82px; }
+      .aw-tools-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 34px 18px;
+        margin-top: 36px;
+      }
+      .aw-tool-card { gap: 14px; }
+      .aw-tool-icon { width: 42px; height: 42px; }
+      .aw-tool-name { font-size: 23px; }
+
+      .reflection-section {
+        min-height: 0;
+        display: block;
+        padding-top: 76px;
+        padding-bottom: 84px;
+      }
+      .reflection-headline { margin: 10px 0 24px; }
+      .reflection-intro { max-width: 32rem; }
+      .reflection-row { padding: 24px 0; }
+      .reflection-row-label { margin-bottom: 12px; }
+      .reflection-row-body ul,
+      .reflection-row-body ol { margin: 14px 0 18px 22px; }
+      .reflection-row-body li { margin-bottom: 8px; }
+
+      .portfolio-footer { padding-bottom: max(36px, env(safe-area-inset-bottom)); }
+    }
   </style>
 </head>
 <body data-i18n-title="titleAIWorkflow">
@@ -1122,6 +1364,17 @@
 <script>
 gsap.registerPlugin(ScrollTrigger)
 
+const mobileCaseStudyQuery = window.matchMedia('(max-width: 809px)')
+const mobileCaseStudy = mobileCaseStudyQuery.matches
+mobileCaseStudyQuery.addEventListener?.('change', () => location.reload())
+
+if (mobileCaseStudy) {
+  document.documentElement.classList.add('ai-workflow-mobile')
+  document.querySelectorAll('.card-flip').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('is-flipped'))
+  })
+} else {
+
 // ── TEXT HELPERS ─────────────────────────────────────────────
 function buildCharSplit(el) {
   const text = el.textContent.trim()
@@ -1154,10 +1407,10 @@ gsap.fromTo('#hero-sub',{opacity:0,y:10},{opacity:0.5,y:0,duration:0.7,delay:0.6
 // ── OVERVIEW SECTION ANIMATIONS ──────────────────────────────
 ;['#about','#workflow','#limitations'].forEach(id => {
   ScrollTrigger.create({
-    trigger: id, start: 'top 75%',
+    trigger: id, start: 'top 95%',
     onEnter: () => {
       document.querySelectorAll(`${id} .iw-inner`).forEach((el,i)=>{
-        gsap.fromTo(el,{yPercent:105},{yPercent:0,duration:0.85,delay:i*0.12,ease:'power4.out'})
+        gsap.fromTo(el,{yPercent:105},{yPercent:0,duration:0.5,delay:i*0.06,ease:'power4.out'})
       })
       if (id === '#about') {
         gsap.fromTo('#about-body',{opacity:0,y:18},{opacity:0.7,y:0,duration:0.7,delay:0.4,ease:'power3.out'})
@@ -1596,6 +1849,7 @@ window.addEventListener('resize',()=>{
   const w=window.innerWidth,h=window.innerHeight
   renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix()
 })
+}
 </script>
 <script src="./i18n-aiworkflow.js?v=1"></script>
 <script src="../../scripts/i18n.js?v=7"></script>

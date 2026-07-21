@@ -226,6 +226,10 @@ section {
   align-items: center;
   justify-content: center;
 }
+#s1-frame {
+  position: absolute;
+  inset: 0;
+}
 #hero-canvas {
   position: absolute;
   inset: 0;
@@ -688,6 +692,8 @@ section {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+  max-width: 1181px;
+  margin: 0 auto;
 }
 .persona-card {
   background: rgba(248,243,232,.04);
@@ -704,7 +710,7 @@ section {
 }
 .persona-img-wrap {
   position: relative;
-  aspect-ratio: 3/4;
+  aspect-ratio: 10/9;
   overflow: hidden;
 }
 .persona-img-wrap img {
@@ -1005,15 +1011,6 @@ section {
   border-right: 1px solid rgba(248,243,232,.07);
 }
 #s8-left-header { margin-bottom: 44px; }
-#s8-left-eyebrow {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: rgba(248,243,232,.35);
-  margin-bottom: 14px;
-}
 #s8-left-heading {
   font-weight: 800;
   font-size: clamp(22px, 2.2vw, 34px);
@@ -1605,9 +1602,918 @@ html[lang="zh-Hans"] button,
 html[lang="zh-Hans"] input {
   font-family: "DM Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif !important;
 }
+
+/* --- Page loading curtain --- */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+  background: #f3f3f4;
+  transition: opacity .4s ease;
+}
+.page-loader.is-ready {
+  opacity: 0;
+  pointer-events: none;
+}
+.page-loader__mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid rgba(46, 47, 49, .15);
+  border-top-color: #2e2f31;
+  border-left-color: #2e2f31;
+  animation: page-loader-spin .8s linear infinite;
+}
+@keyframes page-loader-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================================
+   MOBILE CASE STUDY — isolated from the desktop experience
+========================================================= */
+.rumi-mobile-hero-image,
+.rumi-mobile-hero-fallback,
+.persona-tabs,
+.mobile-idea-progress { display: none; }
+.research-image-grid--mobile { display: none !important; }
+
+@media (max-width: 809px) {
+  :root {
+    --mobile-gutter: clamp(18px, 5.2vw, 24px);
+    --mobile-section-space: clamp(72px, 18vw, 104px);
+  }
+
+  html, body { width: 100%; max-width: 100%; overflow-x: clip; }
+  body { overscroll-behavior-x: none; }
+  #cursor, #cursor-ring, #hero-canvas, #freeze-canvas, #crt-overlay,
+  #hero-dot-grid, #s15-canvas-wrap { display: none !important; }
+  #nav.site-header { height: 68px; padding: 10px var(--mobile-gutter); }
+  .brand { min-width: 0; }
+  .brand__image { width: 78px; }
+
+  section { width: 100%; max-width: 100%; overflow: clip; }
+  .eyebrow { font-size: 10px; letter-spacing: .15em; }
+  .s-heading,
+  .project-title {
+    max-width: 100%;
+    font-size: clamp(38px, 12vw, 64px) !important;
+    line-height: .96 !important;
+    letter-spacing: -.045em !important;
+    text-wrap: balance;
+  }
+  .context-desc, .insert-section-copy, .method-body, .idea-body,
+  .testing-body, .s3-body, .s8-panel-body, .reflect-body {
+    max-width: 64ch;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+  }
+
+  /* Mobile hero: static branded visual + one lightweight text reveal. */
+  #s1 {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: auto;
+    min-height: 100svh;
+    min-height: 100dvh;
+    padding: 84px var(--mobile-gutter) 28px;
+    background:
+      radial-gradient(circle at 50% 34%, rgba(203,253,133,.13), transparent 42%),
+      linear-gradient(180deg, #0e2a1c 0%, #080c09 100%);
+  }
+  #s1::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .22;
+    background-image: radial-gradient(circle, rgba(203,253,133,.7) 1px, transparent 1.2px);
+    background-size: 22px 22px;
+    animation: rumi-mobile-grid-breathe 5s ease-in-out infinite;
+  }
+  .rumi-mobile-hero-image {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: min(82vw, 410px);
+    height: min(72svh, 650px);
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 26px;
+    box-shadow: 0 28px 80px rgba(0,0,0,.34);
+  }
+  #hero-text-overlay {
+    position: absolute;
+    z-index: 2;
+    inset: auto var(--mobile-gutter) 42px;
+    display: block;
+    pointer-events: none;
+  }
+  #falling-container { width: 100%; pointer-events: none; }
+  #decrypt-q {
+    width: 100%;
+    max-width: 9ch;
+    color: var(--cream);
+    font-size: clamp(42px, 13.5vw, 68px) !important;
+    font-weight: 800;
+    line-height: .88 !important;
+    letter-spacing: -.065em;
+    text-shadow: 0 4px 24px rgba(0,0,0,.42);
+  }
+  #decrypt-q .dc-accent { color: var(--lime); }
+  #decrypt-title, #hero-scroll-hint { display: none !important; }
+
+  /* Core narrative becomes a natural, compact document flow. */
+  #s2, #s4, #s5, #s6a, #s6b, #s6d, #s6c, #s7, #s14, #s16 {
+    min-height: 0 !important;
+    padding: var(--mobile-section-space) var(--mobile-gutter) !important;
+    display: block !important;
+  }
+  #s2 .context-grid, .research-grid, .insert-section-head,
+  .testing-charts, .testing-grid, .testing-evidence-grid,
+  .experience-head, .experience-grid, #s14 > div, #s16 > div {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 30px !important;
+    width: 100% !important;
+  }
+  .context-right { margin-top: 18px; }
+  .meta-item { padding: 18px 0; }
+  .overview-role-list { gap: 8px; }
+  .research-methods, .testing-list { min-width: 0; }
+  .research-image-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  .research-image-grid img { min-width: 0; height: 148px; object-fit: cover; border-radius: 14px; }
+
+  /* Problem loses the desktop freeze/pin and remains readable. */
+  #s3 { height: auto !important; min-height: 0 !important; background: var(--black); }
+  #s3-sticky {
+    position: relative !important;
+    inset: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: var(--mobile-section-space) var(--mobile-gutter) !important;
+    display: block !important;
+  }
+  #s3-heading {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  #s3-heading h2 { font-size: clamp(38px, 11.5vw, 60px) !important; line-height: .98 !important; }
+
+  #s6 { min-height: 0 !important; padding: var(--mobile-section-space) var(--mobile-gutter) !important; display: block !important; }
+  #s6 > div { width: 100% !important; min-height: 0 !important; padding: 0 !important; border: 0 !important; }
+  #s6-img { width: 100% !important; max-width: 100% !important; height: auto !important; opacity: 1 !important; transform: none !important; }
+  #s6-eye, #s6-head, #s6-sub, #s6-frame { opacity: 1 !important; transform: none !important; }
+  .experience-primary { grid-column: auto !important; }
+  .experience-grid .case-image { aspect-ratio: auto !important; }
+
+  #ia-flow { overflow-x: auto !important; scroll-snap-type: x proximity; }
+  #ia-flow > div { min-width: 690px !important; }
+
+  /* Five-step experience flow: no 2500px sticky rail on mobile. */
+  #s8, #s8-scroll-space { min-height: 0 !important; height: auto !important; overflow: clip; }
+  #s8-scroll-space { padding: var(--mobile-section-space) 0 !important; }
+  #s8-sticky {
+    position: relative;
+    inset: auto;
+    height: auto !important;
+    min-height: 0 !important;
+    display: block !important;
+  }
+  #s8-left { padding: 0 var(--mobile-gutter) 34px !important; border: 0 !important; }
+  #s8-left-heading { font-size: clamp(40px, 12vw, 62px) !important; line-height: .95; }
+  #s8-timeline { display: none !important; }
+  /* #s8-right / .s8-panel rules removed here too — same leftover-layer issue
+     as the "v2" block below: an even older pass, fully superseded by the
+     higher-specificity #s8-prefixed rules in the "v3" block further down. */
+
+  #s6d > .insert-section-inner > div:last-child { grid-template-columns: 1fr !important; }
+  video, img { max-width: 100%; }
+  video { height: auto; }
+  #s14 img { transform: none !important; scale: 1 !important; }
+  #s16 .reflect-item { padding: 24px 0 !important; }
+  .portfolio-bridge-footer { padding: 30px var(--mobile-gutter); }
+
+  .mobile-reveal {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition: opacity .58s ease, transform .58s cubic-bezier(.22,1,.36,1);
+  }
+  .mobile-reveal.is-visible { opacity: 1; transform: translate3d(0,0,0); }
+}
+
+@keyframes rumi-mobile-grid-breathe {
+  0%, 100% { opacity: .15; transform: scale(1); }
+  50% { opacity: .3; transform: scale(1.015); }
+}
+
+@media (max-width: 809px) and (prefers-reduced-motion: reduce) {
+  #s1::before { animation: none; }
+  .mobile-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .personas-row, .idea-grid, #s8-right { scroll-behavior: auto; }
+}
+
+/* Mobile redesign v2: later rules intentionally replace the first mobile pass. */
+@media (max-width: 809px) {
+  body { cursor: auto; }
+
+  /* Hero: the WebGL canvas returns; the static screenshot stays retired. */
+  #s1 {
+    display: block !important;
+    height: 100svh !important;
+    height: 100dvh !important;
+    min-height: 620px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: radial-gradient(circle at 50% 48%, #264d38 0%, #0e2a1c 54%, #080c09 100%) !important;
+  }
+  #s1::before, .rumi-mobile-hero-image, #hero-text-overlay,
+  .rumi-mobile-hero-fallback { display: none !important; }
+  /* Same desktop hero scene (dot-grid + canvas + CRT), rendered at a fixed
+     desktop-reference size and scaled down to fit — pixel-identical composition,
+     just smaller, instead of a separate simplified mobile build. */
+  #s1-frame {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    width: 1440px;
+    height: 900px;
+    transform-origin: center center;
+    /* The actual cover-fit scale (background-size:cover-style, so the scene
+       fills the screen edge-to-edge) is computed and applied in JS — see the
+       hResize() function in the hero script — since dividing viewport units by
+       a fixed px reference inside scale() isn't reliably supported in CSS. */
+  }
+  #hero-dot-grid { display: flex !important; }
+  #crt-overlay { display: block !important; }
+  #hero-canvas { display: block !important; }
+  #hero-scroll-hint { display: flex !important; }
+
+  /* Problem mirrors the light Overview reading rhythm. */
+  #s3 {
+    height: auto !important;
+    min-height: 0 !important;
+    background: var(--cream) !important;
+    color: var(--dark);
+  }
+  #s3-sticky {
+    position: relative !important;
+    inset: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: var(--mobile-section-space) var(--mobile-gutter) calc(var(--mobile-section-space) + 10px) !important;
+  }
+  #s3-heading { display: grid !important; gap: 20px; }
+  #s3-heading .eyebrow { margin: 0 !important; color: var(--mid); }
+  #s3-heading h2 {
+    max-width: 11ch;
+    margin: 0;
+    color: var(--dark) !important;
+    font-size: clamp(40px, 11.5vw, 62px) !important;
+    line-height: .96 !important;
+    letter-spacing: -.045em;
+  }
+  #s3-heading .s3-body {
+    max-width: 58ch;
+    margin: 2px 0 0 !important;
+    color: rgba(14,42,28,.68) !important;
+  }
+
+  /* Research returns to ordinary flow; no fixed-height media crops. */
+  #s4 { align-items: initial !important; }
+  #s4 .research-grid { gap: 34px !important; }
+  #s4 .research-left {
+    display: block !important;
+    min-width: 0;
+  }
+  #s4 .research-left .s-heading { margin: 14px 0 0 !important; }
+  #s4 .research-methods {
+    display: flex !important;
+    flex-direction: column;
+    gap: 16px !important;
+    width: 100%;
+  }
+  #s4 .method-item {
+    width: 100%;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 12px;
+    padding: 20px 18px;
+  }
+  #s4 .research-image-grid {
+    order: initial !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    width: 100%;
+    margin: 10px 0 0 !important;
+  }
+  #s4 .research-image-grid img {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    min-width: 0;
+    object-fit: contain !important;
+    border-radius: 14px;
+  }
+
+  /* Single-open mobile research accordion. Desktop keeps the original grid. */
+  #s4.is-accordion-ready .research-methods { gap: 0 !important; }
+  #s4.is-accordion-ready .research-methods > .research-image-grid:not(.research-image-grid--mobile) {
+    display: none !important;
+  }
+  #s4 .method-item.is-mobile-accordion {
+    display: block !important;
+    width: 100%;
+    padding: 0;
+    border-top: 1px solid rgba(248,243,232,.14);
+    border-radius: 0;
+    background: transparent;
+  }
+  #s4 .method-item.is-mobile-accordion:nth-child(3) {
+    border-bottom: 1px solid rgba(248,243,232,.14);
+  }
+  .research-accordion-toggle {
+    appearance: none;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) 20px;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 19px 2px;
+    border: 0;
+    background: transparent;
+    color: var(--cream);
+    text-align: left;
+    cursor: pointer;
+  }
+  .research-accordion-toggle:focus-visible {
+    outline: 2px solid var(--lime);
+    outline-offset: -2px;
+  }
+  .research-accordion-toggle .method-num,
+  .research-accordion-toggle .method-title { margin: 0; padding: 0; }
+  .research-accordion-toggle .method-title {
+    color: var(--cream);
+    font-size: clamp(17px, 5vw, 22px);
+    line-height: 1.12;
+  }
+  .research-accordion-icon {
+    position: relative;
+    display: block;
+    width: 18px;
+    height: 18px;
+    justify-self: end;
+  }
+  .research-accordion-icon::before,
+  .research-accordion-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 1px;
+    background: var(--lime);
+    transform: translate(-50%, -50%);
+    transition: transform .26s ease, opacity .26s ease;
+  }
+  .research-accordion-icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .method-item.is-open .research-accordion-icon::after {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  .research-accordion-shell {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows .34s cubic-bezier(.22,1,.36,1), opacity .24s ease;
+  }
+  .method-item.is-open .research-accordion-shell {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  .research-accordion-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .research-accordion-inner .method-body {
+    padding: 0 2px 18px 46px;
+    color: rgba(248,243,232,.62);
+  }
+  #s4 .research-image-grid--mobile {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    margin: 0 0 20px 46px !important;
+    width: calc(100% - 46px);
+  }
+
+  /* Persona tabs replace the wide swipe row. Jayla is the no-JS default. */
+  #s5 { min-height: 0 !important; }
+  #s5 .who-header { margin-bottom: 28px; }
+  .persona-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .persona-tab {
+    appearance: none;
+    border: 1px solid rgba(248,243,232,.18);
+    border-radius: 999px;
+    background: transparent;
+    color: rgba(248,243,232,.66);
+    padding: 8px 14px;
+    font: 600 12px/1 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: color .22s ease, background .22s ease, border-color .22s ease, transform .18s ease;
+  }
+  .persona-tab:active { transform: scale(.97); }
+  .persona-tab:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+  .persona-tab.is-active {
+    color: var(--dark);
+    background: var(--lime);
+    border-color: var(--lime);
+  }
+  #s5 .personas-row {
+    display: block !important;
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  #s5 .persona-card {
+    display: none !important;
+    width: 100% !important;
+    opacity: 1 !important;
+    transform: none !important;
+    scroll-snap-align: none;
+  }
+  #s5 .persona-card.is-active:not([hidden]) { display: block !important; }
+  #s5 .persona-card[hidden] { display: none !important; }
+  #s5 .persona-img-wrap {
+    width: 100%;
+    height: auto !important;
+    aspect-ratio: 4/5 !important;
+  }
+  #s5 .persona-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 18%;
+  }
+  #s5 .persona-body { padding: 22px 20px 24px; }
+
+  /* A pinned, vertical three-card wheel driven only by transforms. */
+  #s6a {
+    min-height: 100dvh !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  #s6a .insert-section-inner {
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    gap: 14px;
+    width: 100%;
+    height: 100svh;
+    height: 100dvh;
+    min-height: 620px;
+    padding: 82px var(--mobile-gutter) 22px;
+    overflow: hidden;
+  }
+  #s6a .insert-section-head {
+    display: block !important;
+    width: 100%;
+  }
+  #s6a .insert-section-copy {
+    margin-top: 12px !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+  }
+  #s6a .s-heading { font-size: clamp(36px, 10vw, 54px) !important; }
+  .mobile-idea-progress {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    color: var(--lime);
+    font: 700 16px/1 'DM Sans', sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+  .mobile-idea-progress span:last-child { color: rgba(248,243,232,.4); font-size: 11px; letter-spacing: .12em; }
+  #s6a .idea-grid {
+    position: relative;
+    display: block !important;
+    width: 100%;
+    min-height: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+  #s6a .idea-card {
+    position: absolute;
+    inset: 0;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    align-content: start;
+    gap: 12px;
+    width: 100% !important;
+    height: 100%;
+    min-width: 0 !important;
+    padding: 15px !important;
+    overflow: hidden;
+    opacity: 0;
+    transform: translate3d(0, 105%, 0);
+    will-change: transform, opacity;
+  }
+  #s6a .idea-card:first-child { opacity: 1; transform: translate3d(0,0,0); }
+  #s6a .idea-card .case-image {
+    grid-row: auto;
+    width: 100%;
+    height: auto !important;
+    max-height: min(23dvh, 190px);
+    aspect-ratio: 16 / 9 !important;
+    margin: 0;
+    object-fit: cover !important;
+    border-radius: 13px;
+  }
+  #s6a .idea-title {
+    margin: 0;
+    font-size: clamp(20px, 5.8vw, 28px);
+    line-height: 1.05;
+  }
+  #s6a .idea-body {
+    min-height: 0;
+    overflow: visible;
+    font-size: 14px !important;
+    line-height: 1.52 !important;
+  }
+
+  /* Percentages remain data, not decorative progress bars. */
+  #s6b .bar-chart {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  #s6b .bar-row {
+    display: flex;
+    min-width: 0;
+    min-height: 112px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 12px;
+    border-top: 1px solid rgba(203,253,133,.38);
+    background: rgba(248,243,232,.035);
+  }
+  #s6b .bar-row > span { font-size: 11px; line-height: 1.35; color: rgba(248,243,232,.58); }
+  #s6b .bar-track { display: none; }
+  #s6b .bar-row strong {
+    color: var(--lime);
+    font-size: clamp(22px, 6.8vw, 34px);
+    line-height: 1;
+    letter-spacing: -.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  #s6 .product-pill-list { display: none !important; }
+  #s6 .product-pill-list + * { margin-top: 0 !important; }
+
+  /* Experience Flow becomes a pinned, one-panel stage like desktop. */
+  #s8, #s8-scroll-space {
+    min-height: 100dvh !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  #s8-scroll-space { padding: 0 !important; }
+  #s8-sticky {
+    position: relative;
+    inset: auto;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto minmax(0, 1fr);
+    width: 100%;
+    height: 100svh !important;
+    height: 100dvh !important;
+    min-height: 620px !important;
+    padding: 78px 0 18px !important;
+    overflow: hidden !important;
+  }
+  #s8-left {
+    display: block !important;
+    padding: 0 var(--mobile-gutter) 14px !important;
+    border: 0 !important;
+  }
+  #s8-left-header { margin: 0 !important; }
+  #s8-left-heading {
+    max-width: 12ch;
+    font-size: clamp(32px, 9.5vw, 50px) !important;
+    line-height: .94 !important;
+  }
+  #s8-timeline { display: none !important; }
+  /* #s8-right / .s8-panel styling removed here — this was an older single-panel
+     crossfade design (keyed off a `.s8-panel.is-active` class nothing sets
+     anymore) that only stayed inert because the "v3" pass below re-declares
+     every conflicting property with !important. Left in place it was a
+     landmine: any future edit to v3's rules would have silently reverted the
+     mobile carousel back to "only the first panel visible." */
+}
+
+@media (min-width: 560px) and (max-width: 809px) {
+  #s4 .research-image-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+
+@media (max-width: 809px) and (prefers-reduced-motion: reduce) {
+  #s6a { padding: var(--mobile-section-space) var(--mobile-gutter) !important; }
+  #s6a .insert-section-inner {
+    display: block;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    overflow: visible;
+  }
+  #s6a .mobile-idea-progress { display: none; }
+  #s6a .idea-grid { display: grid !important; gap: 16px !important; margin-top: 28px !important; overflow: visible !important; }
+  #s6a .idea-card {
+    position: relative;
+    inset: auto;
+    height: auto;
+    min-height: 0;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  #s6a .idea-body { overflow: visible; }
+  #s8, #s8-scroll-space { min-height: 0 !important; }
+  #s8-scroll-space { padding: var(--mobile-section-space) 0 !important; }
+  #s8-sticky { display: block !important; height: auto !important; min-height: 0 !important; padding: 0 !important; overflow: visible !important; }
+  #s8-left { padding-bottom: 28px !important; }
+  #s8-right { display: grid !important; gap: 18px; overflow: visible !important; }
+  #s8 .s8-panel {
+    position: relative !important;
+    inset: auto !important;
+    height: auto;
+    min-height: 0;
+    padding-block: 18px !important;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto;
+  }
+  #s8 .s8-panel-body { overflow: visible; }
+}
+
+/* Mobile redesign v3: accordion ideation + native album experience flow. */
+@media (max-width: 809px) {
+  /* Ideation follows the compact, single-open Research accordion. */
+  #s6a {
+    min-height: 0 !important;
+    padding: var(--mobile-section-space) var(--mobile-gutter) !important;
+    overflow: clip !important;
+  }
+  #s6a .insert-section-inner {
+    display: block !important;
+    width: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  #s6a .insert-section-copy { max-width: 58ch; }
+  #s6a .mobile-idea-progress { display: none !important; }
+  #s6a .idea-grid {
+    display: block !important;
+    width: 100%;
+    min-height: 0;
+    margin: 34px 0 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    border-bottom: 1px solid rgba(248,243,232,.14);
+  }
+  #s6a .idea-card.is-mobile-accordion {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(248,243,232,.14) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    will-change: auto;
+  }
+  .mobile-idea-toggle {
+    appearance: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 20px;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 20px 2px;
+    border: 0;
+    background: transparent;
+    color: var(--cream);
+    text-align: left;
+    cursor: pointer;
+  }
+  .mobile-idea-toggle:focus-visible {
+    outline: 2px solid var(--lime);
+    outline-offset: -2px;
+  }
+  #s6a .mobile-idea-toggle .idea-title {
+    margin: 0 !important;
+    color: var(--cream);
+    font-size: clamp(17px, 5vw, 22px) !important;
+    line-height: 1.12 !important;
+  }
+  .mobile-idea-icon {
+    position: relative;
+    display: block;
+    width: 18px;
+    height: 18px;
+    justify-self: end;
+  }
+  .mobile-idea-icon::before,
+  .mobile-idea-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 1px;
+    background: var(--lime);
+    transform: translate(-50%, -50%);
+    transition: transform .26s ease, opacity .26s ease;
+  }
+  .mobile-idea-icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+  #s6a .idea-card.is-open .mobile-idea-icon::after {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  .mobile-idea-shell {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows .34s cubic-bezier(.22,1,.36,1), opacity .24s ease;
+  }
+  #s6a .idea-card.is-open .mobile-idea-shell {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  .mobile-idea-inner {
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 0 20px;
+  }
+  #s6a .mobile-idea-inner .case-image {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: 16 / 9 !important;
+    margin: 0 !important;
+    object-fit: cover !important;
+    border-radius: 13px;
+  }
+  #s6a .idea-card:not(.is-open) .idea-body { display: none !important; }
+  #s6a .idea-card.is-open .idea-body { padding: 0 0 20px; }
+
+  /* Experience Flow becomes a touch-first, auto-advancing album. */
+  #s8, #s8-scroll-space {
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: clip !important;
+  }
+  #s8-scroll-space { padding: var(--mobile-section-space) 0 !important; }
+  #s8-sticky {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    width: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  #s8-left { padding: 0 var(--mobile-gutter) 28px !important; }
+  #s8-right {
+    position: relative !important;
+    inset: auto !important;
+    display: flex !important;
+    align-items: stretch;
+    gap: 14px;
+    width: 100%;
+    min-height: 0;
+    margin: 0 !important;
+    padding: 0 var(--mobile-gutter) 14px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  #s8-right::-webkit-scrollbar { display: none; }
+  #s8 .s8-panel {
+    position: relative !important;
+    inset: auto !important;
+    display: flex !important;
+    flex: 0 0 min(86vw, 620px);
+    flex-direction: column;
+    gap: 13px !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 14px !important;
+    border: 1px solid rgba(248,243,232,.1);
+    border-radius: 20px;
+    background: rgba(248,243,232,.04);
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    will-change: auto;
+  }
+  #s8 .s8-panel-img {
+    order: 1;
+    width: 100% !important;
+    aspect-ratio: 16 / 10 !important;
+    border-radius: 13px;
+    box-shadow: 0 18px 54px rgba(0,0,0,.24);
+  }
+  #s8 .s8-panel-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important;
+    border-radius: inherit;
+  }
+  #s8 .s8-panel-text {
+    order: 2;
+    display: flex !important;
+    flex: 1;
+    flex-direction: column;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0;
+  }
+  #s8 .s8-panel-eyebrow {
+    margin: 0 0 10px;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+  #s8 .s8-panel-title {
+    margin: 0 0 12px;
+    font-size: clamp(24px, 7.2vw, 36px) !important;
+    line-height: 1 !important;
+  }
+  #s8 .s8-panel-body {
+    min-height: 0;
+    margin: 0;
+    overflow: visible;
+    font-size: 14px !important;
+    line-height: 1.52 !important;
+  }
+}
+
+@media (max-width: 809px) and (prefers-reduced-motion: reduce) {
+  .mobile-idea-icon::before,
+  .mobile-idea-icon::after,
+  .mobile-idea-shell { transition: none !important; }
+  #s8-right { scroll-behavior: auto !important; }
+}
 </style>
 </head>
 <body data-i18n-title="titleRumi">
+<div class="page-loader" id="page-loader" aria-hidden="true"><span class="page-loader__mark"></span></div>
+<script>
+(function () {
+  var loader = document.getElementById("page-loader");
+  if (!loader) return;
+  var hide = function () {
+    loader.classList.add("is-ready");
+    setTimeout(function () { loader.remove(); }, 450);
+  };
+  var resolveHeroReady;
+  var heroReadyPromise = new Promise(function (resolve) { resolveHeroReady = resolve; });
+  window.__hidePageLoader = function () { resolveHeroReady(); };
+  var minTime = new Promise(function (r) { setTimeout(r, 500); });
+  var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+  var safetyTimeout = new Promise(function (r) { setTimeout(r, 6000); });
+  Promise.race([
+    Promise.all([minTime, fontsReady, heroReadyPromise]),
+    safetyTimeout
+  ]).then(hide);
+})();
+</script>
 
 <!-- CURSOR -->
 <div id="cursor"></div>
@@ -1669,13 +2575,20 @@ html[lang="zh-Hans"] input {
 
 <!-- â•â• S1 CHAOS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <section id="s1">
-  <div id="hero-dot-grid" class="dot-grid" aria-hidden="true">
-    <div class="dot-grid__wrap">
-      <canvas class="dot-grid__canvas"></canvas>
-    </div>
+  <img class="rumi-mobile-hero-image" src="assets/images/Rumi-screen.png" alt="Trash Talk with Rumi sorting interface" fetchpriority="high" decoding="async"/>
+  <div class="rumi-mobile-hero-fallback" aria-hidden="true">
+    <span>Trash Talk</span>
+    <span>with Rumi</span>
   </div>
-  <canvas id="hero-canvas"></canvas>
-  <div id="crt-overlay" aria-hidden="true"></div>
+  <div id="s1-frame">
+    <div id="hero-dot-grid" class="dot-grid" aria-hidden="true">
+      <div class="dot-grid__wrap">
+        <canvas class="dot-grid__canvas"></canvas>
+      </div>
+    </div>
+    <canvas id="hero-canvas"></canvas>
+    <div id="crt-overlay" aria-hidden="true"></div>
+  </div>
   <div id="hero-text-overlay">
     <div id="falling-container">
       <div id="decrypt-q"></div>
@@ -1773,8 +2686,13 @@ html[lang="zh-Hans"] input {
     <span class="eyebrow">03 — Users</span>
     <h2 class="s-heading">Who are<br/><em>our users?</em></h2>
   </div>
+  <div class="persona-tabs" role="tablist" aria-label="Choose a persona">
+    <button class="persona-tab is-active" type="button" role="tab" id="persona-tab-jayla" aria-controls="persona-jayla" aria-selected="true" data-persona="jayla">Jayla</button>
+    <button class="persona-tab" type="button" role="tab" id="persona-tab-ava" aria-controls="persona-ava" aria-selected="false" data-persona="ava">Ava</button>
+    <button class="persona-tab" type="button" role="tab" id="persona-tab-ethan" aria-controls="persona-ethan" aria-selected="false" data-persona="ethan">Ethan</button>
+  </div>
   <div class="personas-row">
-    <div class="persona-card">
+    <div class="persona-card is-active" id="persona-jayla" data-persona-panel="jayla">
       <div class="persona-img-wrap"><img src="assets/personas/jayla.png" alt="Jayla"/></div>
       <div class="persona-body">
         <div class="persona-name">Jayla</div>
@@ -1787,7 +2705,7 @@ html[lang="zh-Hans"] input {
         </div>
       </div>
     </div>
-    <div class="persona-card">
+    <div class="persona-card" id="persona-ava" data-persona-panel="ava">
       <div class="persona-img-wrap"><img src="assets/personas/ava.png" alt="Ava"/></div>
       <div class="persona-body">
         <div class="persona-name">Ava</div>
@@ -1800,7 +2718,7 @@ html[lang="zh-Hans"] input {
         </div>
       </div>
     </div>
-    <div class="persona-card">
+    <div class="persona-card" id="persona-ethan" data-persona-panel="ethan">
       <div class="persona-img-wrap"><img src="assets/personas/ethan.png" alt="Ethan"/></div>
       <div class="persona-body">
         <div class="persona-name">Ethan</div>
@@ -1826,6 +2744,7 @@ html[lang="zh-Hans"] input {
         <p class="insert-section-copy s6a-el" style="margin-top:24px">Before committing to the kiosk interaction, we explored different ways to make recycling guidance feel immediate, visible, and low effort.</p>
       </div>
     </div>
+    <div class="mobile-idea-progress" aria-live="polite"><span>01</span><span>/ 03</span></div>
     <div class="idea-grid">
       <div class="idea-card s6a-el">
         <img class="case-image" src="assets/case-study/idea-game-vision.png" alt="Game-based sorting concept reference"/>
@@ -1926,7 +2845,7 @@ html[lang="zh-Hans"] input {
     <h2 class="s6-el" style="font-weight:800;font-size:clamp(42px,5.5vw,80px);line-height:.95;letter-spacing:-.03em;color:var(--dark);margin-bottom:32px">A pop-up sorting<br/><em style="font-style:normal;color:var(--mid)">activity with Rumi.</em></h2>
     <p class="s6-el" style="font-family:'DM Sans', sans-serif;font-size:clamp(14px,1.15vw,17px);line-height:1.75;color:rgba(14,42,28,.6);max-width:500px;margin-bottom:48px">Trash Talk is a community-facing interactive waste sorting installation. It combines an AI character, real-time waste classification, physical sorting, and an interactive video attraction screen to turn confusing disposal rules into a public learning activity.</p>
     <!-- Feature pills -->
-    <div class="s6-el" style="display:flex;flex-wrap:wrap;gap:12px">
+    <div class="s6-el product-pill-list" style="display:flex;flex-wrap:wrap;gap:12px">
       <span class="rumi-pill" style="font-family:'DM Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(14,42,28,.07);color:var(--dark);padding:8px 18px;border-radius:100px;border:1px solid rgba(14,42,28,.12)">AI character guidance</span>
       <span class="rumi-pill" style="font-family:'DM Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(14,42,28,.07);color:var(--dark);padding:8px 18px;border-radius:100px;border:1px solid rgba(14,42,28,.12)">Real-time classification</span>
       <span class="rumi-pill" style="font-family:'DM Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(14,42,28,.07);color:var(--dark);padding:8px 18px;border-radius:100px;border:1px solid rgba(14,42,28,.12)">Physical sorting station</span>
@@ -1941,7 +2860,7 @@ html[lang="zh-Hans"] input {
     </div>
     <div style="position:relative;z-index:2;text-align:center">
       <div class="scan-frame" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);width:260px;height:260px" id="s6-frame"><span></span></div>
-      <img src="assets/images/Rumi-screen.png" alt="Rumi" style="height:clamp(300px,44vh,540px);width:auto;filter:drop-shadow(0 40px 80px rgba(14,42,28,.2));position:relative;z-index:2"/>
+      <img id="s6-img" src="assets/images/Rumi-screen.png" alt="Rumi" style="height:clamp(300px,44vh,540px);width:auto;filter:drop-shadow(0 40px 80px rgba(14,42,28,.2));position:relative;z-index:2"/>
     </div>
     <!-- Stat callouts -->
     <div style="position:relative;z-index:2;display:flex;gap:40px;margin-top:48px">
@@ -2017,7 +2936,6 @@ html[lang="zh-Hans"] input {
       <!-- LEFT: vertical timeline -->
       <div id="s8-left">
         <div id="s8-left-header">
-          <div id="s8-left-eyebrow"></div>
           <div id="s8-left-heading">Five steps.<br/><em>Zero confusion.</em></div>
         </div>
         <div id="s8-timeline">
@@ -2176,10 +3094,11 @@ html[lang="zh-Hans"] input {
   <a href="mailto:angel19190828@gmail.com">angel19190828@gmail.com</a>
   <span>BASED IN VANCOUVER</span>
 </footer><script>
+if (!window.matchMedia('(max-width: 809px)').matches) {
 // â”€â”€ S6 THE PRODUCT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function(){
   if (!document.querySelector('#s6-eye, #s6-head, #s6-img, #s6-sub')) return;
-  const tl = gsap.timeline({ scrollTrigger:{ trigger:'#s6', start:'top 70%', once:true } });
+  const tl = gsap.timeline({ scrollTrigger:{ trigger:'#s6', start:'top 90%', once:true } });
   tl.to('#s6-eye',  { opacity:.7, y:0, duration:.7, ease:'power3.out' })
     .to('#s6-head', { opacity:1,  y:0, duration:.9, ease:'power3.out' }, '-=.4')
     .to('#s6-img',  { opacity:1, scale:1, duration:1.0, ease:'power3.out' }, '-=.5')
@@ -2190,25 +3109,17 @@ html[lang="zh-Hans"] input {
 // â”€â”€ S7 IA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function(){
   gsap.from('.s7-el', {
-    scrollTrigger:{ trigger:'#s7', start:'top 75%', once:true },
-    opacity:0, y:24, duration:.8, ease:'power3.out', stagger:.12
+    scrollTrigger:{ trigger:'#s7', start:'top 95%', once:true },
+    opacity:0, y:24, duration:.5, ease:'power3.out', stagger:.07
   });
   document.querySelectorAll('.ia-node').forEach((node, i) => {
     gsap.from(node, {
-      scrollTrigger:{ trigger:'#ia-flow', start:'top 80%', once:true },
-      opacity:0, y:24, duration:.7, ease:'power3.out', delay: i * .1
+      scrollTrigger:{ trigger:'#ia-flow', start:'top 98%', once:true },
+      opacity:0, y:24, duration:.5, ease:'power3.out', delay: i * .05
     });
   });
 })();
 
-
-// â”€â”€ S9 UI SYSTEM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-(function(){
-  gsap.from('.s9-el', {
-    scrollTrigger:{ trigger:'#s9', start:'top 75%', once:true },
-    opacity:0, y:24, duration:.8, ease:'power3.out', stagger:.14
-  });
-})();
 
 // S6A / S6B / S6D / S6C inserts
 (function(){
@@ -2216,58 +3127,30 @@ html[lang="zh-Hans"] input {
     const section = document.getElementById(id);
     if (!section) return;
     gsap.from('#' + id + ' .' + id + '-el', {
-      scrollTrigger:{ trigger:'#' + id, start:'top 75%', once:true },
-      opacity:0, y:28, duration:.8, ease:'power3.out', stagger:.1
+      scrollTrigger:{ trigger:'#' + id, start:'top 95%', once:true },
+      opacity:0, y:28, duration:.5, ease:'power3.out', stagger:.06
     });
   });
-})();
-
-// â”€â”€ S13 CAMPAIGN poster drag â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-(function(){
-  const s13 = document.getElementById('s13');
-  if (!s13) return;
-  gsap.from('.s13-el', {
-    scrollTrigger:{ trigger:'#s13', start:'top 75%', once:true },
-    opacity:0, y:24, duration:.8, ease:'power3.out', stagger:.1
-  });
-
-  const track = document.getElementById('poster-track');
-  if (!track) return;
-  let isDragging = false, startX = 0, scrollLeft = 0;
-  track.addEventListener('mousedown', e => { isDragging=true; track.classList.add('dragging'); startX=e.pageX-track.offsetLeft; scrollLeft=track.scrollLeft; });
-  window.addEventListener('mouseup', () => { isDragging=false; track.classList.remove('dragging'); });
-  track.addEventListener('mousemove', e => { if(!isDragging) return; e.preventDefault(); const x=e.pageX-track.offsetLeft; track.scrollLeft=scrollLeft-(x-startX)*1.2; });
-  track.style.overflowX = 'auto';
-  track.style.scrollbarWidth = 'none';
 })();
 
 // â”€â”€ S14 IN CONTEXT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function(){
   gsap.from('.s14-el', {
-    scrollTrigger:{ trigger:'#s14', start:'top 75%', once:true },
-    opacity:0, y:24, scale:1, duration:.9, ease:'power3.out', stagger:.14
-  });
-})();
-
-// ── S15 — 3D THROW GAME ─────────────────────────────────────
-(function(){
-  // Entrance animation — use gsap.from so elements are visible by default
-  gsap.from('.s15-el', {
-    scrollTrigger:{ trigger:'#s15', start:'top 80%', once:true },
-    opacity:0, y:40, duration:.8, ease:'power3.out', stagger:.12
+    scrollTrigger:{ trigger:'#s14', start:'top 95%', once:true },
+    opacity:0, y:24, scale:1, duration:.5, ease:'power3.out', stagger:.07
   });
 })();
 
 // â”€â”€ S16 REFLECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function(){
   gsap.from('.s16-el', {
-    scrollTrigger:{ trigger:'#s16', start:'top 75%', once:true },
-    opacity:0, y:24, duration:.8, ease:'power3.out', stagger:.12
+    scrollTrigger:{ trigger:'#s16', start:'top 95%', once:true },
+    opacity:0, y:24, duration:.5, ease:'power3.out', stagger:.07
   });
 
 })();
+}
 
-// â”€â”€ S10 entrances â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 </script>
 
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -2286,9 +3169,8 @@ html[lang="zh-Hans"] input {
      GSAP + LENIS INIT (non-module)
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <script>
-gsap.registerPlugin(ScrollTrigger, Draggable);
-
 // Hero DotGrid background, adapted from React Bits for this static page.
+// Runs unconditionally (desktop + mobile) now that the S1 hero uses the same setup on both.
 (function(){
   const root = document.getElementById('hero-dot-grid');
   if (!root) return;
@@ -2542,6 +3424,11 @@ gsap.registerPlugin(ScrollTrigger, Draggable);
 
   rafId = requestAnimationFrame(draw);
 })();
+</script>
+
+<script>
+if (!window.matchMedia('(max-width: 809px)').matches) {
+gsap.registerPlugin(ScrollTrigger, Draggable);
 
 // â”€â”€ Lenis smooth scroll â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 if (typeof Lenis !== 'undefined') {
@@ -2592,238 +3479,442 @@ ScrollTrigger.create({
 // â”€â”€ S2 CONTEXT entrance â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function(){
   const tl = gsap.timeline({
-    scrollTrigger: { trigger: '#s2', start: 'top 75%', once: true }
+    scrollTrigger: { trigger: '#s2', start: 'top 95%', once: true }
   });
-  tl.from('.context-left .eyebrow',        { y:30, opacity:0, duration:.7, ease:'power3.out' })
-    .from('.context-left .project-title',  { y:40, opacity:0, duration:.9, ease:'power3.out' }, '-=.4')
-    .from('.context-desc',                 { y:24, opacity:0, duration:.7, ease:'power3.out' }, '-=.5')
-    .from('.context-tags .tag',            { y:16, opacity:0, duration:.5, ease:'power3.out', stagger:.06 }, '-=.4')
-    .from('.meta-item',                    { y:20, opacity:0, duration:.5, ease:'power3.out', stagger:.07 }, '-=.5');
+  tl.from('.context-left .eyebrow',        { y:30, opacity:0, duration:.45, ease:'power3.out' })
+    .from('.context-left .project-title',  { y:40, opacity:0, duration:.5, ease:'power3.out' }, '-=.25')
+    .from('.context-desc',                 { y:24, opacity:0, duration:.45, ease:'power3.out' }, '-=.3')
+    .from('.context-tags .tag',            { y:16, opacity:0, duration:.4, ease:'power3.out', stagger:.04 }, '-=.25')
+    .from('.meta-item',                    { y:20, opacity:0, duration:.4, ease:'power3.out', stagger:.04 }, '-=.3');
 })();
 
 // â”€â”€ S4 RESEARCH entrance â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function(){
-  gsap.from('.research-left .eyebrow', { scrollTrigger:{ trigger:'#s4', start:'top 75%', once:true }, y:28, opacity:0, duration:.7, ease:'power3.out' });
-  gsap.from('.research-left .s-heading', { scrollTrigger:{ trigger:'#s4', start:'top 65%', once:true }, y:40, opacity:0, duration:.9, ease:'power3.out' });
+  gsap.from('.research-left .eyebrow', { scrollTrigger:{ trigger:'#s4', start:'top 95%', once:true }, y:28, opacity:0, duration:.7, ease:'power3.out' });
+  gsap.from('.research-left .s-heading', { scrollTrigger:{ trigger:'#s4', start:'top 85%', once:true }, y:40, opacity:0, duration:.9, ease:'power3.out' });
   document.querySelectorAll('.method-item').forEach((el, i) => {
     gsap.from(el, {
-      scrollTrigger: { trigger: el, start: 'top 82%', once: true },
-      y:24, opacity:0, duration: .8, ease: 'power3.out', delay: i * .1
+      scrollTrigger: { trigger: el, start: 'top 98%', once: true },
+      y:24, opacity:0, duration: .5, ease: 'power3.out', delay: i * .05
     });
   });
 })();
 
 // â”€â”€ S5 WHO entrance â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function(){
-  gsap.from('.who-header .eyebrow',   { scrollTrigger:{ trigger:'#s5', start:'top 75%', once:true }, y:28, opacity:0, duration:.7 });
-  gsap.from('.who-header .s-heading', { scrollTrigger:{ trigger:'#s5', start:'top 70%', once:true }, y:40, opacity:0, duration:.9, ease:'power3.out' });
+  gsap.from('.who-header .eyebrow',   { scrollTrigger:{ trigger:'#s5', start:'top 95%', once:true }, y:28, opacity:0, duration:.7 });
+  gsap.from('.who-header .s-heading', { scrollTrigger:{ trigger:'#s5', start:'top 90%', once:true }, y:40, opacity:0, duration:.9, ease:'power3.out' });
   document.querySelectorAll('.persona-card').forEach((card, i) => {
     gsap.to(card, {
-      scrollTrigger: { trigger: '#s5', start: 'top 65%', once: true },
-      y: 0, opacity: 1, duration: .9, ease: 'power3.out', delay: .2 + i * .14
+      scrollTrigger: { trigger: '#s5', start: 'top 85%', once: true },
+      y: 0, opacity: 1, duration: .5, ease: 'power3.out', delay: .1 + i * .07
     });
   });
 })();
+}
 
 // (hero text sequence moved to its own script block below)
 </script>
 
-<script>
-// â”€â”€ HERO TEXT SEQUENCE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-(function() {
-  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&?';
-  const TEXT_Q = 'Where does this actually go?';
-  const TEXT_T = 'Trash Talk with Rumi';
-
-  /* â”€â”€ DecryptedText engine â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  function decryptReveal(container, text, accentWord, opts) {
-    opts = opts || {};
-    var speed = opts.speed || 42;
-    var onComplete = opts.onComplete || null;
-
-    var words = text.split(' ');
-    var html = '';
-    words.forEach(function(word, wi) {
-      var isAccent = accentWord && word === accentWord;
-      word.split('').forEach(function(ch) {
-        var rnd = CHARS[Math.floor(Math.random() * CHARS.length)];
-        html += '<span class="dc' + (isAccent ? ' dc-accent' : '') + ' dc-enc" data-ch="' + ch + '">' + rnd + '</span>';
-      });
-      if (wi < words.length - 1) html += '<span class="dc dc-space"> </span>';
-    });
-    container.innerHTML = html;
-
-    var nonSpace = Array.prototype.slice.call(container.querySelectorAll('.dc:not(.dc-space)'));
-    var n = nonSpace.length;
-
-    function centerOut(len) {
-      var mid = Math.floor(len / 2);
-      var order = [mid];
-      for (var d = 1; order.length < len; d++) {
-        var hi = mid + d, lo = mid - d;
-        if (hi < len) order.push(hi);
-        if (order.length < len && lo >= 0) order.push(lo);
-      }
-      return order;
-    }
-    var revOrder = centerOut(n);
-    var revealed = {};
-    var ptr = 0;
-
-    var iv = setInterval(function() {
-      nonSpace.forEach(function(el, idx) {
-        if (!revealed[idx]) {
-          el.textContent = CHARS[Math.floor(Math.random() * CHARS.length)];
-        }
-      });
-      if (ptr < revOrder.length) {
-        var ri = revOrder[ptr++];
-        revealed[ri] = true;
-        nonSpace[ri].textContent = nonSpace[ri].dataset.ch;
-        nonSpace[ri].classList.remove('dc-enc');
-      } else {
-        clearInterval(iv);
-        if (onComplete) onComplete();
-      }
-    }, speed);
-
-    return { stop: function() { clearInterval(iv); } };
-  }
-
-  /* â”€â”€ FallingText (Matter.js physics) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  function triggerFalling(text, accentWord, onSettled) {
-    if (!window.Matter) { if (onSettled) onSettled(); return; }
-    var M = window.Matter;
-
-    var decryptQ = document.getElementById('decrypt-q');
-
-    // Rebuild as word-level spans so we can measure each word's bbox
-    decryptQ.innerHTML = '';
-    var words = text.split(' ');
-    var wordEls = [];
-    words.forEach(function(word, wi) {
-      var span = document.createElement('span');
-      span.className = 'ft-word' + (accentWord && word === accentWord ? ' accent' : '');
-      span.textContent = word;
-      decryptQ.appendChild(span);
-      wordEls.push(span);
-      if (wi < words.length - 1) decryptQ.appendChild(document.createTextNode(' '));
-    });
-
-    // Measure after paint
-    requestAnimationFrame(function() {
-      var rects = wordEls.map(function(el) { return el.getBoundingClientRect(); });
-
-      // Spawn fixed-position clones for physics — original becomes hidden
-      var physEls = rects.map(function(r, i) {
-        var el = document.createElement('div');
-        el.className = 'ft-word' + (accentWord && words[i] === accentWord ? ' accent' : '');
-        el.textContent = words[i];
-        el.style.cssText = [
-          'position:fixed',
-          'left:' + r.left + 'px',
-          'top:' + r.top + 'px',
-          'width:' + r.width + 'px',
-          'height:' + r.height + 'px',
-          'z-index:20',
-          'pointer-events:none',
-          'transform-origin:center center'
-        ].join(';');
-        document.body.appendChild(el);
-        return el;
-      });
-      decryptQ.style.visibility = 'hidden';
-
-      var W = window.innerWidth, H = window.innerHeight;
-      var engine = M.Engine.create({ gravity: { y: 1.2 } });
-
-      var floor = M.Bodies.rectangle(W / 2, H + 25, W + 200, 50, { isStatic: true });
-      var wallL = M.Bodies.rectangle(-25, H / 2, 50, H * 2, { isStatic: true });
-      var wallR = M.Bodies.rectangle(W + 25, H / 2, 50, H * 2, { isStatic: true });
-
-      var bodies = rects.map(function(r) {
-        var b = M.Bodies.rectangle(
-          r.left + r.width / 2, r.top + r.height / 2, r.width, r.height,
-          { restitution: 0.35, frictionAir: 0.012, friction: 0.25 }
-        );
-        M.Body.setVelocity(b, { x: (Math.random() - 0.5) * 9, y: (Math.random() - 0.5) * 2 });
-        M.Body.setAngularVelocity(b, (Math.random() - 0.5) * 0.22);
-        return b;
-      });
-
-      // Mouse push
-      var mouse = M.Mouse.create(document.body);
-      mouse.pixelRatio = window.devicePixelRatio || 1;
-      var mc = M.MouseConstraint.create(engine, {
-        mouse: mouse,
-        constraint: { stiffness: 0.5, render: { visible: false } }
-      });
-
-      M.World.add(engine.world, bodies.concat([floor, wallL, wallR, mc]));
-      var runner = M.Runner.create();
-      M.Runner.run(runner, engine);
-
-      var raf;
-      function tick() {
-        bodies.forEach(function(body, i) {
-          var r = rects[i];
-          physEls[i].style.left = (body.position.x - r.width / 2) + 'px';
-          physEls[i].style.top  = (body.position.y - r.height / 2) + 'px';
-          physEls[i].style.transform = 'rotate(' + body.angle + 'rad)';
-        });
-        raf = requestAnimationFrame(tick);
-      }
-      tick();
-
-      setTimeout(function() {
-        cancelAnimationFrame(raf);
-        M.Runner.stop(runner);
-        physEls.forEach(function(el) {
-          gsap.to(el, { opacity: 0, duration: 0.4, onComplete: function() { el.remove(); } });
-        });
-        setTimeout(function() { if (onSettled) onSettled(); }, 150);
-      }, 1400);
-    });
-  }
-
-  /* â”€â”€ Orchestration — called directly by module script â”€â”€â”€â”€â”€ */
-  window._startHeroText = function() {
-    var decryptQ     = document.getElementById('decrypt-q');
-    var decryptTitle = document.getElementById('decrypt-title');
-    var fallingCont  = document.getElementById('falling-container');
-    if (!decryptQ) return;
-
-    // Phase 1: decrypt "Where does this actually go?"
-    decryptReveal(decryptQ, TEXT_Q, 'actually', {
-      speed: 42,
-      onComplete: function() {
-        // Cursor ring expand on hover
-        if (typeof ring !== 'undefined') {
-          fallingCont.addEventListener('mouseenter', function() { ring.classList.add('big'); });
-          fallingCont.addEventListener('mouseleave', function() { ring.classList.remove('big'); });
-        }
-        // Phase 2: hover → FallingText
-        fallingCont.addEventListener('mouseenter', function onHover() {
-          fallingCont.removeEventListener('mouseenter', onHover);
-          triggerFalling(TEXT_Q, 'actually', function() {
-            // Phase 3: "Trash Talk with Rumi" decrypt in
-            gsap.set(decryptTitle, { opacity: 1 });
-            decryptReveal(decryptTitle, TEXT_T, null, { speed: 38 });
-          });
-        });
-      }
-    });
-  };
-})();
-</script>
-
+<!-- (unused hero decrypt/physics engine removed here — the live hero text effect is
+     the Three.js canvas scramble driven by _startTxtAnim() below, not this DOM-based one) -->
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      THREE.JS MODULE — Hero S1 + Freeze S3
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <script type="module">
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+// Mobile now runs the exact same desktop hero setup, scaled down visually via
+// a CSS transform:scale() wrapper (see the #s1 mobile CSS) instead of a separate
+// simplified build — the old mobile-only branch below is intentionally dead code,
+// kept only so the two implementations can be diffed/reused later if needed.
+const rumiMobile = false;
+if (rumiMobile) {
+  const heroEl = document.getElementById('s1');
+  const heroCanvas = document.getElementById('hero-canvas');
+
+  function mobileHeroFailed(error) {
+    if (error) console.warn('Mobile Rumi hero fallback:', error);
+    if (heroEl) heroEl.classList.add('is-webgl-failed');
+    if (typeof window.__hidePageLoader === 'function') window.__hidePageLoader();
+  }
+
+  if (!heroEl || !heroCanvas) {
+    mobileHeroFailed(new Error('Hero canvas is unavailable'));
+  } else {
+    try {
+      const THREE = await import('three');
+      const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+      const { DRACOLoader } = await import('three/addons/loaders/DRACOLoader.js');
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas: heroCanvas,
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.05;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 50);
+      camera.position.set(0, 0, 10.5);
+      scene.add(new THREE.HemisphereLight(0xf8f3e8, 0x0e2a1c, 2.3));
+      const key = new THREE.DirectionalLight(0xcbfd85, 2.1);
+      key.position.set(3, 5, 6);
+      scene.add(key);
+      const fill = new THREE.DirectionalLight(0xffffff, 1.05);
+      fill.position.set(-4, -2, 5);
+      scene.add(fill);
+
+      const textCanvas = document.createElement('canvas');
+      textCanvas.width = 1024;
+      textCanvas.height = 512;
+      const textContext = textCanvas.getContext('2d');
+      const textTexture = new THREE.CanvasTexture(textCanvas);
+      textTexture.colorSpace = THREE.SRGBColorSpace;
+      textTexture.minFilter = THREE.LinearFilter;
+      const textMaterial = new THREE.MeshBasicMaterial({
+        map: textTexture,
+        transparent: true,
+        depthWrite: false,
+        side: THREE.DoubleSide
+      });
+      const textPlane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), textMaterial);
+      textPlane.position.z = -0.15;
+      scene.add(textPlane);
+
+      const glyphPool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&?';
+      let textElapsed = 0;
+      function drawMobileText(elapsed) {
+        let lines;
+        let reveal;
+        let accentLine;
+        if (elapsed < 2.45) {
+          lines = ['Where does this', 'actually go?'];
+          reveal = Math.min(1, Math.max(0, (elapsed - .18) / 1.25));
+          accentLine = 1;
+        } else {
+          lines = ['Trash Talk', 'with Rumi'];
+          reveal = Math.min(1, Math.max(0, (elapsed - 2.45) / 1.05));
+          accentLine = 1;
+        }
+
+        textContext.clearRect(0, 0, textCanvas.width, textCanvas.height);
+        textContext.textAlign = 'center';
+        textContext.textBaseline = 'middle';
+        textContext.font = '800 104px DM Sans, Arial Black, sans-serif';
+
+        const chars = lines.join('').length;
+        let revealed = Math.floor(chars * reveal);
+        let cursor = 0;
+        lines.forEach((line, lineIndex) => {
+          let output = '';
+          for (let i = 0; i < line.length; i++) {
+            if (line[i] === ' ') {
+              output += ' ';
+            } else if (cursor < revealed) {
+              output += line[i];
+              cursor++;
+            } else {
+              output += glyphPool[Math.floor(Math.random() * glyphPool.length)];
+              cursor++;
+            }
+          }
+          textContext.fillStyle = lineIndex === accentLine ? '#CBFD85' : '#F8F3E8';
+          textContext.fillText(output, 512, lineIndex === 0 ? 196 : 316);
+        });
+        textTexture.needsUpdate = true;
+      }
+
+      const draco = new DRACOLoader();
+      draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
+      const loader = new GLTFLoader();
+      loader.setDRACOLoader(draco);
+
+      function normalizeMobileModel(model) {
+        const box = new THREE.Box3().setFromObject(model);
+        const size = new THREE.Vector3();
+        box.getSize(size);
+        const maxSize = Math.max(size.x, size.y, size.z) || 1;
+        model.scale.multiplyScalar(1 / maxSize);
+        const center = new THREE.Vector3();
+        new THREE.Box3().setFromObject(model).getCenter(center);
+        model.position.sub(center);
+      }
+
+      const modelPaths = [
+        'assets/hero/aluminium_can-_350ml.glb',
+        'assets/hero/juicebox.glb',
+        'assets/hero/pouch.glb',
+        'assets/hero/cardboard_box.glb'
+      ];
+      const modelSizeBias = [1, .9, 1.08, 1.02];
+      const models = [];
+      const loadResults = await Promise.allSettled(modelPaths.map((path, index) => new Promise((resolve, reject) => {
+        let settled = false;
+        const timeout = setTimeout(() => {
+          settled = true;
+          reject(new Error('Timed out loading ' + path));
+        }, 12000);
+        loader.load(path, gltf => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timeout);
+          const model = gltf.scene;
+          normalizeMobileModel(model);
+          model.traverse(node => {
+            if (!node.isMesh || !node.material) return;
+            const materials = Array.isArray(node.material) ? node.material : [node.material];
+            materials.forEach(material => {
+              material.envMapIntensity = .35;
+              material.needsUpdate = true;
+            });
+          });
+          const orbitNode = new THREE.Group();
+          orbitNode.add(model);
+          scene.add(orbitNode);
+          models[index] = {
+            index,
+            model: orbitNode,
+            offset: index * Math.PI / 2,
+            bias: modelSizeBias[index],
+            spinX: .12 + index * .025,
+            spinY: .2 + index * .035,
+            phase: index * 1.71,
+            entryProgress: 0
+          };
+          resolve(model);
+        }, undefined, error => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timeout);
+          reject(error);
+        });
+      })));
+
+      const successfulLoads = loadResults.filter(result => result.status === 'fulfilled').length;
+      if (!successfulLoads) throw new Error('All mobile hero models failed to load');
+      const activeModels = models.filter(Boolean);
+      const reduceHeroMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const cameraTargetZ = 10.8;
+
+      let orbitRx = .5;
+      let orbitRy = 3.2;
+      let orbitDepth = 1.05;
+      let baseModelScale = 1.45;
+
+      function resizeMobileHero() {
+        const width = Math.max(1, heroEl.clientWidth);
+        const height = Math.max(1, heroEl.clientHeight);
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+
+        const visibleHeight = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * cameraTargetZ;
+        const visibleWidth = visibleHeight * camera.aspect;
+        const safeWorld = Math.max(.12, (16 / height) * visibleHeight);
+        baseModelScale = Math.max(1.08, Math.min(1.58, visibleWidth * .34));
+        orbitRx = Math.max(.28, Math.min(.68, visibleWidth * .105));
+        orbitRy = Math.max(2.45, Math.min(3.55, visibleHeight * .5 - baseModelScale * .62 - safeWorld));
+        orbitDepth = Math.max(.78, Math.min(1.18, visibleWidth * .24));
+
+        const textWidth = Math.min(visibleWidth * .78, 4.35);
+        textPlane.scale.set(textWidth, textWidth * .5, 1);
+      }
+
+      let running = false;
+      let raf = 0;
+      let previousTime = 0;
+      let orbitTime = reduceHeroMotion ? .32 : 0;
+      let orbitActive = false;
+      let textActivated = false;
+      let introStarted = false;
+      let heroVisible = true;
+      let introTimeline = null;
+
+      function orbitPosition(angle) {
+        const front = Math.sin(angle);
+        const focus = Math.pow(Math.max(0, front), 5);
+        return {
+          x: Math.sin(angle * 2) * orbitRx,
+          y: Math.cos(angle) * orbitRy,
+          z: front * orbitDepth + focus * .58,
+          focus
+        };
+      }
+
+      function renderMobileHero(now) {
+        if (!running) return;
+        const delta = previousTime ? Math.min(.05, (now - previousTime) / 1000) : 0;
+        previousTime = now;
+        if (orbitActive && !reduceHeroMotion) {
+          orbitTime += delta * .34 * (1 + .16 * Math.sin(orbitTime * .42));
+        }
+
+        activeModels.forEach(item => {
+          const angle = orbitTime + item.offset;
+          const position = orbitPosition(angle);
+          const entry = 1 - Math.pow(1 - Math.max(0, Math.min(1, item.entryProgress)), 3);
+          const entryY = orbitRy + baseModelScale * 1.35 + item.index * 1.05;
+          item.model.position.set(
+            position.x * entry,
+            THREE.MathUtils.lerp(entryY, position.y, entry),
+            position.z * entry
+          );
+          item.model.rotation.x += item.spinX * delta;
+          item.model.rotation.y += item.spinY * delta;
+          const cinematicFocus = 1 + position.focus * .24;
+          const breathe = 1 + Math.sin(orbitTime * 1.25 + item.phase) * .018;
+          item.model.scale.setScalar(baseModelScale * item.bias * cinematicFocus * breathe);
+          item.model.renderOrder = position.focus > .45 ? 3 : 1;
+        });
+
+        if (textActivated) {
+          textElapsed += delta;
+          drawMobileText(textElapsed);
+        }
+        renderer.render(scene, camera);
+        if (reduceHeroMotion) {
+          running = false;
+          raf = 0;
+        } else {
+          raf = requestAnimationFrame(renderMobileHero);
+        }
+      }
+
+      function startMobileHero() {
+        if (running || document.hidden) return;
+        running = true;
+        previousTime = 0;
+        if (introTimeline && !introTimeline.isActive() && introTimeline.progress() < 1) introTimeline.resume();
+        raf = requestAnimationFrame(renderMobileHero);
+      }
+      function stopMobileHero() {
+        running = false;
+        if (raf) cancelAnimationFrame(raf);
+        raf = 0;
+        if (introTimeline && introTimeline.progress() < 1) introTimeline.pause();
+      }
+
+      function startMobileIntro() {
+        if (introStarted) return;
+        introStarted = true;
+
+        if (reduceHeroMotion || !window.gsap) {
+          camera.position.set(0, 0, cameraTargetZ);
+          activeModels.forEach(item => { item.entryProgress = 1; });
+          orbitActive = false;
+          textActivated = true;
+          textElapsed = 3.8;
+          textPlane.visible = true;
+          heroCanvas.style.filter = 'none';
+          startMobileHero();
+          return;
+        }
+
+        const caR = document.getElementById('ca-r');
+        const caB = document.getElementById('ca-b');
+        const caState = { dx: 4 };
+        const blurState = { value: 8 };
+
+        camera.position.set(0, .35, 3.05);
+        heroCanvas.style.filter = 'blur(8px) url(#ca-filter)';
+        introTimeline = window.gsap.timeline({ paused: true, delay: .3 });
+        introTimeline
+          .to(camera.position, {
+            z: cameraTargetZ,
+            y: 0,
+            duration: 1.8,
+            ease: 'power2.inOut'
+          }, 0)
+          .to(caState, {
+            dx: 1.25,
+            duration: 1.8,
+            ease: 'power2.inOut',
+            onUpdate: function () {
+              if (caR) caR.setAttribute('dx', caState.dx.toFixed(2));
+              if (caB) caB.setAttribute('dx', (-caState.dx).toFixed(2));
+            }
+          }, 0)
+          .to(blurState, {
+            value: 0,
+            duration: 1.6,
+            ease: 'power2.inOut',
+            onUpdate: function () {
+              heroCanvas.style.filter = 'blur(' + blurState.value.toFixed(2) + 'px) url(#ca-filter)';
+            },
+            onComplete: function () { heroCanvas.style.filter = 'url(#ca-filter)'; }
+          }, .2);
+
+        activeModels.forEach(item => {
+          introTimeline.to(item, {
+            entryProgress: 1,
+            duration: 1,
+            ease: 'power3.out'
+          }, item.index * .18);
+        });
+        introTimeline.call(function () { orbitActive = true; }, null, .85);
+        introTimeline.call(function () {
+          textActivated = true;
+          textElapsed = 0;
+          textPlane.visible = true;
+        }, null, 1.1);
+
+        if (heroVisible && !document.hidden) introTimeline.play();
+      }
+
+      const heroObserver = new IntersectionObserver(entries => {
+        heroVisible = entries[0].isIntersecting;
+        if (heroVisible) {
+          startMobileIntro();
+          startMobileHero();
+        } else stopMobileHero();
+      }, { rootMargin: '100px 0px' });
+      heroObserver.observe(heroEl);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stopMobileHero();
+        else if (heroVisible) {
+          startMobileIntro();
+          startMobileHero();
+        }
+      });
+      heroCanvas.addEventListener('webglcontextlost', event => {
+        event.preventDefault();
+        stopMobileHero();
+        mobileHeroFailed(new Error('WebGL context lost'));
+      }, { once: true });
+
+      camera.position.set(0, reduceHeroMotion ? 0 : .35, reduceHeroMotion ? cameraTargetZ : 3.05);
+      textPlane.visible = false;
+      resizeMobileHero();
+      activeModels.forEach(item => {
+        item.model.position.set(0, orbitRy + baseModelScale * 1.35 + item.index * 1.05, 0);
+        item.model.scale.setScalar(baseModelScale * item.bias);
+      });
+
+      let resizeTimer = 0;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          resizeMobileHero();
+          if (reduceHeroMotion) startMobileHero();
+        }, 120);
+      }, { passive: true });
+
+      renderer.render(scene, camera);
+      heroEl.classList.add('is-webgl-ready');
+      if (typeof window.__hidePageLoader === 'function') window.__hidePageLoader();
+      startMobileIntro();
+      startMobileHero();
+    } catch (error) {
+      mobileHeroFailed(error);
+    }
+  }
+} else {
+const THREE = await import('three');
+const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+const { DRACOLoader } = await import('three/addons/loaders/DRACOLoader.js');
 
 
 
@@ -2832,6 +3923,28 @@ const draco = new DRACOLoader();
 draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
 const loader = new GLTFLoader();
 loader.setDRACOLoader(draco);
+
+/* â”€â”€ SHARED GLB CACHE (path-keyed, avoids re-fetching the same GLB across
+     the hero orbit / freeze / sorting-game scenes) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+window.__glbLoadCache = window.__glbLoadCache || {};
+window.__loadGLBCached = function (loaderInstance, path) {
+  if (!window.__glbLoadCache[path]) {
+    window.__glbLoadCache[path] = new Promise((resolve, reject) => {
+      loaderInstance.load(path, resolve, undefined, reject);
+    });
+  }
+  return window.__glbLoadCache[path].then(gltf => {
+    const scene = gltf.scene.clone(true);
+    scene.traverse(n => {
+      if (n.isMesh && n.material) {
+        n.material = Array.isArray(n.material)
+          ? n.material.map(m => m.clone())
+          : n.material.clone();
+      }
+    });
+    return { scene, gltf };
+  });
+};
 
 /* â”€â”€ SHARED LIGHTS FACTORY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function makeLights(scene) {
@@ -2915,6 +4028,9 @@ const txtMat = new THREE.MeshBasicMaterial({
 const txtPlane = new THREE.Mesh(new THREE.PlaneGeometry(13, 2.0), txtMat);
 txtPlane.position.set(0, 0.1, 0);
 txtPlane.visible = false;
+if (window.matchMedia('(max-width: 809px)').matches) {
+  txtPlane.scale.set(0.5, 0.5, 1); // mobile-only: hero headline text at 50% size
+}
 hScene.add(txtPlane);
 document.fonts.load('800 96px DM Sans');
 
@@ -2996,11 +4112,20 @@ const hCam = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
 hCam.position.z = 2.5;
 hCam.position.y = 0.4;
 
+const heroFrameEl = document.getElementById('s1-frame') || heroEl;
+const heroFrameIsScaled = heroFrameEl !== heroEl && window.matchMedia('(max-width: 809px)').matches;
 function hResize() {
-  const w = heroEl.clientWidth, h = heroEl.clientHeight;
+  const w = heroFrameEl.clientWidth, h = heroFrameEl.clientHeight;
   hRenderer.setSize(w, h);
   hCam.aspect = w / h;
   hCam.updateProjectionMatrix();
+  // Cover-fit the fixed-size desktop frame into the mobile viewport. Computed
+  // in JS (not CSS calc()) since dividing two different length units inside
+  // scale() isn't reliably supported and was silently no-op'ing the transform.
+  if (heroFrameIsScaled) {
+    const scale = Math.max(window.innerWidth / w, window.innerHeight / h);
+    heroFrameEl.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
 }
 hResize();
 window.addEventListener('resize', hResize);
@@ -3034,8 +4159,8 @@ const ORBIT_PATHS = [
 ];
 
 ORBIT_PATHS.forEach((path, i) => {
-  loader.load(path, gltf => {
-    const m = gltf.scene;
+  window.__loadGLBCached(loader, path).then(({ scene }) => {
+    const m = scene;
     normalize(m, ORBIT_SIZES[i]);
     m.traverse(c => {
       if (c.isMesh && c.material) {
@@ -3083,7 +4208,7 @@ ORBIT_PATHS.forEach((path, i) => {
     });
     hLoaded++;
     if (hLoaded === ORBIT_PATHS.length) heroReady();
-  }, undefined, err => console.warn(path, err));
+  }).catch(err => console.warn(path, err));
 });
 
 // â”€â”€ Orbit position calculator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -3096,6 +4221,7 @@ function orbitPos(angle) {
 }
 
 function heroReady() {
+  if (window.__hidePageLoader) window.__hidePageLoader();
   function startHero() {
     ORBIT.scatterMult = 1;
 
@@ -3462,12 +4588,12 @@ gsap.ticker.add((time) => {
     groups[index] = group;
     scene.add(group);
 
-    loader.load(item.path, (gltf) => {
-      prepModel(gltf.scene, item.size);
-      group.add(gltf.scene);
+    window.__loadGLBCached(loader, item.path).then(({ scene }) => {
+      prepModel(scene, item.size);
+      group.add(scene);
       loaded += 1;
       if (loaded === items.length) initS3Timeline();
-    }, undefined, (err) => {
+    }).catch((err) => {
       console.warn('S3 model failed:', item.path, err);
       loaded += 1;
       if (loaded === items.length) initS3Timeline();
@@ -3671,11 +4797,11 @@ gsap.ticker.add((time) => {
 // ── S6 PRODUCT entrance
 (function(){
   gsap.from('.s6-el', {
-    scrollTrigger: { trigger: '#s6', start: 'top 75%', once: true },
-    opacity: 0, y: 30, duration: .8, ease: 'power3.out', stagger: .1
+    scrollTrigger: { trigger: '#s6', start: 'top 95%', once: true },
+    opacity: 0, y: 30, duration: .5, ease: 'power3.out', stagger: .06
   });
   const frame = document.getElementById('s6-frame');
-  if (frame) gsap.to(frame, { scrollTrigger:{ trigger:'#s6', start:'top 60%', once:true }, opacity:.5, duration:.8, delay:.4 });
+  if (frame) gsap.to(frame, { scrollTrigger:{ trigger:'#s6', start:'top 80%', once:true }, opacity:.5, duration:.8, delay:.4 });
 })();
 
 // ── S8 HOW IT WORKS — pinned two-column timeline ────────────────
@@ -3709,57 +4835,43 @@ gsap.ticker.add((time) => {
   goTo(0);
 
   gsap.from('#s8-left-header', {
-    opacity: 0, y: 30, duration: .8, ease: 'power3.out',
-    scrollTrigger: { trigger: '#s8', start: 'top 80%', once: true }
+    opacity: 0, y: 30, duration: .5, ease: 'power3.out',
+    scrollTrigger: { trigger: '#s8', start: 'top 98%', once: true }
   });
   gsap.from('.s8-step', {
-    opacity: 0, x: -20, duration: .6, ease: 'power3.out', stagger: .08,
-    scrollTrigger: { trigger: '#s8', start: 'top 75%', once: true }
+    opacity: 0, x: -20, duration: .4, ease: 'power3.out', stagger: .05,
+    scrollTrigger: { trigger: '#s8', start: 'top 95%', once: true }
   });
 
-  ScrollTrigger.create({
-    trigger: '#s8-scroll-space',
-    pin: '#s8-sticky',
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: 1,
-    onUpdate: self => {
-      const idx = Math.min(TOTAL - 1, Math.floor(self.progress * TOTAL));
-      goTo(idx);
-    }
-  });
-})();
-
-
-// ── GLOBAL ENTRANCE SYSTEM (B) ──────────────────────────────────────
-(function(){
-  const GROUPS = [
-    '#s2 .context-desc', '#s2 .meta-item',
-    '#s4 .method-card',  '#s4 .finding',
-    '#s5 .persona-card',
-    '#s9 .s9-card',
-    '#s10 .asset-card',
-    '#s14 h2', '#s14 p',
-    '#s16 h2', '#s16 p',
-  ];
-  GROUPS.forEach(sel => {
-    const els = document.querySelectorAll(sel);
-    if (!els.length) return;
-    gsap.from(els, {
-      opacity:0, y:30, duration:.65, ease:'power3.out', stagger:.08,
-      scrollTrigger:{ trigger: els[0].closest('section') || els[0], start:'top 78%', once:true }
+  // Desktop-only: the pinned scrub timeline fights the mobile touch carousel
+  // (below) over the same panels, since both drive .s8-panel visibility.
+  if (!window.matchMedia('(max-width: 809px)').matches) {
+    ScrollTrigger.create({
+      trigger: '#s8-scroll-space',
+      pin: '#s8-sticky',
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1,
+      onUpdate: self => {
+        const idx = Math.min(TOTAL - 1, Math.floor(self.progress * TOTAL));
+        goTo(idx);
+      }
     });
-  });
+  }
 })();
+
+
+}
 
 </script>
 
 
 <script type="module">
 /* S15 - 3D DRAG-AND-THROW GAME */
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+if (!window.matchMedia('(max-width: 809px)').matches) {
+const THREE = await import('three');
+const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+const { DRACOLoader } = await import('three/addons/loaders/DRACOLoader.js');
 
 const canvas = document.getElementById('s15-canvas');
 if (!canvas) { console.warn('s15-canvas missing'); }
@@ -3869,8 +4981,7 @@ let loadCount = 0;
 let allLoaded = false;
 
 ITEM_DEFS.forEach((def, idx) => {
-  loader.load(def.glb, gltf => {
-    const model = gltf.scene;
+  window.__loadGLBCached(loader, def.glb).then(({ scene: model }) => {
     normalize(model, def.size);
     enableShadows(model);
     const pivot = new THREE.Group();
@@ -3913,7 +5024,7 @@ ITEM_DEFS.forEach((def, idx) => {
     objects.push(obj);
     loadCount++;
     if (loadCount === ITEM_DEFS.length) { allLoaded = true; startEntrance(); }
-  }, undefined, () => {
+  }).catch(() => {
     loadCount++;
     if (loadCount === ITEM_DEFS.length) { allLoaded = true; startEntrance(); }
   });
@@ -4135,18 +5246,257 @@ new ResizeObserver(() => {
 }).observe(wrap);
 
 ScrollTrigger.create({
-  trigger: '#s15', start: 'top 85%', once: true,
+  trigger: '#s15', start: 'top 98%', once: true,
   onEnter: () => { if (!started) { started = true; clock.start(); tick(); } }
 });
 
 canvas.style.cursor = 'grab';
 } // end if canvas
+}
 </script>
 
+<script>
+(function () {
+  var mobileQuery = window.matchMedia('(max-width: 809px)');
+  if (!mobileQuery.matches) return;
+  mobileQuery.addEventListener('change', function () { window.location.reload(); }, { once: true });
+
+  var nav = document.getElementById('nav');
+  var bar = document.getElementById('progress-bar');
+  var ticking = false;
+  function updateChrome() {
+    ticking = false;
+    if (nav) nav.classList.toggle('scrolled', window.scrollY > 24);
+    if (bar) {
+      var range = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      bar.style.width = Math.min(100, window.scrollY / range * 100) + '%';
+    }
+  }
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(updateChrome);
+  }, { passive: true });
+  updateChrome();
+
+  /* Mobile Research: enhance the existing copy into a single-open accordion. */
+  var researchSection = document.getElementById('s4');
+  var researchItems = researchSection
+    ? Array.prototype.slice.call(researchSection.querySelectorAll('.method-item'))
+    : [];
+  var sourceResearchImages = researchSection && researchSection.querySelector('.research-methods > .research-image-grid');
+  var researchRefreshTimer = 0;
+  function refreshAfterResearchChange() {
+    clearTimeout(researchRefreshTimer);
+    researchRefreshTimer = setTimeout(function () {
+      if (window.ScrollTrigger) ScrollTrigger.refresh();
+    }, 380);
+  }
+  if (researchSection && researchItems.length === 3) {
+    researchItems.forEach(function (item, index) {
+      var number = item.querySelector('.method-num');
+      var title = item.querySelector('.method-title');
+      var body = item.querySelector('.method-body');
+      var content = title && title.parentElement;
+      if (!number || !title || !body || !content) return;
+
+      var toggle = document.createElement('button');
+      var detailId = 'research-detail-' + (index + 1);
+      var toggleId = 'research-toggle-' + (index + 1);
+      toggle.type = 'button';
+      toggle.className = 'research-accordion-toggle';
+      toggle.id = toggleId;
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', detailId);
+
+      var icon = document.createElement('span');
+      icon.className = 'research-accordion-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      toggle.appendChild(number);
+      toggle.appendChild(title);
+      toggle.appendChild(icon);
+
+      var shell = document.createElement('div');
+      shell.className = 'research-accordion-shell';
+      shell.id = detailId;
+      shell.setAttribute('role', 'region');
+      shell.setAttribute('aria-labelledby', toggleId);
+      shell.setAttribute('aria-hidden', 'true');
+      content.classList.add('research-accordion-inner');
+      shell.appendChild(content);
+
+      if (index === 0 && sourceResearchImages) {
+        var mobileImages = sourceResearchImages.cloneNode(true);
+        mobileImages.classList.add('research-image-grid--mobile');
+        mobileImages.removeAttribute('id');
+        content.appendChild(mobileImages);
+      }
+
+      item.classList.add('is-mobile-accordion');
+      item.appendChild(toggle);
+      item.appendChild(shell);
+
+      toggle.addEventListener('click', function () {
+        var shouldOpen = !item.classList.contains('is-open');
+        researchItems.forEach(function (otherItem) {
+          var otherToggle = otherItem.querySelector('.research-accordion-toggle');
+          var otherShell = otherItem.querySelector('.research-accordion-shell');
+          otherItem.classList.remove('is-open');
+          if (otherToggle) otherToggle.setAttribute('aria-expanded', 'false');
+          if (otherShell) otherShell.setAttribute('aria-hidden', 'true');
+        });
+        if (shouldOpen) {
+          item.classList.add('is-open');
+          toggle.setAttribute('aria-expanded', 'true');
+          shell.setAttribute('aria-hidden', 'false');
+        }
+        refreshAfterResearchChange();
+      });
+    });
+    if (sourceResearchImages) sourceResearchImages.setAttribute('aria-hidden', 'true');
+    researchSection.classList.add('is-accordion-ready');
+  }
+
+  /* Mobile persona tabs: one compact persona at a time, Jayla by default. */
+  var personaTabs = Array.prototype.slice.call(document.querySelectorAll('.persona-tab'));
+  var personaPanels = Array.prototype.slice.call(document.querySelectorAll('[data-persona-panel]'));
+  function activatePersona(name, focusTab) {
+    personaTabs.forEach(function (tab) {
+      var selected = tab.dataset.persona === name;
+      tab.classList.toggle('is-active', selected);
+      tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+      tab.tabIndex = selected ? 0 : -1;
+      if (selected && focusTab) tab.focus();
+    });
+    personaPanels.forEach(function (panel) {
+      var selected = panel.dataset.personaPanel === name;
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', 'persona-tab-' + panel.dataset.personaPanel);
+      panel.hidden = !selected;
+      panel.classList.toggle('is-active', selected);
+      panel.setAttribute('aria-hidden', selected ? 'false' : 'true');
+    });
+  }
+  personaTabs.forEach(function (tab, index) {
+    tab.addEventListener('click', function () { activatePersona(tab.dataset.persona, false); });
+    tab.addEventListener('keydown', function (event) {
+      var next = index;
+      if (event.key === 'ArrowRight') next = (index + 1) % personaTabs.length;
+      else if (event.key === 'ArrowLeft') next = (index - 1 + personaTabs.length) % personaTabs.length;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = personaTabs.length - 1;
+      else return;
+      event.preventDefault();
+      activatePersona(personaTabs[next].dataset.persona, true);
+    });
+  });
+  if (personaTabs.length && personaPanels.length) activatePersona('jayla', false);
+
+  var revealTargets = document.querySelectorAll(
+    '#s2 .context-grid, #s3-heading, #s4 .research-grid, #s5 .who-header, ' +
+    '#s6a .insert-section-head, #s6b .insert-section-head, #s6d .insert-section-head, ' +
+    '#s6 > div, #s6c .experience-head, #s7 > div, #s8-left, #s14 > div, #s16 > div'
+  );
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
+    revealTargets.forEach(function (el) {
+      el.classList.add('mobile-reveal');
+      revealObserver.observe(el);
+    });
+  }
+
+  /* Ideation: the same single-open disclosure model used by Research. */
+  var ideaSection = document.getElementById('s6a');
+  var ideaCards = ideaSection ? Array.prototype.slice.call(ideaSection.querySelectorAll('.idea-card')) : [];
+  if (ideaCards.length) {
+    ideaCards.forEach(function (card, index) {
+      var title = card.querySelector('.idea-title');
+      var image = card.querySelector('.case-image');
+      if (!title || !image) return;
+
+      var toggle = document.createElement('button');
+      var detailId = 'mobile-idea-detail-' + (index + 1);
+      var toggleId = 'mobile-idea-toggle-' + (index + 1);
+      toggle.type = 'button';
+      toggle.className = 'mobile-idea-toggle';
+      toggle.id = toggleId;
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', detailId);
+
+      var icon = document.createElement('span');
+      icon.className = 'mobile-idea-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      toggle.appendChild(title);
+      toggle.appendChild(icon);
+
+      var shell = document.createElement('div');
+      shell.className = 'mobile-idea-shell';
+      shell.id = detailId;
+      shell.setAttribute('role', 'region');
+      shell.setAttribute('aria-labelledby', toggleId);
+      shell.setAttribute('aria-hidden', 'true');
+
+      var inner = document.createElement('div');
+      inner.className = 'mobile-idea-inner';
+      image.loading = 'lazy';
+      inner.appendChild(image);
+      shell.appendChild(inner);
+
+      card.insertBefore(toggle, card.firstChild);
+      card.insertBefore(shell, card.querySelector('.idea-body'));
+      card.classList.add('is-mobile-accordion');
+
+      toggle.addEventListener('click', function () {
+        var shouldOpen = !card.classList.contains('is-open');
+        ideaCards.forEach(function (otherCard) {
+          var otherToggle = otherCard.querySelector('.mobile-idea-toggle');
+          var otherShell = otherCard.querySelector('.mobile-idea-shell');
+          otherCard.classList.remove('is-open');
+          if (otherToggle) otherToggle.setAttribute('aria-expanded', 'false');
+          if (otherShell) otherShell.setAttribute('aria-hidden', 'true');
+        });
+        if (shouldOpen) {
+          card.classList.add('is-open');
+          toggle.setAttribute('aria-expanded', 'true');
+          shell.setAttribute('aria-hidden', 'false');
+        }
+      });
+    });
+  }
+
+  // Experience Flow cards: plain native horizontal scroll (CSS scroll-snap
+  // on #s8-right handles swiping) — no JS, no autoplay, no active-state tracking.
+
+  var videos = Array.prototype.slice.call(document.querySelectorAll('video'));
+  if (videos.length && 'IntersectionObserver' in window) {
+    var activeVideo = null;
+    var videoObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var video = entry.target;
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
+          if (activeVideo && activeVideo !== video) activeVideo.pause();
+          activeVideo = video;
+          video.play().catch(function () {});
+        } else if (!entry.isIntersecting || entry.intersectionRatio < 0.2) {
+          video.pause();
+          if (activeVideo === video) activeVideo = null;
+        }
+      });
+    }, { threshold: [0, 0.2, 0.55, 0.85], rootMargin: '80px 0px' });
+    videos.forEach(function (video) {
+      video.preload = 'metadata';
+      videoObserver.observe(video);
+    });
+  }
+})();
+</script>
 <script src="./i18n-rumi.js?v=1"></script>
 <script src="../../scripts/i18n.js?v=7"></script>
 </body>
 </html>
-
-
-

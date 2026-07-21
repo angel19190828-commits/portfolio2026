@@ -5,6 +5,7 @@
   if (!root || !stage || !hero || !window.Matter) return;
 
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isMobilePhysics = window.matchMedia("(max-width: 809px)").matches;
 
   const { Engine, World, Bodies, Body, Vector } = Matter;
   const engine = Engine.create({ enableSleeping: false });
@@ -35,7 +36,7 @@
   let isStarted = false;
   let isHeroActive = true;
   let initialStickersSpawned = false;
-  const maxStickers = 28;
+  const maxStickers = isMobilePhysics ? 3 : 28;
 
   function heroRect() {
     return hero.getBoundingClientRect();
@@ -150,6 +151,7 @@
   }
 
   function spawnBurst() {
+    if (isMobilePhysics) return;
     const copies = 3 + Math.floor(Math.random() * 3);
     const configs = Array.from({ length: copies }, () => randomStickerConfig(stickerSources));
 
@@ -165,10 +167,12 @@
     if (initialStickersSpawned) return;
     initialStickersSpawned = true;
     const copies = prefersReduced ? 6 : width < 720 ? 8 : 11;
-    const configs = [
-      angelInitialSticker,
-      ...Array.from({ length: copies - 1 }, (_, index) => ({ ...initialWebStickerSources[index % initialWebStickerSources.length] })),
-    ];
+    const configs = isMobilePhysics
+      ? [angelInitialSticker, stickerSources[0], stickerSources[2]].map((config) => ({ ...config }))
+      : [
+          angelInitialSticker,
+          ...Array.from({ length: copies - 1 }, (_, index) => ({ ...initialWebStickerSources[index % initialWebStickerSources.length] })),
+        ];
 
     configs.forEach((config, index) => {
       const column = index / Math.max(1, copies - 1);

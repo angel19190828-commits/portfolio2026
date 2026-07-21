@@ -75,6 +75,7 @@
         yPercent: 0,
         scale: 1
       });
+      gsap.set(".scroll-hint", { clearProps: "opacity,visibility,filter,transform" });
     };
     const parkLoadingAssetInHeader = () => {
       if (!loadingAsset) return;
@@ -148,7 +149,8 @@
           scale: 1,
           duration: 0.34,
           ease: "power2.out",
-          overwrite: "auto"
+          overwrite: "auto",
+          onComplete: () => gsap.set(".scroll-hint", { clearProps: "opacity,visibility,filter,transform" })
         });
         gsap.set(".opening", { autoAlpha: 0, display: "none", pointerEvents: "none" });
         window.requestAnimationFrame(() => document.querySelector(".opening")?.remove());
@@ -211,7 +213,15 @@
       )
       .fromTo([".hero-statement", ".skill-strip", ".resume-button", ".geo-panel", ".school-panel", ".based-panel", ".scroll-hint", ".page-intro", ".detail-hero-copy"],
         { autoAlpha: 0, filter: "blur(7px)", scale: 0.96 },
-        { autoAlpha: 1, filter: "blur(0px)", scale: 1, stagger: 0.06, duration: 0.48, ease: "power2.out" },
+        {
+          autoAlpha: 1,
+          filter: "blur(0px)",
+          scale: 1,
+          stagger: 0.06,
+          duration: 0.48,
+          ease: "power2.out",
+          onComplete: () => gsap.set(".scroll-hint", { clearProps: "opacity,visibility,filter,transform" })
+        },
         "-=0.28"
       );
 
@@ -322,7 +332,6 @@
     });
   });
 
-  const preview = document.querySelector(".cursor-preview");
   const workScrollHint = document.querySelector(".work-scroll-hint");
 
   function updateWorkScrollHint() {
@@ -351,6 +360,7 @@
     requestAnimationFrame(watchWorkScrollHint);
   }
 
+  const preview = document.querySelector(".cursor-preview");
   const previewRows = document.querySelectorAll(".index-row[data-img], .work-row[data-img]");
   previewRows.forEach((row) => {
     if (!row.dataset.img) return;

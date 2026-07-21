@@ -10,9 +10,12 @@
 
   const cards = gsap.utils.toArray(".stack-card");
   const completeLink = document.querySelector(".work-complete");
+  const mobileCompleteLink = document.querySelector(".mobile-work-all");
   let orbitItems = gsap.utils.toArray(".orbit-copy span");
   const focusDot = document.querySelector(".wheel-focus-dot");
-  const isMobile = () => window.matchMedia("(max-width: 809px)").matches;
+  const mobileQuery = window.matchMedia("(max-width: 809px)");
+  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const isMobile = () => mobileQuery.matches;
 
   let activeIndex = -1;
   let projectAngles = [];
@@ -34,6 +37,16 @@
   let settleCall = null;
   let track = null;
   let cardSlot = 0;
+  let mobileTrackSet = null;
+  let mobileActiveIndex = -1;
+  let mobileSectionActive = false;
+  let mobileSnapTween = null;
+  const mobileSnapState = { y: 0 };
+  let mobileSnapListenersAttached = false;
+  let mobileGesturePeakVelocity = 0;
+  let mobileLastDirection = 1;
+  let activeMode = null;
+  let resizeTimer = null;
 
   function extendOrbitForLoopRead() {
     if (orbit.dataset.extended === "true") return;
@@ -51,6 +64,7 @@
 
   function setupOrbitClicks() {
     orbitItems.forEach((span, index) => {
+      if (span.dataset.workOrbitClickBound === "true") return;
       const cardIndex = index % cards.length;
       span.style.pointerEvents = "auto";
       span.style.cursor = "pointer";
@@ -60,6 +74,7 @@
         const scrollPos = workTimeline.start + targetProgress * (workTimeline.end - workTimeline.start);
         window.scrollTo({ top: scrollPos, behavior: "smooth" });
       });
+      span.dataset.workOrbitClickBound = "true";
     });
   }
 
@@ -76,7 +91,7 @@
     }
 
     const mobile = isMobile();
-    const gap = mobile ? 78 : 96;
+    const gap = mobile ? 12 : 96;
     gsap.set(cards, {
       clearProps: "position,inset",
       autoAlpha: 1,
@@ -93,6 +108,7 @@
       card.style.minHeight = "";
     });
 
+    stack.style.height = "";
     const measuredHeight = Math.max(...cards.map((card) => card.offsetHeight), stack.offsetHeight);
     cardSlot = measuredHeight + gap;
     stack.style.height = `${measuredHeight}px`;
@@ -100,6 +116,23 @@
       card.style.height = `${measuredHeight}px`;
       card.style.marginBottom = index === cards.length - 1 ? "0px" : `${gap}px`;
     });
+    if (mobile) {
+      const safeTop = 84;
+      const bottomSafe = 24;
+      const ctaGap = 18;
+      const targetCenter = window.innerHeight * 0.44;
+      const ctaHeight = mobileCompleteLink?.offsetHeight || 50;
+      const idealStackTop = targetCenter - measuredHeight / 2;
+      const maxStackTop = window.innerHeight - bottomSafe - ctaHeight - ctaGap - measuredHeight;
+      const stackTop = Math.max(safeTop, Math.min(idealStackTop, maxStackTop));
+      stack.style.top = `${stackTop}px`;
+      if (mobileCompleteLink) {
+        mobileCompleteLink.style.top = `${stackTop + measuredHeight + ctaGap}px`;
+      }
+    } else {
+      stack.style.top = "";
+      if (mobileCompleteLink) mobileCompleteLink.style.top = "";
+    }
     gsap.set(track, { y: 0 });
   }
 
@@ -283,7 +316,7 @@
     applyOrbitDepth(cardPosition);
     renderCardStack(cardPosition);
 
-    const outro = gsap.utils.clamp(0, 1, workState.outro);
+    const outro = isMobile() ? 0 : gsap.utils.clamp(0, 1, workState.outro);
     const stackExit = gsap.utils.clamp(0, 1, outro / 0.58);
     const linkIntro = gsap.utils.clamp(0, 1, (outro - 0.2) / 0.24);
     const linkEase = linkIntro * linkIntro * (3 - 2 * linkIntro);
@@ -304,7 +337,169 @@
     }
   }
 
-  function buildWorkTimeline() {
+  function pauseAllCardVideos() {
+    cards.forEach((card) => card.querySelector("video")?.pause());
+  }
+
+  function playMobileActiveVideo() {
+    if (!mobileSectionActive || mobileActiveIndex < 0) return;
+    const video = cards[mobileActiveIndex]?.querySelector("video");
+    if (video?.paused) video.play().catch(() => {});
+  }
+
+  function setMobileActive(index, force) {
+    const nextIndex = gsap.utils.clamp(0, cards.length - 1, index);
+    if (nextIndex === mobileActiveIndex && !force) return;
+    mobileActiveIndex = nextIndex;
+    pauseAllCardVideos();
+
+    cards.forEach((card, cardIndex) => {
+      const selected = cardIndex === nextIndex;
+      card.classList.toggle("is-current", selected);
+      card.setAttribute("aria-current", selected ? "true" : "false");
+      gsap.set(card, {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        filter: "blur(0px)",
+        zIndex: selected ? 20 : 10,
+        pointerEvents: selected ? "auto" : "none"
+      });
+    });
+
+    playMobileActiveVideo();
+  }
+
+  function renderMobileProgress(progress, immediate) {
+    if (!track || !cardSlot) setupCardTrack();
+    const position = gsap.utils.clamp(0, 1, progress) * Math.max(0, cards.length - 1);
+    const trackY = -position * cardSlot;
+
+    if (!mobileTrackSet) mobileTrackSet = gsap.quickSetter(track, "y", "px");
+    mobileTrackSet(trackY);
+
+    setMobileActive(Math.round(position), false);
+  }
+
+  function cancelMobileSnap() {
+    if (mobileSnapTween) mobileSnapTween.kill();
+    mobileSnapTween = null;
+    mobileGesturePeakVelocity = 0;
+  }
+
+  function snapMobileToNearest() {
+    if (!isMobile() || !workTimeline?.isActive || cards.length < 2) return;
+
+    const maxIndex = cards.length - 1;
+    const currentProgress = gsap.utils.clamp(0, 1, workTimeline.progress || 0);
+    const rawIndex = currentProgress * maxIndex;
+    const gestureVelocity = mobileGesturePeakVelocity;
+    const gestureDirection = Math.sign(gestureVelocity) || mobileLastDirection || 1;
+    const fastGesture = Math.abs(gestureVelocity) >= 650;
+    const targetIndex = gsap.utils.clamp(0, maxIndex, fastGesture
+      ? (gestureDirection > 0 ? Math.ceil(rawIndex + 0.001) : Math.floor(rawIndex - 0.001))
+      : Math.round(rawIndex));
+    const targetProgress = targetIndex / maxIndex;
+    const targetScroll = workTimeline.start + targetProgress * (workTimeline.end - workTimeline.start);
+    const currentScroll = window.scrollY;
+    mobileGesturePeakVelocity = 0;
+
+    if (Math.abs(targetScroll - currentScroll) < 2) {
+      renderMobileProgress(targetProgress, true);
+      return;
+    }
+
+    cancelMobileSnap();
+    if (reducedMotionQuery.matches) {
+      window.scrollTo(0, targetScroll);
+      renderMobileProgress(targetProgress, true);
+      return;
+    }
+
+    mobileSnapState.y = currentScroll;
+    mobileSnapTween = gsap.to(mobileSnapState, {
+      y: targetScroll,
+      duration: gsap.utils.clamp(0.48, 0.68, Math.abs(targetScroll - currentScroll) / 1200),
+      ease: "power3.out",
+      overwrite: true,
+      onUpdate: () => window.scrollTo(0, Math.round(mobileSnapState.y)),
+      onComplete: () => {
+        mobileSnapTween = null;
+        renderMobileProgress(targetProgress, true);
+      }
+    });
+  }
+
+  function attachMobileSnapListeners() {
+    if (mobileSnapListenersAttached) return;
+    ScrollTrigger.addEventListener("scrollEnd", snapMobileToNearest);
+    window.addEventListener("touchstart", cancelMobileSnap, { passive: true });
+    window.addEventListener("pointerdown", cancelMobileSnap, { passive: true });
+    window.addEventListener("wheel", cancelMobileSnap, { passive: true });
+    mobileSnapListenersAttached = true;
+  }
+
+  function detachMobileSnapListeners() {
+    if (!mobileSnapListenersAttached) return;
+    ScrollTrigger.removeEventListener("scrollEnd", snapMobileToNearest);
+    window.removeEventListener("touchstart", cancelMobileSnap);
+    window.removeEventListener("pointerdown", cancelMobileSnap);
+    window.removeEventListener("wheel", cancelMobileSnap);
+    mobileSnapListenersAttached = false;
+  }
+
+  function buildMobileWorkTimeline() {
+    mobileSectionActive = false;
+    mobileActiveIndex = -1;
+    mobileGesturePeakVelocity = 0;
+    mobileLastDirection = 1;
+    pauseAllCardVideos();
+    gsap.set(stack, { autoAlpha: 1, y: 0, pointerEvents: "auto" });
+    mobileTrackSet = gsap.quickSetter(track, "y", "px");
+    setMobileActive(0, true);
+
+    workTimeline = ScrollTrigger.create({
+      id: "section1-work-carousel",
+      trigger: section,
+      start: "top top",
+      end: () => `+=${Math.max(2400, window.innerHeight * 3.2)}`,
+      pin: true,
+      anticipatePin: 1,
+      refreshPriority: 20,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        if (!mobileSnapTween) {
+          const velocity = self.getVelocity ? self.getVelocity() : 0;
+          if (Math.abs(velocity) > Math.abs(mobileGesturePeakVelocity)) {
+            mobileGesturePeakVelocity = velocity;
+          }
+          mobileLastDirection = self.direction || mobileLastDirection || 1;
+        }
+        renderMobileProgress(self.progress, false);
+      },
+      onToggle: (self) => {
+        mobileSectionActive = self.isActive;
+        renderMobileProgress(self.progress, true);
+        if (mobileSectionActive) {
+          playMobileActiveVideo();
+        } else {
+          mobileGesturePeakVelocity = 0;
+          pauseAllCardVideos();
+        }
+      },
+      onRefresh: (self) => {
+        setupCardTrack();
+        renderMobileProgress(self.progress || 0, true);
+      }
+    });
+
+    mobileSectionActive = workTimeline.isActive;
+    renderMobileProgress(workTimeline.progress || 0, true);
+    playMobileActiveVideo();
+    attachMobileSnapListeners();
+  }
+
+  function buildDesktopWorkTimeline() {
     if (workTimeline) {
       workTimeline.kill();
     }
@@ -406,6 +601,50 @@
     });
   }
 
+  function cleanupWorkMode() {
+    if (workTimeline) {
+      workTimeline.kill();
+      workTimeline = null;
+    }
+    if (renderTick) {
+      gsap.ticker.remove(renderTick);
+      renderTick = null;
+    }
+    if (settleCall) {
+      settleCall.kill();
+      settleCall = null;
+    }
+    mobileTrackSet = null;
+    cancelMobileSnap();
+    detachMobileSnapListeners();
+    mobileSectionActive = false;
+    mobileActiveIndex = -1;
+    if (track) gsap.killTweensOf(track);
+    pauseAllCardVideos();
+  }
+
+  function initializeWorkMode() {
+    const nextMode = isMobile() ? "mobile" : "desktop";
+    cleanupWorkMode();
+    activeMode = nextMode;
+    activeIndex = -1;
+    setupCardTrack();
+
+    if (nextMode === "mobile") {
+      buildMobileWorkTimeline();
+      return;
+    }
+
+    extendOrbitForLoopRead();
+    setupOrbitClicks();
+    layoutWheel();
+    buildDesktopWorkTimeline();
+    cards.forEach((card) => {
+      const video = card.querySelector("video");
+      if (video?.paused) video.play().catch(() => {});
+    });
+  }
+
   gsap.set(cards, {
     autoAlpha: 1,
     y: 0,
@@ -415,15 +654,18 @@
   });
   gsap.set(completeLink, { autoAlpha: 0, y: 18, pointerEvents: "none" });
 
-  extendOrbitForLoopRead();
-  setupOrbitClicks();
-  setupCardTrack();
-  layoutWheel();
-  buildWorkTimeline();
+  initializeWorkMode();
+
+  const handleModeChange = () => initializeWorkMode();
+  if (mobileQuery.addEventListener) mobileQuery.addEventListener("change", handleModeChange);
+  else mobileQuery.addListener(handleModeChange);
 
   window.addEventListener("resize", () => {
-    setupCardTrack();
-    layoutWheel();
-    ScrollTrigger.refresh();
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      const nextMode = isMobile() ? "mobile" : "desktop";
+      if (nextMode !== activeMode) initializeWorkMode();
+      else ScrollTrigger.refresh();
+    }, 180);
   }, { passive: true });
 })();

@@ -56,19 +56,38 @@
 
 @media (max-width: 809px) {
   .hero-role-loop {
-    gap: 9px;
-    justify-content: flex-start;
+    --role-size: clamp(44px, 14vw, 59px);
+    --role-height: clamp(50px, 15.7vw, 66px);
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    max-width: 100%;
+    min-width: 0;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .hero-role-loop__label {
+    margin: 0;
+    font-size: 12px;
+    line-height: 16px;
   }
 
   .hero-role-loop__mask {
-    flex-basis: min(64vw, 368px);
-    width: min(64vw, 368px);
-    height: 76px;
+    flex: 0 0 var(--role-height);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: var(--role-height);
   }
 
   .hero-role-loop__word,
   .hero-role-loop__fixed {
-    font-size: 58px;
-    line-height: 76px;
+    width: 100%;
+    max-width: 100%;
+    font-size: var(--role-size);
+    line-height: var(--role-height);
+    text-align: center;
+    white-space: nowrap;
   }
 }

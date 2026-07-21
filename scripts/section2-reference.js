@@ -16,6 +16,18 @@
   let resizeTimer = null;
   let mediaRefreshQueued = false;
 
+  const mobileCollageQuery = window.matchMedia("(max-width: 809px)");
+  mobileCollageQuery.addEventListener?.("change", () => window.location.reload());
+
+  if (mobileCollageQuery.matches) {
+    items.forEach((item, index) => {
+      gsap.set(item, { clearProps: "all" });
+      item.setAttribute("aria-hidden", index < 6 ? "false" : "true");
+    });
+    gsap.set([titleWrap, title, subtitle, grid, viewAll].filter(Boolean), { clearProps: "all" });
+    return;
+  }
+
   function snapItemsToFinal() {
     items.forEach((item) => {
       gsap.set(item, {
