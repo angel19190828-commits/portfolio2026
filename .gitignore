@@ -1,5 +1,17 @@
 versions/
 
+# Local AI/editor state. Do not commit machine-specific agent settings.
+.claude/
+.agents/
+
+# Local worktrees and scratch render/output folders.
+_worktrees/
+.codex/
+.cache/
+tmp/
+temp/
+*.tmp
+*.log
 # Local/source media archives. The live site uses optimized/web proxies.
 assets/art/*.mov
 assets/art/*.mp4
